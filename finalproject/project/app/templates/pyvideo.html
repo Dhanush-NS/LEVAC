@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python videos</title>
+  {% load static%}
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+ 
+</head>
+<body>
+  {% block content %}
+
+  <!-- ********************nav bar ************************** -->
+  <nav>
+    <button class="dropbtn1" id="englishvideo">English</button>
+    <button class="dropbtn1" id="kannadavideo">Kannada</button>
+    <button class="dropbtn1" id="teluguvideo">Telugu</button>
+    <button class="dropbtn1" id="hindivideo">Hindi</button>
+    <button class="dropbtn1" id="articles">Articles</button>
+    <button class="dropbtn1" id="codeeditor">Code Editor</button>
+    <a href="logout">Logout</a>
+    
+  </nav>
+  <!-- ********************nav bar ************************** -->
+
+<!-- **************************English python videos************************************** -->
+<div class="video-gallery" id="videoshowEnglish" style="display: none;">
+  
+  <div class="video-item">
+    <iframe src="https://www.youtube.com/embed/8c74mXV2lJ0?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
+  </div>
+ 
+
+</div>
+<!-- **************************English python videos************************************** -->
+
+<!-- **************************Kannada python videos************************************** -->
+<div class="video-gallery" id="videoshowKannada" style="display: none;">
+  
+  <div class="video-item">
+    <iframe src="https://www.youtube.com/embed/8c74mXV2lJ0?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <div class="video-item">
+    <iframe src="https://www.youtube.com/embed/jr1FF9-VAJs?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <div class="video-item">
+    <iframe src="https://www.youtube.com/embed/0qo3QEidzjA?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <div class="video-item">
+    <iframe src="https://www.youtube.com/embed/YOUR_FOURTH_VIDEO_ID?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <div class="video-item">
+    <iframe src="https://www.youtube.com/embed/8c74mXV2lJ0?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <div class="video-item">
+    <iframe src="https://www.youtube.com/embed/jr1FF9-VAJs?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <div class="video-item">
+    <iframe src="https://www.youtube.com/embed/0qo3QEidzjA?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <div class="video-item">
+    <iframe src="https://www.youtube.com/embed/YOUR_FOURTH_VIDEO_ID?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
+  </div>
+
+</div>
+<!-- **************************Kannada python videos************************************** -->
+
+
+
+
+
+
+ <script>
+  // *********************************Display Hidden video *******************************************
+
+  document.addEventListener("DOMContentLoaded", function () {
+    function toggleVideoDisplay(buttonId, videoSectionId) {
+        const videoSection = document.getElementById(videoSectionId);
+        const button = document.getElementById(buttonId);
+
+        button.addEventListener("click", function () {
+            // Hide all video sections first
+            const allVideoSections = document.querySelectorAll(".video-gallery");
+            allVideoSections.forEach(section => {
+                section.style.display = "none"; // Hide all video sections
+            });
+
+            // Show only the selected video section
+            videoSection.style.display = "block";
+        });
+    }
+
+    // Initialize toggling for each button and video section pair
+    toggleVideoDisplay("englishvideo", "videoshowEnglish");
+    toggleVideoDisplay("kannadavideo", "videoshowKannada");
+    toggleVideoDisplay("teluguvideo", "videoshowTelugu");
+    toggleVideoDisplay("hindivideo", "videoshowHindi");
+});
+
+
+  // *********************************Display Hidden video *******************************************
+
+  
+ </script>
+
+<script src="{% static 'js/script.js' %}"></script>
+{% endblock %}
+
+
+</body>
+</html>
