@@ -102,3 +102,5 @@ def java(request):
 
 def pyvideo(request):
     return render(request,'pyvideo.html')
+def javavideo(request):
+    return render(request,'javavideo.html')
