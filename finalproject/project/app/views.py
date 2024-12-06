@@ -12,7 +12,7 @@ import os
 import google.generativeai as genai
 
 def mainpage(request):
-    return render(request,'index.html')
+    return render(request,'base.html')
 
 
 def signup(request):
@@ -56,7 +56,7 @@ def signup(request):
             messages.info(request, "Passwords do not match.")
             return redirect('mainpage')
 
-    return render(request, 'index.html')
+    return render(request, 'base.html')
 
 def login(request):
     if request.method == "POST":
@@ -80,7 +80,7 @@ def login(request):
             messages.error(request, 'Invalid credentials. Please try again.')
             return redirect('mainpage')
 
-    return render(request, 'index.html')
+    return render(request, 'base.html')
 # Logout view to logout user
 def logout(request):
 
