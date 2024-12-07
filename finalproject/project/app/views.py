@@ -104,3 +104,5 @@ def pyvideo(request):
     return render(request,'pyvideo.html')
 def javavideo(request):
     return render(request,'javavideo.html')
+def cvideo(request):
+    return render(request,'cvideo.html')
