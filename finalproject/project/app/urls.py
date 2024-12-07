@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import  mainpage,signup,login,java,python,c,cpp,js,pyvideo,logout,javavideo
+from .views import  mainpage,signup,login,java,python,c,cpp,js,pyvideo,logout,javavideo,cvideo
 
 urlpatterns = [
     path('',mainpage ,name='mainpage'),
@@ -12,6 +12,7 @@ urlpatterns = [
     path('js/',js,name='js'),
     path('pyvideo/',pyvideo,name='pyvideo'),
     path('javavideo/',javavideo,name='javavideo'),
+path('cvideo/',cvideo,name='cvideo'),
     path('logout/',logout,name='logout'),
    
 ]
