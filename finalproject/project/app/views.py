@@ -106,3 +106,5 @@ def javavideo(request):
     return render(request,'javavideo.html')
 def cvideo(request):
     return render(request,'cvideo.html')
+def jsvideo(request):
+    return render(request,'jsvideo.html')
