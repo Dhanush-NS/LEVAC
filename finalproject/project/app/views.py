@@ -108,3 +108,5 @@ def cvideo(request):
     return render(request,'cvideo.html')
 def jsvideo(request):
     return render(request,'jsvideo.html')
+def dsavideo(request):
+    return render(request,'dsavideo.html')
