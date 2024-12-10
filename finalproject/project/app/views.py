@@ -14,6 +14,9 @@ import google.generativeai as genai
 def mainpage(request):
     return render(request,'index.html')
 
+def base(request):
+    return render(request,'base.html')
+
 
 def signup(request):
     if request.method == 'POST':
@@ -59,6 +62,7 @@ def signup(request):
     return render(request, 'index.html')
 
 
+
 def login(request):
     if request.method == "POST":
         email = request.POST.get("loginemail")
@@ -67,19 +71,24 @@ def login(request):
         try:
             student = Student.objects.get(email=email)
         except Student.DoesNotExist:
-            messages.error(request, "Email not found. Please sign up first.")
-            return redirect('mainpage')
+            messages.error(request, "couldn't login, Please signup first...")
+            return redirect('login')
+        except Student.MultipleObjectsReturned:
+            # Handle the case where multiple students with the same email exist
+            students = Student.objects.filter(email=email)
+            student = students.first()
+            
+        if student.password1 != password:
+            messages.error(request, 'Wrong password')
+            return redirect('login')
+        # Save login record in Login model
+        applogin = Login(email=email, password=password)
+        applogin.save()
+        
+        messages.success(request, "Login successful")  # Optional: Add a success message
+        return render(request, 'base.html')
 
-        # Authenticate user
-        user = authenticate(email = student.email, password=password)
-        if user is not None:
-            auth.login(request, user)
-            messages.success(request, "Login successful")
-            return redirect('pyvideo')  # Redirect to the desired page after login
-
-        else:
-            messages.error(request, 'Invalid credentials. Please try again.')
-            return redirect('mainpage')
+        # return HttpResponse("Login successful")  # Or redirect to another page
 
     return render(request, 'index.html')
 # Logout view to logout user
