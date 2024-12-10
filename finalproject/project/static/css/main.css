@@ -76,6 +76,10 @@ body {
 .dropdown:hover .dropdown-content {
     display: block;
 }
+#logoname{
+    font-size: 25px;
+    color: #d76060;
+}
 
 /* nav bar login button */
 #signupbutton {
@@ -86,6 +90,9 @@ body {
     padding: 5px;
     cursor: pointer;
     background-color: #333;
+    float: right;
+    padding: 13px;
+    font-size: 17px;
 
 }
 

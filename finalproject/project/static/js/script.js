@@ -139,7 +139,7 @@ function validateForm() {
         if (messages) {
             messages.style.display = 'none';
         }
-    }, 5000);  // Adjust time as needed (5000 ms = 5 seconds)
+    }, 1000);  // Adjust time as needed (5000 ms = 5 seconds)
 
 
 //**************************************** password eye visibility *********************************************

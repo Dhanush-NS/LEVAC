@@ -108,7 +108,6 @@ def js(request):
     return render(request,'js.html')
 def java(request):
     return render(request,'java.html')
-
 def pyvideo(request):
     return render(request,'pyvideo.html')
 def javavideo(request):
