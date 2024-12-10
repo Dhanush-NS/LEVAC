@@ -36,8 +36,8 @@ def signup(request):
 
             else:
                 # Hash password before saving
-                hashed_password = make_password(password1)
-                student = Student(name=name, phone=phone, email=email, username=username, password1=hashed_password)
+                # hashed_password = make_password(password1)
+                student = Student(name=name, phone=phone, email=email, username=username, password1=password1)
                 student.save()
                 return redirect('mainpage')
 

@@ -12,9 +12,9 @@ urlpatterns = [
     path('js/',js,name='js'),
     path('pyvideo/',pyvideo,name='pyvideo'),
     path('javavideo/',javavideo,name='javavideo'),
-path('cvideo/',cvideo,name='cvideo'),
-path('jsvideo/',jsvideo,name='jsvideo'),
-path('dsavideo/',dsavideo,name='dsavideo'),
+    path('cvideo/',cvideo,name='cvideo'),
+    path('jsvideo/',jsvideo,name='jsvideo'),
+    path('dsavideo/',dsavideo,name='dsavideo'),
     path('logout/',logout,name='logout'),
    
 ]

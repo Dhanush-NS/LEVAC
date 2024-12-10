@@ -85,6 +85,8 @@ body {
     border-radius: 5px;
     padding: 5px;
     cursor: pointer;
+    background-color: #333;
+
 }
 
 /* Signup form */
@@ -115,6 +117,8 @@ body {
     font-size: larger;
     border: 1px solid gray;
     width: auto;
+    background-color: #333;
+    color: white;
 }
 
 /* login form */

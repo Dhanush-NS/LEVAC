@@ -12,44 +12,8 @@
 </head>
 <body>
     <!-- <img src="{% static 'images/b.jpg'%}" alt="background image"> -->
-
     {% block content %}
-    <div class="navbar">
-        <div class="nav-items">
-            <div class="dropdown">
-                <button class="dropbtn">Articles</button>
-                <div class="dropdown-content">
-                    <a target="_blank" href="{% url 'python' %}">Python</a>
-                    <a target="_blank" href="{% url 'java' %}">Java</a>
-                    <a target="_blank" href="{% url 'c' %}">C</a>
-                    <a target="_blank" href="{% url 'cpp' %}">C++</a>
-                    <a target="_blank" href="{% url 'js' %}">JavaScript</a>
-                    <a href="#">Data Structures & Algorithms</a>
-                </div>
-            </div>
-            <div class="dropdown">
-                <button class="dropbtn">Videos</button>
-                <div class="dropdown-content">
-                    <a href="{% url 'pyvideo' %}">Python Tutor</a>
-                    <a href="#">Java</a>
-                    <a href="#">JavaScript</a>
-                    <a href="#">MySQL</a>
-                </div>
-            </div>
-            <div class="dropdown">
-                <button class="dropbtn">Code Editor</button>
-            </div>
-            <div class="dropdown">
-                <button class="dropbtn">Leetcode Problems</button>
-            </div>
-            <div class="dropdown">
-                <button id="geminiButton" class="dropbtn">Gemini Assistant</button>
-            </div>
-        </div>
-        <p id="signupbutton">Login/Signup</p>
-       
-    </div>
-    <div id="geminiResponse"></div>
+    <button id="signupbutton">Login/Signup</button>
     <!-- *************************Sigup Button**************************************** -->
   <!-- Overlay -->
 <div id="overlay" style="display:none;"></div> 
