@@ -45,7 +45,7 @@ body {
     border: none;
     outline: none;
     color: white;
-    padding: 14px 16px;
+    padding: 20px 16px;
     background-color: inherit;
 }
 
@@ -201,4 +201,7 @@ img{
   /* Hover effect */
    .dropbtn:hover {
     background-color: #777;
+    /* width: 170px;
+    height: 45px; */
+    
   }
