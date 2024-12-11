@@ -81,12 +81,13 @@
     <!-- **************************End Login Button************************************ -->
     
     {% if messages %}
-    <div id="messages">
-        {% for message in messages %}
-            <div class="alert alert-danger">{{ message }}</div>
-        {% endfor %}
-    </div>
-    {% endif %}
+<div id="messages">
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+
     
 
 
