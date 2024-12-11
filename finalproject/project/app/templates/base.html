@@ -47,6 +47,14 @@
 
             </div>
         </div>
+        <a class="navbar-brand" href="#">
+            {% if username %}
+                Welcome, {{ username }}
+            {% else %}
+                Welcome, Guest
+            {% endif %}
+        </a>
+        
        
     </div>
     <div id="geminiResponse"></div>
