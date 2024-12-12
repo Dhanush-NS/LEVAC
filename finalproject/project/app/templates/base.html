@@ -57,7 +57,20 @@
         
        
     </div>
+    <div id="editor-container"></div>
+
     <div id="geminiResponse"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+    <script>
+        require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs' } });
+        require(['vs/editor/editor.main'], function () {
+            monaco.editor.create(document.getElementById('editor-container'), {
+                value: "print('Hello, World!')",
+                language: 'python',
+                theme: 'vs-dark'
+            });
+        });
+    </script>
     
     <script src="{% static 'js/script.js' %}"></script>
 

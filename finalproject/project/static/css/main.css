@@ -163,6 +163,12 @@ body {
     margin-top: 17%;
     background-color: black;
 }
+
+#editor-container {
+    width: 100%;
+    height: 500px;
+    border: 1px solid #ddd;
+}
 li{
     margin-left: -7%;
 }
