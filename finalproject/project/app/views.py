@@ -101,7 +101,7 @@ def logout(request):
 def python(request):
     return render(request,'python.html')
 def c(request):
-    return render(request, 'c.html') 
+    return render(request,'c.html') 
 def cpp(request):
     return render(request,'cpp.html')
 def js(request):
