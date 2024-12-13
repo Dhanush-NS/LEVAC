@@ -6,10 +6,16 @@
     <title>Document</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
-
+    <style>
+        #editor-container {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #ddd;
+            display: none; /* Initially hidden */
+        }
+    </style>
 </head>
 <body>
-    
     {% block content %}
     <div class="navbar">
         <div class="nav-items">
@@ -36,7 +42,7 @@
                 </div>
             </div>
             <div class="dropdown">
-                <button class="dropbtn">Code Editor (do)</button>
+                <button class="dropbtn" id="showEditorButton">Code Editor</button>
             </div>
             <div class="dropdown">
                 <button class="dropbtn">Leetcode Problems (do)</button>
@@ -46,36 +52,46 @@
             </div>
             <div class="dropdown">
                 <a class="dropbtn" href="{% url 'logout' %}">Logout</a>
-
             </div>
         </div>
         <a class="navbar-brand" href="#">
+            {%load static%}
             {% if username %}
-                Welcome, {{ username }}
+                Welcome {{ username }} <img style="margin-bottom: -8px; margin-right: -15px;" src="{% static 'images/profile.png'%}" alt="profile" height="28px" width="28px">
             {% else %}
-                Welcome, Guest
+                Welcome Guest
             {% endif %}
         </a>
-        
-       
     </div>
     <div id="editor-container"></div>
 
     <div id="geminiResponse"></div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
     <script>
+        // Initialize Monaco Editor
+        let editor;
         require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs' } });
         require(['vs/editor/editor.main'], function () {
-            monaco.editor.create(document.getElementById('editor-container'), {
+            editor = monaco.editor.create(document.getElementById('editor-container'), {
                 value: "print('Hello, World!')",
                 language: 'python',
                 theme: 'vs-dark'
             });
         });
-    </script>
-    
-    <script src="{% static 'js/script.js' %}"></script>
 
+        // Toggle editor visibility
+        document.getElementById('showEditorButton').addEventListener('click', function () {
+            const editorContainer = document.getElementById('editor-container');
+            if (editorContainer.style.display === 'none') {
+                editorContainer.style.display = 'block';
+            } else {
+                editorContainer.style.display = 'none';
+            }
+        });
+    </script>
+
+    <script src="{% static 'js/script.js' %}"></script>
     {% endblock %}
 </body>
 </html>
