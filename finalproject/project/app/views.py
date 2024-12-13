@@ -97,6 +97,12 @@ def logout(request):
     # Logout user and redirect to home page
     # auth.logout(request)
     return redirect("mainpage")
+# def update_profile(request):
+#     student = Student.get('username')
+
+
+
+
 
 def python(request):
     return render(request,'python.html')
