@@ -104,8 +104,8 @@ function validateForm() {
 
     // Username Validation
     var username = document.getElementById("username").value.trim();
-    if (username.length <= 5 || username.length === 0) {
-        document.getElementById("username-error").innerHTML = "Please enter a username more than 5 characters and not empty.";
+    if (username.length <= 5 || username.length === 0 ) {
+        document.getElementById("username-error").innerHTML = "Please enter a username more than 5 and less than 7 characters and not empty.";
         document.getElementById("username-error").style.display = "block"; // Make the error message visible
         return false;
     }
