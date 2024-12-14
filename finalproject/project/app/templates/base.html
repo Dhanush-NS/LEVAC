@@ -57,9 +57,9 @@
         <a class="navbar-brand" href="#">
             {%load static%}
             {% if username %}
-                Welcome {{ username }} <img style="margin-bottom: -8px; margin-right: -15px;" src="{% static 'images/profile.png'%}" alt="profile" height="28px" width="28px">
+                Welcome, {{ username }} <img style="margin-bottom: -8px; margin-right: -15px;" src="{% static 'images/profile.png'%}" alt="profile" height="28px" width="28px">
             {% else %}
-                Welcome Guest
+                Welcome, Guest
             {% endif %}
         </a>
     </div>
