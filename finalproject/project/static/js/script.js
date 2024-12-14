@@ -150,7 +150,7 @@ function validateForm() {
         toggleIcon.addEventListener("click", function () {
             if (passwordField.type === "password") {
                 passwordField.type = "text";  // Show password
-                toggleIcon.src = 'static/images/eye.png';
+                toggleIcon.src = 'static/images/openeye.png';
             } else {
                 passwordField.type = "password";  // Hide password
                 toggleIcon.src = 'static/images/hidden.png';
