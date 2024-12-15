@@ -105,22 +105,22 @@ def logout(request):
 
 
 def python(request):
-    return render(request,'python.html')
+    return render(request,'PYTHON/python.html')
 def c(request):
-    return render(request,'c.html') 
+    return render(request,'C/c.html') 
 def cpp(request):
-    return render(request,'cpp.html')
+    return render(request,'CPP/cpp.html')
 def js(request):
-    return render(request,'js.html')
+    return render(request,'JS/js.html')
 def java(request):
-    return render(request,'java.html')
+    return render(request,'JAVA/java.html')
 def pyvideo(request):
-    return render(request,'pyvideo.html')
+    return render(request,'PYTHON/pyvideo.html')
 def javavideo(request):
-    return render(request,'javavideo.html')
+    return render(request,'JAVA/javavideo.html')
 def cvideo(request):
-    return render(request,'cvideo.html')
+    return render(request,'C/cvideo.html')
 def jsvideo(request):
-    return render(request,'jsvideo.html')
+    return render(request,'JS/jsvideo.html')
 def dsavideo(request):
-    return render(request,'dsavideo.html')
+    return render(request,'DSA/dsavideo.html')
