@@ -1,21 +1,23 @@
-from django.shortcuts import render, redirect, HttpResponse
-from .models import Student,Login
-from django.contrib import messages
+import os
 import re
 import requests
+import google.generativeai as genai
+from .models import Student,Login
+from django.contrib import messages
 from django.http import JsonResponse
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import auth, User
 from django.contrib.auth.hashers import check_password
-import os
-import google.generativeai as genai
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
+
 
 def mainpage(request):
     return render(request,'index.html')
 
-def base(request):
-    return render(request,'base.html')
+
 
 
 def signup(request):
@@ -91,6 +93,11 @@ def login(request):
         # return HttpResponse("Login successful")  # Or redirect to another page
 
     return render(request, 'index.html')
+@login_required
+def base(request):
+    return render(request,'base.html')
+
+
 # Logout view to logout user
 def logout(request):
 
