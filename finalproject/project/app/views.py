@@ -11,7 +11,8 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import auth, User
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
+from django.contrib.auth import logout as auth_logout
 
 
 def mainpage(request):
@@ -94,18 +95,17 @@ def login(request):
 
     return render(request, 'index.html')
 @login_required
+@never_cache
 def base(request):
     return render(request,'base.html')
 
 
 # Logout view to logout user
 def logout(request):
-
-    # Logout user and redirect to home page
-    # auth.logout(request)
+    # Logout user and clear session
+    auth_logout(request)
+    messages.success(request, "You have been logged out successfully.")
     return redirect("mainpage")
-# def update_profile(request):
-#     student = Student.get('username')
 
 
 
