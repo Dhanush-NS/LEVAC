@@ -101,6 +101,7 @@ def base(request):
 
 
 # Logout view to logout user
+@never_cache
 def logout(request):
     # Logout user and clear session
     auth_logout(request)
