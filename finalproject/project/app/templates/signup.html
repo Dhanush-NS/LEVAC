@@ -10,11 +10,10 @@
 </head>
 <body>
      <!-- *************************Sigup Button**************************************** -->
-  <!-- Overlay -->
-<!-- <div id="overlay" style="display:none;"></div>  -->
+
 {% load static %}
 <!-- Signup Form -->
-<div class="signupform" id="signupform" style="display:none;">
+<div class="signupform" id="signupform" >
     <form action="{% url 'signup' %}" method="POST" onsubmit="return validateForm()">
         {% csrf_token %}
         <label for="name">NAME: </label>
