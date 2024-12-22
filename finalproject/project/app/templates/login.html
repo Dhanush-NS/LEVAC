@@ -3,36 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup</title>
-    {%load static%}
-    <link rel="stylesheet" href="main.css">
+    <title>Login</title>
+    <!-- {% load static %} -->
+    <!-- <link rel="stylesheet" href="{% static 'main.css' %}"> -->
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
+        .login-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px 30px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-container h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .login-container label {
+            display: block;
+            text-align: left;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .login-container input:focus {
+            border-color: #4285f4;
+            outline: none;
+            box-shadow: 0 0 5px rgba(66, 133, 244, 0.5);
+        }
+
+        .login-container button {
+            background-color: #4285f4;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .login-container button:hover {
+            background-color: #357ae8;
+        }
+
+        .login-container img {
+            cursor: pointer;
+            position: absolute;
+            right: 30px;
+            top: 10px;
+        }
+
+        .messages {
+            margin-top: 10px;
+            color: red;
+            font-size: 14px;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .footer a {
+            color: #4285f4;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    {% load static %}
-    <!-- *************************Login Button***************************************** -->
-    <!-- <div id="overlay"></div>  -->
-    <div class="loginform" id="loginform">
-    <form action="{% url 'login' %}" method="POST" onsubmit="return loginform()">
-        {% csrf_token %}
-        <label for="loginemail">E-MAIL:</label>
-        <input type="email" name="loginemail" id="loginemail" placeholder="Enter Email" required>
-        <br><br>
-        <label for="loginpassword">PASSWORD:</label>
-        <input type="password" name="loginpassword" id="loginpassword" placeholder="Enter Password" required>
-        <img id="toggleLoginPassword" src="{% static 'images/hidden.png' %}" alt="eye" style="cursor: pointer; margin-left:-29px; margin-bottom:-6px" width="20px" height="20px">
-        <br><br>
-        <button type="submit" style="cursor: pointer; margin-left:40%">Login</button>
-    </form>
+    {% block content %}
+
+    <div class="login-container">
+        <h1>Login</h1>
+        <form action="{% url 'login' %}" method="POST" onsubmit="return loginform()">
+            {% csrf_token %}
+            <label for="loginemail">Email</label>
+            <input type="email" name="loginemail" id="loginemail" placeholder="Enter your email" required>
+
+            <label for="loginpassword">Password</label>
+            <div style="position: relative;">
+                <input type="password" name="loginpassword" id="loginpassword" placeholder="Enter your password" required>
+                <img id="toggleLoginPassword" src="{% static 'images/hidden.png' %}" alt="eye" width="20px" height="20px" onclick="togglePassword()">
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="footer">
+            <p>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></p>
+        </div>
     </div>
-    
-    <!-- **************************End Login Button************************************ -->
-    {% if messages %}
-    <div id="messages">
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-    </div>
-    {% endif %}
+    <script src="{% static 'js/script.js' %}"></script>
+
+    {% endblock %}
 </body>
 </html>

@@ -9,6 +9,8 @@
 
 </head>
 <body>
+    {% block content %}
+
      <!-- *************************Sigup Button**************************************** -->
 
 {% load static %}
@@ -60,5 +62,8 @@
         {% endfor %}
     </div>
     {% endif %}
+    <script src="{% static 'js/script.js' %}"></script>
+
+    {% endblock %}
 </body>
 </html>
