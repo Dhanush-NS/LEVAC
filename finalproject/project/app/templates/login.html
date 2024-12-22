@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    {%load static%}
+    <link rel="stylesheet" href="main.css">
+
+</head>
+<body>
+    {% load static %}
+    <!-- *************************Login Button***************************************** -->
+    <!-- <div id="overlay"></div>  -->
+    <div class="loginform" id="loginform">
+    <form action="{% url 'login' %}" method="POST" onsubmit="return loginform()">
+        {% csrf_token %}
+        <label for="loginemail">E-MAIL:</label>
+        <input type="email" name="loginemail" id="loginemail" placeholder="Enter Email" required>
+        <br><br>
+        <label for="loginpassword">PASSWORD:</label>
+        <input type="password" name="loginpassword" id="loginpassword" placeholder="Enter Password" required>
+        <img id="toggleLoginPassword" src="{% static 'images/hidden.png' %}" alt="eye" style="cursor: pointer; margin-left:-29px; margin-bottom:-6px" width="20px" height="20px">
+        <br><br>
+        <button type="submit" style="cursor: pointer; margin-left:40%">Login</button>
+    </form>
+    </div>
+    
+    <!-- **************************End Login Button************************************ -->
+    {% if messages %}
+    <div id="messages">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</body>
+</html>

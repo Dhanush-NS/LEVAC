@@ -19,70 +19,8 @@
     <span id="logoname">LEVAC</span>
     <!-- <img src="{% static 'images/b.jpg'%}" alt="background image"> -->
     {% block content %}
-    <button id="signupbutton">Login/Signup</button>
-    <!-- *************************Sigup Button**************************************** -->
-  <!-- Overlay -->
-<div id="overlay" style="display:none;"></div> 
-{% load static %}
-<!-- Signup Form -->
-<div class="signupform" id="signupform" style="display:none;">
-    <form action="{% url 'signup' %}" method="POST" onsubmit="return validateForm()">
-        {% csrf_token %}
-        <label for="name">NAME: </label>
-        <input type="text" name="name" id="name" placeholder="Enter name">
-        <small class="error-message" id="name-error" style="color: red; display: none; font-size:13px; margin-top:5px; margin-bottom:-20px"></small>
-        <br><br>
-        <label for="phone">PHONE:</label>
-        <input type="number" name="phone" id="phone" placeholder="Enter phone number" required>
-        <small class="error-message" id="phone-error" style="color: red; display: none; font-size:13px; margin-top:5px; margin-bottom:-20px"></small>
-        <br><br>
-        <label for="signupemail">E-MAIL: </label>
-        <input type="email" name="email" id="signupemail" placeholder="Enter email" required>
-        <small class="error-message" id="email-error" style="color: red; display: none; font-size:13px; margin-top:5px; margin-bottom:-20px"></small>
-        <br><br>
-        <label for="username">USERNAME: </label>
-        <input type="text" name="username" id="username" placeholder="Enter Username" maxlength="7" required>
-        <small class="error-message" id="username-error" style="color: red; display: none; font-size:13px; margin-top:5px; margin-bottom:-20px"></small>
-        <br><br>
-        <label for="password1">PASSWORD: </label>
-        <input type="password" name="password1" id="password1" placeholder="Enter password" required>
-        <img id="togglePassword1" src="{% static 'images/hidden.png' %}" alt="eye" style="cursor: pointer; margin-left:-29px; margin-bottom:-6px" width="20px" height="20px">
-        <small class="error-message" id="password1-error" style="color: red; display: none; font-size:13px; margin-top:5px; margin-bottom:-20px"></small>
-        <br><br>
-        <label for="password2">PASSWORD (Retype): </label>
-        <input type="password" name="password2" id="password2" placeholder="Enter password" required>
-        <img id="togglePassword2" src="{% static 'images/hidden.png' %}" alt="eye" style="cursor: pointer; margin-left:-29px; margin-bottom:-6px" width="20px" height="20px">
-        <small class="error-message" id="password2-error" style="color: red; display: none; font-size:13px; margin-top:5px; margin-bottom:-20px"></small>
-        <br><br>
-        
-        <button type="submit" style="cursor: pointer; margin-left:40%">Register</button>
-        <!-- Switch to Login -->
-        <p id="loginbutton">Login</p>
-        
-        </div>
-        
-        
-    </form>
-</div>
-    <!-- **************************End Sigup Button************************************ -->
-    {% load static %}
-    <!-- *************************Login Button***************************************** -->
-    <div id="overlay"></div> 
-    <div class="loginform" id="loginform">
-    <form action="{% url 'login' %}" method="POST" onsubmit="return loginform()">
-        {% csrf_token %}
-        <label for="loginemail">E-MAIL:</label>
-        <input type="email" name="loginemail" id="loginemail" placeholder="Enter Email" required>
-        <br><br>
-        <label for="loginpassword">PASSWORD:</label>
-        <input type="password" name="loginpassword" id="loginpassword" placeholder="Enter Password" required>
-        <img id="toggleLoginPassword" src="{% static 'images/hidden.png' %}" alt="eye" style="cursor: pointer; margin-left:-29px; margin-bottom:-6px" width="20px" height="20px">
-        <br><br>
-        <button type="submit" style="cursor: pointer; margin-left:40%">Login</button>
-    </form>
-    </div>
-    
-    <!-- **************************End Login Button************************************ -->
+    <button id="signupbutton"><a href="{% url 'login' %}">Login</a></button>
+   
     
     {% if messages %}
 <div id="messages">

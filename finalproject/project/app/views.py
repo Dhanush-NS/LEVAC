@@ -91,7 +91,7 @@ def login(request):
 
         # return HttpResponse("Login successful")  # Or redirect to another page
 
-    return render(request, 'index.html')
+    return render(request, 'login.html')
 
 @login_required
 @never_cache

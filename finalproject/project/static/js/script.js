@@ -1,72 +1,72 @@
-//*********************************  Signup visisble  *****************************************
+// //*********************************  Signup visisble  *****************************************
 
-const signupbutton = document.getElementById("signupbutton");
-const signupForm = document.getElementById("signupform");
-const overlay = document.getElementById("overlay");
+// const signupbutton = document.getElementById("signupbutton");
+// const signupForm = document.getElementById("signupform");
+// const overlay = document.getElementById("overlay");
 
-// Function to show the signup form
-signupbutton.addEventListener("click", function(event) {
-    event.stopPropagation(); // Prevent the click from propagating
-    signupForm.style.display = "block";
-    overlay.style.display = "block";
-});
+// // Function to show the signup form
+// signupbutton.addEventListener("click", function(event) {
+//     event.stopPropagation(); // Prevent the click from propagating
+//     signupForm.style.display = "block";
+//     overlay.style.display = "block";
+// });
 
-// Function to close the signup form
-function closeSignupForm() {
-    signupForm.style.display = "none";
-    overlay.style.display = "none";
-}
+// // Function to close the signup form
+// function closeSignupForm() {
+//     signupForm.style.display = "none";
+//     overlay.style.display = "none";
+// }
 
-// Close the form when clicking outside of it
-document.addEventListener("click", function(event) {
-    if (signupForm.style.display === "block" && !signupForm.contains(event.target) && event.target !== signupbutton) {
-        closeSignupForm();
-    }
-});
+// // Close the form when clicking outside of it
+// document.addEventListener("click", function(event) {
+//     if (signupForm.style.display === "block" && !signupForm.contains(event.target) && event.target !== signupbutton) {
+//         closeSignupForm();
+//     }
+// });
 
-// Prevent closing the form when clicking inside it
-signupForm.addEventListener("click", function(event) {
-    event.stopPropagation();
-});
+// // Prevent closing the form when clicking inside it
+// signupForm.addEventListener("click", function(event) {
+//     event.stopPropagation();
+// });
 
-// Close form on overlay click
-overlay.addEventListener("click", closeSignupForm);
+// // Close form on overlay click
+// overlay.addEventListener("click", closeSignupForm);
 
-//*********************************  End Signup  *****************************************
+// //*********************************  End Signup  *****************************************
 
-//*********************************  login button  *****************************************
-const loginbutton = document.getElementById("loginbutton");
-const loginForm = document.getElementById("loginform");
+// //*********************************  login button  *****************************************
+// const loginbutton = document.getElementById("loginbutton");
+// const loginForm = document.getElementById("loginform");
 
 
-loginbutton.addEventListener("click", function(event) {
-    event.stopPropagation(); // Prevent the click from propagating
-    loginForm.style.display = "block";
-    overlay.style.display = "block";
-    signupForm.style.display = "none"
-});
+// loginbutton.addEventListener("click", function(event) {
+//     event.stopPropagation(); // Prevent the click from propagating
+//     loginForm.style.display = "block";
+//     overlay.style.display = "block";
+//     signupForm.style.display = "none"
+// });
 
-// Function to close the login form
-function closeloginForm() {
-    loginForm.style.display = "none";
-}
+// // Function to close the login form
+// function closeloginForm() {
+//     loginForm.style.display = "none";
+// }
 
-// Close the form when clicking outside of it
-document.addEventListener("click", function(event) {
-    if (loginForm.style.display === "block" && !loginForm.contains(event.target) && event.target !== loginbutton) {
-        closeloginForm();
-    }
-});
+// // Close the form when clicking outside of it
+// document.addEventListener("click", function(event) {
+//     if (loginForm.style.display === "block" && !loginForm.contains(event.target) && event.target !== loginbutton) {
+//         closeloginForm();
+//     }
+// });
 
-// Prevent closing the form when clicking inside it
-loginForm.addEventListener("click", function(event) {
-    event.stopPropagation();
-});
+// // Prevent closing the form when clicking inside it
+// loginForm.addEventListener("click", function(event) {
+//     event.stopPropagation();
+// });
 
-// Close form on overlay click
-overlay.addEventListener("click", closeloginForm);
+// // Close form on overlay click
+// overlay.addEventListener("click", closeloginForm);
 
-//********************************* End login button  *****************************************
+// //********************************* End login button  *****************************************
 
 //*********************************  Signup Validation  *****************************************
 // Update the validateForm function to show error messages
@@ -139,7 +139,7 @@ function validateForm() {
         if (messages) {
             messages.style.display = 'none';
         }
-    }, 1000);  // Adjust time as needed (5000 ms = 5 seconds)
+    }, 3000);  // Adjust time as needed (3000 ms = 3 seconds)
 
 
 //**************************************** password eye visibility *********************************************
