@@ -4,64 +4,151 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup</title>
-    {%load static%}
-    <link rel="stylesheet" href="main.css">
+    <!-- {% load static %} -->
+    <!-- <link rel="stylesheet" href="{% static 'main.css' %}"> -->
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
+        .signup-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px 30px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .signup-container h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .signup-container label {
+            display: block;
+            text-align: left;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .signup-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .signup-container input:focus {
+            border-color: #4285f4;
+            outline: none;
+            box-shadow: 0 0 5px rgba(66, 133, 244, 0.5);
+        }
+
+        .signup-container button {
+            background-color: #4285f4;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .signup-container button:hover {
+            background-color: #357ae8;
+        }
+
+        .signup-container img {
+            cursor: pointer;
+            position: absolute;
+            right: 30px;
+            top: 10px;
+        }
+
+        .signup-container .error-message {
+            color: red;
+            font-size: 13px;
+            display: none;
+            margin-top: -15px;
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .footer a {
+            color: #4285f4;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     {% block content %}
 
-     <!-- *************************Sigup Button**************************************** -->
+    <div class="signup-container">
+        <h1>Signup</h1>
+        <form action="{% url 'signup' %}" method="POST" onsubmit="return validateForm()">
+            {% csrf_token %}
+            
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" placeholder="Enter your name">
+            <small class="error-message" id="name-error">Please enter a valid name</small>
 
-{% load static %}
-<!-- Signup Form -->
-<div class="signupform" id="signupform" >
-    <form action="{% url 'signup' %}" method="POST" onsubmit="return validateForm()">
-        {% csrf_token %}
-        <label for="name">NAME: </label>
-        <input type="text" name="name" id="name" placeholder="Enter name">
-        <small class="error-message" id="name-error" style="color: red; display: none; font-size:13px; margin-top:5px; margin-bottom:-20px"></small>
-        <br><br>
-        <label for="phone">PHONE:</label>
-        <input type="number" name="phone" id="phone" placeholder="Enter phone number" required>
-        <small class="error-message" id="phone-error" style="color: red; display: none; font-size:13px; margin-top:5px; margin-bottom:-20px"></small>
-        <br><br>
-        <label for="signupemail">E-MAIL: </label>
-        <input type="email" name="email" id="signupemail" placeholder="Enter email" required>
-        <small class="error-message" id="email-error" style="color: red; display: none; font-size:13px; margin-top:5px; margin-bottom:-20px"></small>
-        <br><br>
-        <label for="username">USERNAME: </label>
-        <input type="text" name="username" id="username" placeholder="Enter Username" maxlength="7" required>
-        <small class="error-message" id="username-error" style="color: red; display: none; font-size:13px; margin-top:5px; margin-bottom:-20px"></small>
-        <br><br>
-        <label for="password1">PASSWORD: </label>
-        <input type="password" name="password1" id="password1" placeholder="Enter password" required>
-        <img id="togglePassword1" src="{% static 'images/hidden.png' %}" alt="eye" style="cursor: pointer; margin-left:-29px; margin-bottom:-6px" width="20px" height="20px">
-        <small class="error-message" id="password1-error" style="color: red; display: none; font-size:13px; margin-top:5px; margin-bottom:-20px"></small>
-        <br><br>
-        <label for="password2">PASSWORD (Retype): </label>
-        <input type="password" name="password2" id="password2" placeholder="Enter password" required>
-        <img id="togglePassword2" src="{% static 'images/hidden.png' %}" alt="eye" style="cursor: pointer; margin-left:-29px; margin-bottom:-6px" width="20px" height="20px">
-        <small class="error-message" id="password2-error" style="color: red; display: none; font-size:13px; margin-top:5px; margin-bottom:-20px"></small>
-        <br><br>
-        
-        <button type="submit" style="cursor: pointer; margin-left:40%">Signup</button>
-        <!-- Switch to Login -->
-        <p id="loginbutton">Login</p>
-        
+            <label for="phone">Phone</label>
+            <input type="number" name="phone" id="phone" placeholder="Enter your phone number" required>
+            <small class="error-message" id="phone-error">Please enter a valid phone number</small>
+
+            <label for="signupemail">Email</label>
+            <input type="email" name="email" id="signupemail" placeholder="Enter your email" required>
+            <small class="error-message" id="email-error">Please enter a valid email</small>
+
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" placeholder="Enter your username" maxlength="7" required>
+            <small class="error-message" id="username-error">Username must be less than 7 characters</small>
+
+            <label for="password1">Password</label>
+            <div style="position: relative;">
+                <input type="password" name="password1" id="password1" placeholder="Enter your password" required>
+                <img id="togglePassword1" src="{% static 'images/hidden.png' %}" alt="eye" width="20px" height="20px" onclick="togglePassword('password1', 'togglePassword1')">
+            </div>
+            <small class="error-message" id="password1-error">Please enter a valid password</small>
+
+            <label for="password2">Confirm Password</label>
+            <div style="position: relative;">
+                <input type="password" name="password2" id="password2" placeholder="Re-enter your password" required>
+                <img id="togglePassword2" src="{% static 'images/hidden.png' %}" alt="eye" width="20px" height="20px" onclick="togglePassword('password2', 'togglePassword2')">
+            </div>
+            <small class="error-message" id="password2-error">Passwords do not match</small>
+
+            <button type="submit">Signup</button>
+        </form>
+
+        <div class="footer">
+            <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
         </div>
-        
-        
-    </form>
-</div>
-    <!-- **************************End Sigup Button************************************ -->
-    {% if messages %}
-    <div id="messages">
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-        {% endfor %}
     </div>
-    {% endif %}
+
     <script src="{% static 'js/script.js' %}"></script>
 
     {% endblock %}
