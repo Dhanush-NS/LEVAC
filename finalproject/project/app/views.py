@@ -60,7 +60,7 @@ def signup(request):
             messages.info(request, "Passwords do not match.")
             return redirect('mainpage')
 
-    return render(request, 'index.html')
+    return render(request, 'signup.html')
 
 
 
@@ -106,6 +106,7 @@ def logout(request):
     auth_logout(request)
     messages.success(request, "You have been logged out successfully.")
     return redirect("mainpage")
+
 
 
 

@@ -97,7 +97,8 @@ body {
     border-radius: 5px;
     padding: 5px;
     cursor: pointer;
-    background-color: #333;
+    text-decoration: none;
+    /* background-color: #333; */
     float: right;
     padding: 13px;
     font-size: 17px;

@@ -19,7 +19,7 @@
     <span id="logoname">LEVAC</span>
     <!-- <img src="{% static 'images/b.jpg'%}" alt="background image"> -->
     {% block content %}
-    <button id="signupbutton"><a href="{% url 'login' %}">Login</a></button>
+    <button id="signupbutton"><a href="{% url 'login' %}">Login/</a><a href="{% url 'signup' %}">Signup</a></button>
    
     
     {% if messages %}
