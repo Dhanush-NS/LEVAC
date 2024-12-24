@@ -110,53 +110,41 @@ def logout(request):
 
 
 
-
-@login_required
-@never_cache
 def python(request):
     return render(request,'PYTHON/python.html')
 
-@login_required
-@never_cache
+
 def c(request):
     return render(request,'C/c.html')
  
-@login_required
-@never_cache
+
 def cpp(request):
     return render(request,'CPP/cpp.html')
 
-@login_required
-@never_cache
+
 def js(request):
     return render(request,'JS/js.html')
 
-@login_required
-@never_cache
+
 def java(request):
     return render(request,'JAVA/java.html')
 
-@login_required
-@never_cache
+
 def pyvideo(request):
     return render(request,'PYTHON/pyvideo.html')
 
-@login_required
-@never_cache
+
 def javavideo(request):
     return render(request,'JAVA/javavideo.html')
 
-@login_required
-@never_cache
+
+
 def cvideo(request):
     return render(request,'C/cvideo.html')
 
-@login_required
-@never_cache
 def jsvideo(request):
     return render(request,'JS/jsvideo.html')
 
-@login_required
-@never_cache
+
 def dsavideo(request):
     return render(request,'DSA/dsavideo.html')

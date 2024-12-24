@@ -114,7 +114,8 @@
             <label for="loginpassword">Password</label>
             <div style="position: relative;">
                 <input type="password" name="loginpassword" id="loginpassword" placeholder="Enter your password" required>
-                <img id="toggleLoginPassword" src="{% static 'images/hidden.png' %}" alt="eye" width="20px" height="20px" onclick="togglePassword()">
+                <img id="togglePassword1" src="{% static 'images/hidden.png' %}" alt="eye" width="20px" height="20px" onclick="togglePassword('password1', 'togglePassword1')">
+
             </div>
 
             <button type="submit">Login</button>
@@ -129,7 +130,7 @@
         {% endif %}
 
         <div class="footer">
-            <p>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></p>
+            <p><b>Don't have an account?</b> <a href="{% url 'signup' %}"><b>Sign up</b></a></p>
         </div>
     </div>
     <script src="{% static 'js/script.js' %}"></script>
