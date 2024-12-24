@@ -19,16 +19,32 @@
     <span id="logoname">LEVAC</span>
     <!-- <img src="{% static 'images/b.jpg'%}" alt="background image"> -->
     {% block content %}
-    <a href="{% url 'login' %}" id="signupbutton">Login</a>
    
     
-    {% if messages %}
+
+
+    {% if not user.is_authenticated %}
+        <a  href="/login">Login</a>
+    </li>
+        <a  href="/signup">Register</a>
+    </li>
+    {% else %}
+    <a href="{% url 'logout' %}" id="logoutbutton">Logout</a>
+    <a href="{% url 'java' %}">Java</a>
+    <a href="{% url 'python' %}">Python</a>
+    <a href="{% url 'c' %}">C</a>
+    <a href="{% url 'cpp' %}">C++</a>
+    <a href="{% url 'js' %}">JavaScript</a>
+
+
+{% endif %}
+
 <div id="messages">
     {% for message in messages %}
         <div class="alert alert-{{ message.tags }}">{{ message }}</div>
     {% endfor %}
 </div>
-{% endif %}
+
 
     
 

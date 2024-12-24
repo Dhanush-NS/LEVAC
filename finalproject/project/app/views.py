@@ -43,7 +43,7 @@ def signup(request):
                 # hashed_password = make_password(password1)
                 student = Student(name=name, phone=phone, email=email, username=username, password1=password1)
                 student.save()
-                return redirect('mainpage')
+                return redirect('login')
 
                 # Authenticate and log in the user immediately after signup
                 # user = authenticate(request, username=username, password=password1)
@@ -104,9 +104,9 @@ def base(request):
 def logout(request):
     # Logout user and clear session
     auth_logout(request)
+    request.session.flush()  # Ensure all session data is cleared
     messages.success(request, "You have been logged out successfully.")
     return redirect("mainpage")
-
 
 
 
