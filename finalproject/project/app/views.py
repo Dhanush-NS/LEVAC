@@ -41,26 +41,22 @@ def signup(request):
             else:
                 # Hash password before saving
                 # hashed_password = make_password(password1)
-                student = Student(name=name, phone=phone, email=email, username=username, password1=password1)
-                student.save()
+                user = User.objects.create_user(name=name, 
+                                  phone=phone, 
+                                  email=email, 
+                                  username=username, 
+                                  password1=password1,
+                                  password2=password2)
+                user.save()
                 return redirect('login')
 
-                # Authenticate and log in the user immediately after signup
-                # user = authenticate(request, username=username, password=password1)
-                # if user is not None:
-                #     login(request, user)
-                #     messages.success(request, "Signup successful, and you are logged in.")
-                #     return redirect('mainpage')
-
-                # else:
-                #     messages.error(request, "Authentication failed. Please try again.")
-                #     return redirect('signup')
+                
 
         else:
             messages.info(request, "Passwords do not match.")
             return redirect('mainpage')
-
-    return render(request, 'signup.html')
+    else:
+        return render(request, 'signup.html')
 
 
 
