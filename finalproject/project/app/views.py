@@ -85,9 +85,10 @@ def login(request):
         # Save login record in Login model
         applogin = Login(email=email, password=password)
         applogin.save()
-        studentusername = student.username
+        # student = Student.objects.get(username)
+        student_username = student.username
         # messages.success(request, "Login successful")  # Optional: Add a success message
-        return render(request, 'base.html',{'username':studentusername})
+        return render(request, 'base.html',{'username':student_username})
 
         # return HttpResponse("Login successful")  # Or redirect to another page
 
