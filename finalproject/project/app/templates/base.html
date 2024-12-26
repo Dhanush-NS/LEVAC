@@ -60,8 +60,8 @@
         </div>
         <a class="navbar-brand" href="#">
             {%load static%}
-            {% if username %}
-                Welcome, {{ username }} <img style="margin-bottom: -8px; margin-right: -15px;" src="{% static 'images/profile.png'%}" alt="profile" height="28px" width="28px">
+            {% if requset.user.is_authenticated %}
+                Welcome, {{ request.user.username }} <img style="margin-bottom: -8px; margin-right: -15px;" src="{% static 'images/profile.png'%}" alt="profile" height="28px" width="28px">
             {% else %}
                 Welcome, Guest
             {% endif %}

@@ -37,26 +37,30 @@ def signup(request):
                 messages.info(request, 'Username is already taken, please choose another.')
                 return redirect('signup')
 
-
             else:
-                # Hash password before saving
-                # hashed_password = make_password(password1)
-                user = User.objects.create_user(name=name, 
+                # Create User object
+                user = User.objects.create_user(username=username, 
+                                                email=email, 
+                                                password=password1)
+                user.save()
+
+                # Create Student object and associate with the User
+                student = Student(name=name, 
                                   phone=phone, 
                                   email=email, 
                                   username=username, 
-                                  password1=password1,
+                                  password1=password1, 
                                   password2=password2)
-                user.save()
-                return redirect('login')
+                student.save()
 
-                
+                return redirect('login')
 
         else:
             messages.info(request, "Passwords do not match.")
-            return redirect('mainpage')
+            return redirect('signup')
     else:
         return render(request, 'signup.html')
+
 
 
 
@@ -64,31 +68,53 @@ def login(request):
     if request.method == "POST":
         email = request.POST.get("loginemail")
         password = request.POST.get("loginpassword")
+        
+        user = auth.authenticate(email = email, password=password)
 
-        try:
-            student = Student.objects.get(email=email)
-        except Student.DoesNotExist:
-            messages.error(request, "couldn't login, Please signup first...")
-            return redirect('login')
-        except Student.MultipleObjectsReturned:
-            # Handle the case where multiple students with the same email exist
-            students = Student.objects.filter(email=email)
-            student = students.first()
-            
-        if student.password1 != password:
-            messages.error(request, 'Wrong password')
-            return redirect('login')
-        # Save login record in Login model
-        applogin = Login(email=email, password=password)
-        applogin.save()
-        # student = Student.objects.get(username)
+        # If user is authenticated then login user
+        if user is not None:
+            auth.login(request, user)
+            # Save login record in Login model
+            applogin = Login(email=email, password=password)
+            applogin.save()
+
+            # Redirect to home page
+            return redirect("base")
+        else:
+
+            # If user is not authenticated then show error message
+            # and redirect to login page
+            messages.info(request, "Invalid Credential")
+            return redirect("login")
+    else:
         student_username = student.username
+        # If request is not post then render login page
+        return render(request, "login.html",{'username':student_username})
+    
+        # try:
+        #     student = Student.objects.get(email=email)
+        # except Student.DoesNotExist:
+        #     messages.error(request, "couldn't login, Please signup first...")
+        #     return redirect('login')
+        # except Student.MultipleObjectsReturned:
+        #     # Handle the case where multiple students with the same email exist
+        #     students = Student.objects.filter(email=email)
+        #     student = students.first()
+            
+        # if student.password1 != password:
+        #     messages.error(request, 'Wrong password')
+        #     return redirect('login')
+        # # Save login record in Login model
+        # applogin = Login(email=email, password=password)
+        # applogin.save()
+        # student = Student.objects.get(username)
+        # student_username = student.username
         # messages.success(request, "Login successful")  # Optional: Add a success message
-        return render(request, 'base.html',{'username':student_username})
+        # return render(request, 'base.html')
 
         # return HttpResponse("Login successful")  # Or redirect to another page
 
-    return render(request, 'login.html')
+    # return render(request, 'login.html')
 
 @login_required
 @never_cache
@@ -106,11 +132,11 @@ def logout(request):
     return redirect("mainpage")
 
 
-
+@login_required
 def python(request):
     return render(request,'PYTHON/python.html')
 
-
+@login_required
 def c(request):
     return render(request,'C/c.html')
  
