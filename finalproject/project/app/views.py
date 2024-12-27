@@ -87,34 +87,10 @@ def login(request):
             messages.info(request, "Invalid Credential")
             return redirect("login")
     else:
-        # student_username = user.username
         # If request is not post then render login page
         return render(request, "login.html")
     
-        # try:
-        #     student = Student.objects.get(email=email)
-        # except Student.DoesNotExist:
-        #     messages.error(request, "couldn't login, Please signup first...")
-        #     return redirect('login')
-        # except Student.MultipleObjectsReturned:
-        #     # Handle the case where multiple students with the same email exist
-        #     students = Student.objects.filter(email=email)
-        #     student = students.first()
-            
-        # if student.password1 != password:
-        #     messages.error(request, 'Wrong password')
-        #     return redirect('login')
-        # # Save login record in Login model
-        # applogin = Login(email=email, password=password)
-        # applogin.save()
-        # student = Student.objects.get(username)
-        # student_username = student.username
-        # messages.success(request, "Login successful")  # Optional: Add a success message
-        # return render(request, 'base.html')
-
-        # return HttpResponse("Login successful")  # Or redirect to another page
-
-    # return render(request, 'login.html')
+       
 
 @login_required
 @never_cache
@@ -140,34 +116,34 @@ def python(request):
 def c(request):
     return render(request,'C/c.html')
  
-
+@login_required
 def cpp(request):
     return render(request,'CPP/cpp.html')
 
-
+@login_required
 def js(request):
     return render(request,'JS/js.html')
 
-
+@login_required
 def java(request):
     return render(request,'JAVA/java.html')
 
-
+@login_required
 def pyvideo(request):
     return render(request,'PYTHON/pyvideo.html')
 
-
+@login_required
 def javavideo(request):
     return render(request,'JAVA/javavideo.html')
 
-
-
+@login_required
 def cvideo(request):
     return render(request,'C/cvideo.html')
 
+@login_required
 def jsvideo(request):
     return render(request,'JS/jsvideo.html')
 
-
+@login_required
 def dsavideo(request):
     return render(request,'DSA/dsavideo.html')
