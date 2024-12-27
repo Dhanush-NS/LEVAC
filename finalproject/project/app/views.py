@@ -87,9 +87,9 @@ def login(request):
             messages.info(request, "Invalid Credential")
             return redirect("login")
     else:
-        student_username = student.username
+        # student_username = user.username
         # If request is not post then render login page
-        return render(request, "login.html",{'username':student_username})
+        return render(request, "login.html")
     
         # try:
         #     student = Student.objects.get(email=email)
