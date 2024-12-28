@@ -108,9 +108,9 @@
         <h1>Login</h1>
         <form action="{% url 'login' %}" method="POST" onsubmit="return loginform()">
             {% csrf_token %}
-            <label for="loginemail">Email</label>
-            <input type="email" name="loginemail" id="loginemail" placeholder="Enter your email" required>
-
+            <label for="identifier">Username or Email:</label>
+            <input type="text" name="identifier" id="identifier" required>
+            
             <label for="loginpassword">Password</label>
             <div style="position: relative;">
                 <input type="password" name="loginpassword" id="loginpassword" placeholder="Enter your password" required>

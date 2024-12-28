@@ -16,7 +16,11 @@ from django.contrib.auth import logout as auth_logout
 
 
 def mainpage(request):
-    return render(request,'index.html')
+    if request.user.is_authenticated:
+        return render(request,'base.html',{'user':request.user})
+    else:
+
+        return render(request,'index.html')
 
 
 def signup(request):
@@ -63,32 +67,23 @@ def signup(request):
 
 
 
-
 def login(request):
     if request.method == "POST":
-        email = request.POST.get("loginemail")
-        password = request.POST.get("loginpassword")
+        identifier = request.POST.get("identifier")  # Can be email or username
+        password = request.POST.get("password")
         
-        user = auth.authenticate(email = email, password=password)
+        # Use the custom backend for authentication
+        user = authenticate(request, username=identifier, password=password)
 
-        # If user is authenticated then login user
         if user is not None:
-            auth.login(request, user)
-            # Save login record in Login model
-            applogin = Login(email=email, password=password)
-            applogin.save()
-
-            # Redirect to home page
-            return redirect("base")
+            login(request, user)
+            return redirect("base")  # Redirect to the desired page
         else:
-
-            # If user is not authenticated then show error message
-            # and redirect to login page
-            messages.info(request, "Invalid Credential")
+            messages.error(request, "Invalid credentials. Please try again.")
             return redirect("login")
     else:
-        # If request is not post then render login page
         return render(request, "login.html")
+
     
        
 
