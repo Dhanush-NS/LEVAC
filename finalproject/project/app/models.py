@@ -24,9 +24,8 @@ class Student(models.Model):
         return f"{self.name}{self.phone}{self.email}"
     
 class Login(models.Model):
-    email = models.EmailField()
+    username = models.CharField(max_length=10)
     password = models.CharField(max_length=60)
     login_datetime = models.DateTimeField(auto_now_add=True)  # Automatically set on creation
 
   
-

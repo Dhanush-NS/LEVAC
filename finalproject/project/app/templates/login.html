@@ -108,12 +108,12 @@
         <h1>Login</h1>
         <form action="{% url 'login' %}" method="POST" onsubmit="return loginform()">
             {% csrf_token %}
-            <label for="identifier">Username or Email:</label>
-            <input type="text" name="identifier" id="identifier" required>
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" required>
             
-            <label for="loginpassword">Password</label>
+            <label for="password">Password</label>
             <div style="position: relative;">
-                <input type="password" name="loginpassword" id="loginpassword" placeholder="Enter your password" required>
+                <input type="password" name="password" id="password" placeholder="Enter your password" required>
                 <img id="togglePassword1" src="{% static 'images/hidden.png' %}" alt="eye" width="20px" height="20px" onclick="togglePassword('password1', 'togglePassword1')">
 
             </div>

@@ -67,23 +67,29 @@ def signup(request):
 
 
 
-def login(request):
+def login_view(request):
     if request.method == "POST":
-        identifier = request.POST.get("identifier")  # Can be email or username
+        username = request.POST.get("username")
         password = request.POST.get("password")
         
-        # Use the custom backend for authentication
-        user = authenticate(request, username=identifier, password=password)
-
+    
+        
+        
+       
+        
+        # Authenticate the user
+        user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            loginvalue = Login(username=username,password=password)
+            loginvalue.save()
             return redirect("base")  # Redirect to the desired page
         else:
+            print("Authentication failed")
             messages.error(request, "Invalid credentials. Please try again.")
             return redirect("login")
     else:
         return render(request, "login.html")
-
     
        
 

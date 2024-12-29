@@ -1,11 +1,11 @@
 from django.urls import path
-from .views import  mainpage,signup,login,java,python,c,cpp,js,pyvideo,logout,javavideo,cvideo,jsvideo,dsavideo,base
+from .views import  mainpage,signup,login_view,java,python,c,cpp,js,pyvideo,logout,javavideo,cvideo,jsvideo,dsavideo,base
 
 urlpatterns = [
     path('',mainpage ,name='mainpage'),
     path('base/',base ,name='base'),
     path('signup/',signup ,name='signup'),
-    path('login/',login ,name='login'),
+    path('login/',login_view ,name='login'),
     path('java/',java,name='java'),
     path('python/',python,name='python'),
     path('c/',c,name='c'),
