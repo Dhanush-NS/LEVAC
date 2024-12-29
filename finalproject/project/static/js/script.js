@@ -133,13 +133,13 @@ function validateForm() {
 
 // *********************************  End Signup Validation  *****************************************
 
-    // Automatically hide messages after 5 seconds
-    setTimeout(function() {
-        const messages = document.getElementById('messages');
-        if (messages) {
-            messages.style.display = 'none';
-        }
-    }, 3000);  // Adjust time as needed (3000 ms = 3 seconds)
+    // // Automatically hide messages after 5 seconds
+    // setTimeout(function() {
+    //     const messages = document.getElementById('messages');
+    //     if (messages) {
+    //         messages.style.display = 'none';
+    //     }
+    // }, 3000);  // Adjust time as needed (3000 ms = 3 seconds)
 
 
 //**************************************** password eye visibility *********************************************
