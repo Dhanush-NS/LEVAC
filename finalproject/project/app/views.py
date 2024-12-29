@@ -86,7 +86,8 @@ def login_view(request):
     else:
         return render(request, "REG/login.html")
     
-       
+def edit(request):
+    return render(request,'REG/edit.html')       
 
 @login_required
 @never_cache
