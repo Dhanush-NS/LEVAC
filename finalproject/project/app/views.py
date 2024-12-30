@@ -88,10 +88,10 @@ def login_view(request):
     
 def edit_view(request):
     if request.method == "POST":
-        username = request.get("username")
-        email = request.get("email")
+        username = request.POST.get("username")
+        email = request.POST.get("email")
         if username == User.username or email == User.email:
-            messages.erroe(request,"already username exist, choose another")
+            messages.error(request,"already username exist, choose another")
         else:
             edituser = User(
                 username= username,
