@@ -18,9 +18,16 @@
             <label for="email">Email</label>
             <input type="email" name="email" id="email" value="{{user.email}}" required>
             <label for="password">Password</label>
-            <input type="password" name="password" id="password" required>
+            <input type="password" name="password" id="password">
             <button type="submit">Edit</button>
         </form>
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
     {%endblock%}
     
 </body>
