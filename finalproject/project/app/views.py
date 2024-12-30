@@ -63,7 +63,7 @@ def signup(request):
             messages.info(request, "Passwords do not match.")
             return redirect('signup')
     else:
-        return render(request, 'signup.html')
+        return render(request, 'REG/signup.html')
 
 
 
@@ -84,7 +84,7 @@ def login_view(request):
             messages.error(request, "Invalid credentials. Please try again.")
             return redirect("login")
     else:
-        return render(request, "login.html")
+        return render(request, "REG/login.html")
     
        
 
