@@ -90,17 +90,19 @@ def edit_view(request):
     if request.method == "POST":
         username = request.POST.get("username")
         email = request.POST.get("email")
-        if username == User.username or email == User.email:
-            messages.error(request,"already username exist, choose another")
-        else:
-            edituser = User(
-                username= username,
-                email= email
-            )
-            edituser.save()
-            editDB = Student(username= username,email = email)
-            editDB.save()
-            return redirect('base')
+        print(f"usename :{username}")
+        # if username == User.username or email == User.email:
+        #     messages.error(request,"already username exist, choose another")
+        # else:
+
+        edituser = User(
+            username= username,
+            email= email
+        )
+        edituser.save()
+        editDB = Student(username= username,email = email)
+        editDB.save()
+        return redirect('base')
 
     return render(request,'REG/edit.html')       
 
