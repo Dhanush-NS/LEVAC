@@ -88,23 +88,30 @@ def login_view(request):
     
 def edit_view(request):
     if request.method == "POST":
-        username = request.POST.get("username")
-        email = request.POST.get("email")
-        print(f"usename :{username}")
-        # if username == User.username or email == User.email:
-        #     messages.error(request,"already username exist, choose another")
-        # else:
+        old_username = request.POST.get("old_username")  # The current username
+        new_username = request.POST.get("new_username")  # The new username
+        
+        try:
+            # Retrieve the user with the old username
+            user = User.objects.get(username=old_username)
+            user.username = new_username
+            user.save()
 
-        edituser = User(
-            username= username,
-            email= email
-        )
-        edituser.save()
-        editDB = Student(username= username,email = email)
-        editDB.save()
+            # Update the Student record if it exists
+            try:
+                student = Student.objects.get(username=old_username)
+                student.username = new_username
+                student.save()
+            except Student.DoesNotExist:
+                messages.error(request, "Student record does not exist.")
+            
+            messages.success(request, "Profile updated successfully")
+        except User.DoesNotExist:
+            messages.error(request, "User record does not exist.")
+        
         return redirect('base')
 
-    return render(request,'REG/edit.html')       
+    return render(request, 'REG/edit.html')   
 
 @login_required
 @never_cache
