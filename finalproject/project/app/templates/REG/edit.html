@@ -58,7 +58,7 @@
         }
 
         .login-container button {
-            background-color: #4285f4;
+            background-color: #4abb38;
             color: white;
             padding: 10px 20px;
             border: none;
@@ -69,13 +69,13 @@
         }
 
         .login-container button:hover {
-            background-color: #357ae8;
+            background-color: #4abb38;
         }
 
         .messages {
-            margin-top: 10px;
+            margin-top: 0px;
             color: red;
-            font-size: 14px;
+            font-size: 16px;
         }
 
         .footer {
@@ -92,6 +92,7 @@
         .footer a:hover {
             text-decoration: underline;
         }
+       
     </style>
 </head>
 <body>
@@ -102,15 +103,16 @@
             {% csrf_token %}
             <label for="edit_username">Username:</label>
             <input type="text" id="edit_username" name="edit_username" value="{{ user.username }}" minlength="5" maxlength="7" required><br><br>
-            <button type="submit">Update</button>
-        </form>
-        {% if messages %}
+            {% if messages %}
         <div class="messages">
             {% for message in messages %}
                 <p>{{ message }}</p>
             {% endfor %}
         </div>
         {% endif %}
+            <button type="submit">Update</button>
+        </form>
+        
     </div>
     {% endblock %}
 </body>

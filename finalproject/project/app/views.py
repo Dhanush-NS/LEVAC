@@ -111,7 +111,7 @@ def edit_view(request):
             except Student.DoesNotExist:
                 messages.error(request, "Student record does not exist.")
         
-        return redirect('base')
+        return redirect('edit')
 
     return render(request, 'REG/edit.html')
 
