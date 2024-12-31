@@ -12,11 +12,9 @@
     <div class="login-container">
         <h1>Edit Details</h1>
         <form action="{% url 'edit' %}" method="POST">
-            {% csrf_token %}
-        <label for="old_username">Current Username:</label>
-        <input type="text" id="old_username" name="old_username" value="{{user.username}}" required><br><br>
-        <label for="new_username">New Username:</label>
-        <input type="text" id="new_username" name="new_username" required><br><br>
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="{{user.username}}" maxlength="7" required><br><br>
         <button type="submit">Update</button>
         </form>
         {% if messages %}
