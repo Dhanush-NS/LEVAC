@@ -5,17 +5,104 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Details</title>
     {% load static %}
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px 30px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-container h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .login-container label {
+            display: block;
+            text-align: left;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .login-container input:focus {
+            border-color: #4285f4;
+            outline: none;
+            box-shadow: 0 0 5px rgba(66, 133, 244, 0.5);
+        }
+
+        .login-container button {
+            background-color: #4285f4;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .login-container button:hover {
+            background-color: #357ae8;
+        }
+
+        .messages {
+            margin-top: 10px;
+            color: red;
+            font-size: 14px;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .footer a {
+            color: #4285f4;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    {%block content%}
+    {% block content %}
     <div class="login-container">
         <h1>Edit Details</h1>
         <form action="{% url 'edit' %}" method="POST">
-        {% csrf_token %}
-        <label for="username">Username:</label>
-        <input type="text" id="edit_username" name="edit_username" value="{{user.username}}" minlength="5" maxlength="7" required><br><br>
-        <button type="submit">Update</button>
+            {% csrf_token %}
+            <label for="edit_username">Username:</label>
+            <input type="text" id="edit_username" name="edit_username" value="{{ user.username }}" minlength="5" maxlength="7" required><br><br>
+            <button type="submit">Update</button>
         </form>
         {% if messages %}
         <div class="messages">
@@ -24,7 +111,7 @@
             {% endfor %}
         </div>
         {% endif %}
-    {%endblock%}
-    
+    </div>
+    {% endblock %}
 </body>
 </html>
