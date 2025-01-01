@@ -87,28 +87,27 @@ def login_view(request):
         return render(request, "REG/login.html")
     
 def edit_view(request):
-    
+    user = request.user
+
     if request.method == "POST":
         new_username = request.POST.get("edit_username")  # The new username
-        new_name = request.POST.get("name") #the new name
-        
+        new_name = request.POST.get("name")  # The new name
+
         # Check if the new username already exists
         if User.objects.filter(username=new_username).exists():
             messages.error(request, "Username already exists, choose another")
             return redirect('edit')
-       
+
         else:
-            user = request.user
             old_username = user.username
-            
+
             # Update the current user's username
             user.username = new_username
             user.save()
 
             # Update the Student record if it exists
-            try:
-                
-                student = Student.objects.get(username=old_username,name = new_name)
+            try:   
+                student = Student.objects.get(username=old_username)
                 student.username = new_username
                 student.name = new_name
                 student.save()
@@ -118,8 +117,14 @@ def edit_view(request):
         
         return redirect('edit')
 
-    return render(request, 'REG/edit.html',{'student':student})
+    else:
+        # Handle GET request to retrieve the student's current details
+        try:
+            student = Student.objects.get(username=user.username)
+        except Student.DoesNotExist:
+            student = None
 
+    return render(request, 'REG/edit.html', {'student': student})
 @login_required
 @never_cache
 def base(request):
