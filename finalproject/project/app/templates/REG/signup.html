@@ -148,7 +148,13 @@
             <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
         </div>
     </div>
-
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
     <script src="{% static 'js/script.js' %}"></script>
 
     {% endblock %}

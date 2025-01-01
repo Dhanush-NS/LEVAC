@@ -33,12 +33,12 @@ def signup(request):
         password2 = request.POST.get("password2")
 
         if password1 == password2:
-            if Student.objects.filter(email=email).exists():
-                messages.info(request, 'Email is registered already, please log in.')
+            if Student.objects.filter(email=email).exists() or User.objects.filter(email=email).exists():
+                messages.error(request, 'Email is registered already, please log in.')
                 return redirect('signup')
             
-            elif Student.objects.filter(username=username).exists():
-                messages.info(request, 'Username is already taken, please choose another.')
+            elif Student.objects.filter(username=username).exists() or User.objects.filter(username=username).exists():
+                messages.error(request, 'Username is already taken, please choose another.')
                 return redirect('signup')
 
             else:
@@ -60,7 +60,7 @@ def signup(request):
                 return redirect('login')
 
         else:
-            messages.info(request, "Passwords do not match.")
+            messages.error(request, "Passwords do not match.")
             return redirect('signup')
     else:
         return render(request, 'REG/signup.html')
@@ -69,7 +69,7 @@ def signup(request):
 
 def login_view(request):
     if request.method == "POST":
-        username = request.POST.get("username")
+        username = request.POST.get("login_username")
         password = request.POST.get("password") 
         
         # Authenticate the user
@@ -88,11 +88,12 @@ def login_view(request):
     
 def edit_view(request):
     if request.method == "POST":
-        new_username = request.POST.get("username")  # The new username
+        new_username = request.POST.get("edit_username")  # The new username
         
         # Check if the new username already exists
         if User.objects.filter(username=new_username).exists():
             messages.error(request, "Username already exists, choose another")
+            return redirect('edit')
         else:
             user = request.user
             old_username = user.username

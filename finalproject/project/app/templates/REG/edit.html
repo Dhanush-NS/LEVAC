@@ -14,7 +14,7 @@
         <form action="{% url 'edit' %}" method="POST">
         {% csrf_token %}
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" value="{{user.username}}" maxlength="7" required><br><br>
+        <input type="text" id="edit_username" name="edit_username" value="{{user.username}}" maxlength="7" required><br><br>
         <button type="submit">Update</button>
         </form>
         {% if messages %}
