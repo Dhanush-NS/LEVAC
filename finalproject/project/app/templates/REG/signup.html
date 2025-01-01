@@ -141,20 +141,24 @@
             </div>
             <small class="error-message" id="password2-error">Passwords do not match</small>
 
+
             <button type="submit">Signup</button>
         </form>
+        {% if messages %}
+        <div class="messages" style="color: red;">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
 
         <div class="footer">
             <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
         </div>
     </div>
-    {% if messages %}
-        <div class="messages">
-            {% for message in messages %}
-                <p>{{ message }}</p>
-            {% endfor %}
-        </div>
-    {% endif %}
+
+    
+
     <script src="{% static 'js/script.js' %}"></script>
 
     {% endblock %}
