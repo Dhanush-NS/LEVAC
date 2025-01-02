@@ -103,6 +103,8 @@
             {% csrf_token %}
             <label for="edit_username">Username:</label>
             <input type="text" id="edit_username" name="edit_username" value="{{ user.username }}" minlength="5" maxlength="7" required><br><br>
+            <label for="edit_name">Name:</label>
+            <input type="text" name="edit_name" id="edit_name" required value="{{student.name}}"><br><br>
             {% if messages %}
         <div class="messages">
             {% for message in messages %}

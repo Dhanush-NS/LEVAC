@@ -5,7 +5,7 @@ import google.generativeai as genai
 from .models import Student,Login
 from django.contrib import messages
 from django.http import JsonResponse
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect, HttpResponse ,get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import auth, User
@@ -87,13 +87,16 @@ def login_view(request):
         return render(request, "REG/login.html")
     
 def edit_view(request):
+    
     if request.method == "POST":
         new_username = request.POST.get("edit_username")  # The new username
+        new_name = request.POST.get("name") #the new name
         
         # Check if the new username already exists
         if User.objects.filter(username=new_username).exists():
             messages.error(request, "Username already exists, choose another")
             return redirect('edit')
+       
         else:
             user = request.user
             old_username = user.username
@@ -104,8 +107,10 @@ def edit_view(request):
 
             # Update the Student record if it exists
             try:
-                student = Student.objects.get(username=old_username)
+                
+                student = Student.objects.get(username=old_username,name = new_name)
                 student.username = new_username
+                student.name = new_name
                 student.save()
                 messages.success(request, "Profile updated successfully")
             except Student.DoesNotExist:
@@ -113,7 +118,7 @@ def edit_view(request):
         
         return redirect('edit')
 
-    return render(request, 'REG/edit.html')
+    return render(request, 'REG/edit.html',{'student':student})
 
 @login_required
 @never_cache
