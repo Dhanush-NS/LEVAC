@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import  (mainpage,base,signup,login_view,edit_view,logout,java,python,c,dsa,
-cpp,js,pyvideo,javavideo,cvideo,jsvideo,dsavideo)
+cpp,js,pyvideo,javavideo,cvideo,jsvideo,dsavideo,cppvideo)
 urlpatterns = [
     path('',mainpage ,name='mainpage'),
     path('base/',base ,name='base'),
@@ -27,5 +27,6 @@ urlpatterns = [
     path('cvideo/',cvideo,name='cvideo'),
     path('jsvideo/',jsvideo,name='jsvideo'),
     path('dsavideo/',dsavideo,name='dsavideo'),
+    path('cppvideo/',cppvideo,name='cppvideo'),
    
 ]

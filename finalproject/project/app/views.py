@@ -189,3 +189,7 @@ def jsvideo(request):
 @login_required
 def dsavideo(request):
     return render(request,'DSA/dsavideo.html')
+
+@login_required
+def cppvideo(request):
+    return render(request,'CPP/cppvideo.html')
