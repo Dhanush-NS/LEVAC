@@ -14,6 +14,10 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from django.contrib.auth import logout as auth_logout
 
+@login_required
+@never_cache
+def base(request):
+    return render(request,'base.html')
 
 def mainpage(request):
     if request.user.is_authenticated:
@@ -125,10 +129,7 @@ def edit_view(request):
             student = None
 
     return render(request, 'REG/edit.html', {'student': student})
-@login_required
-@never_cache
-def base(request):
-    return render(request,'base.html')
+
 
 
 # Logout view to logout user
@@ -140,7 +141,7 @@ def logout(request):
     messages.success(request, "You have been logged out successfully.")
     return redirect("mainpage")
 
-
+#tutor views
 @login_required
 def python(request):
     return render(request,'PYTHON/python.html')
