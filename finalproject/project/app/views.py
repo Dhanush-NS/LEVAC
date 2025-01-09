@@ -141,7 +141,7 @@ def logout(request):
     messages.success(request, "You have been logged out successfully.")
     return redirect("mainpage")
 
-#tutor views
+#*******************************************tutor views
 @login_required
 def python(request):
     return render(request,'PYTHON/python.html')
@@ -162,10 +162,13 @@ def js(request):
 def java(request):
     return render(request,'JAVA/java.html')
 
-@login_required
-def pyvideo(request):
-    return render(request,'PYTHON/pyvideo.html')
 
+@login_required
+def dsa(request):
+    return render(request,'DSA/dsa.html')
+
+
+# ************************************* video views
 @login_required
 def javavideo(request):
     return render(request,'JAVA/javavideo.html')
@@ -173,6 +176,11 @@ def javavideo(request):
 @login_required
 def cvideo(request):
     return render(request,'C/cvideo.html')
+
+@login_required
+def pyvideo(request):
+    return render(request,'PYTHON/pyvideo.html')
+
 
 @login_required
 def jsvideo(request):
