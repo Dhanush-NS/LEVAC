@@ -30,6 +30,7 @@ body {
 
 .navbar a:hover {
     background-color: #ddd;
+    border-radius: 8px;
     color: black;
 }
 
