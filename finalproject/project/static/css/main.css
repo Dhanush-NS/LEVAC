@@ -93,31 +93,57 @@ body {
     border-radius: 15px;
 }
 
-/* nav bar login button */
-#signupbutton {
+/* General styles for the buttons */
+#signupbutton, #loginbutton {
     color: white;
-    margin-left: auto; /* Pushes login/signup to the right */
     border: 2px solid grey;
     border-radius: 5px;
-    padding: 5px;
+    padding: 13px;
     cursor: pointer;
     text-decoration: none;
-    background-color: rgb(136,55,233);
-    float: right;
-    padding: 13px;
+    background-color: rgb(136, 55, 233);
     font-size: 17px;
-
+    margin: 5px;
 }
 
-
-/* login button */
-#loginbutton{
-    text-align: center;
-    font-size: larger;
-    border: 1px solid gray;
-    width: auto;
+/* Container for the navigation bar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
     background-color: #333;
     color: white;
+    /* flex-direction: row; */
+}
+
+#logoname {
+    font-size: 54px;
+    font-weight: bold;
+    
+}
+
+/* Container for the buttons */
+.nav-buttons {
+    display: flex;
+}
+
+@media (max-width: 480px) {
+    /* Stack buttons vertically on smaller screens */
+    .nav-buttons {
+        flex-direction:column-reverse;
+        align-items: flex-start;
+    }
+
+    #signupbutton, #loginbutton {
+        width: 100%;
+        text-align: center;
+    }
+
+    #logoname {
+        text-align: center;
+        width: 100%;
+    }
 }
 
 
