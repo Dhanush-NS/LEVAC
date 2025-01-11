@@ -80,13 +80,7 @@ body {
 .dropdown:hover .dropdown-content {
     display: block;
 }
-#logoname{
-    font-size: 75px;
-    color: #cb6c6c;
-    /* text-align: center; */
-    margin-left: 35%;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-}
+
 #logopic{
     height: 150px;
     width: 150px;
@@ -175,7 +169,6 @@ img{
 
 .video-gallery {
     display:flex;
-    /* flex-wrap: wrap; */
     gap: 20px;
   }
   .video-item {
@@ -220,7 +213,6 @@ img{
    .dropbtn:hover {
     background-color: #777;
     border-radius: 10px;
-    /* width: 170px;
-    height: 45px; */
+    
     
   }
