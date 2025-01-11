@@ -219,6 +219,7 @@ img{
   /* Hover effect */
    .dropbtn:hover {
     background-color: #777;
+    border-radius: 10px;
     /* width: 170px;
     height: 45px; */
     
