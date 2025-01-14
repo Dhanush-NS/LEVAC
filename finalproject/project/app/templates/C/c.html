@@ -3,115 +3,364 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C Programming for Beginners</title>
+    <title>C for Beginners</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eaf0f9; /* Soft background */
             color: #333;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
         }
+
         header {
-            background-color: #333;
+            background-color: #007ACC; /* Blue header */
             color: #fff;
+            padding: 20px;
             text-align: center;
-            padding: 10px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
+        h1 {
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
         nav {
-            background-color: #444;
-            padding: 10px;
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            background-color: #333;
+            padding: 10px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
         nav a {
             color: #fff;
-            padding: 10px;
             text-decoration: none;
-            display: inline-block;
+            padding: 15px 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: background-color 0.3s;
         }
+
+        nav a:hover {
+            background-color: #ff9800; /* Bright hover effect */
+            border-radius: 5px;
+        }
+
         section {
-            margin: 20px;
+            max-width: 900px;
+            margin: 30px auto;
             padding: 20px;
             background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
         }
-        h1, h2 {
-            color: #333;
+
+        h2 {
+            color: #007ACC; /* Match header color */
+            font-size: 2rem;
         }
-        p {
-            line-height: 1.6;
+
+        p, ul {
+            font-size: 1.1rem;
+            color: #555;
         }
+
+        ul {
+            margin-left: 20px;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+
         .code {
-            background-color: #e8e8e8;
-            padding: 10px;
-            font-family: "Courier New", Courier, monospace;
-            border-left: 5px solid #333;
+            background-color: #f0f4c3; /* Light yellow */
+            padding: 15px;
             margin: 15px 0;
+            border-radius: 8px;
+            border-left: 5px solid #007ACC;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.1rem;
+            color: #333;
+            white-space: pre-wrap;
+            overflow-x: auto;
         }
+
         footer {
-            background-color: #333;
+            background-color: #007ACC;
             color: #fff;
             text-align: center;
-            padding: 10px 0;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        section:hover {
+            transform: scale(1.02); /* Slight zoom effect */
+            transition: transform 0.3s;
+        }
+
+        footer p {
+            font-size: 1.1rem;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Learn C Programming: A Beginner's Guide</h1>
+    <h1>C for Beginners: A Comprehensive Introduction</h1>
 </header>
 
 <nav>
-    <a href="#introduction">Introduction</a>
+    <a href="#history">History</a>
     <a href="#features">Key Features</a>
-    <a href="#setup">Getting Started</a>
+    <a href="#getting-started">Getting Started</a>
     <a href="#resources">Resources</a>
 </nav>
 
-<section id="introduction">
-    <h2>Introduction to C</h2>
-    <p>C is a powerful general-purpose programming language created by Dennis Ritchie in 1972. It’s widely used for system programming, game development, and embedded systems. Its efficiency and performance make it one of the most popular languages today.</p>
+<section id="history">
+    <h2>1. History of C</h2>
+    <p>The C programming language was developed by Dennis Ritchie at Bell Labs in the early 1970s. It was designed to be a system programming language and has since become one of the most widely used programming languages.</p>
+    <p>Key features include:</p>
+    <ul>
+        <li><strong>Efficiency:</strong> C is known for its performance and efficiency, making it suitable for system-level programming.</li>
+        <li><strong>Low-Level Access:</strong> C provides low-level access to memory and allows for direct manipulation of hardware.</li>
+    </ul>
+    <p>C has influenced many other programming languages, and its syntax and concepts are still widely used today.</p>
 </section>
 
 <section id="features">
-    <h2>Key Features of C</h2>
+    <h2>2. Key Features of C</h2>
     <ul>
-        <li><strong>Low-Level Access:</strong> C provides access to low-level memory operations and is close to hardware.</li>
-        <li><strong>Efficient:</strong> C programs execute quickly and use minimal system resources.</li>
-        <li><strong>Portable:</strong> C code is highly portable across platforms.</li>
+        <li><strong>Portability:</strong> C programs can be easily ported to different platforms with minimal changes.</li>
+        <li><strong>Powerful:</strong> C provides powerful constructs and low-level access, making it suitable for system programming, embedded systems, and more.</li>
+        <li><strong>Rich Libraries:</strong> C has a vast standard library that provides functions for various tasks.</li>
+        <li><strong>Community Support:</strong> C has a large and active community, providing extensive documentation and support.</li>
+        <li><strong>Foundation Language:</strong> Many modern programming languages are based on or influenced by C.</li>
     </ul>
 </section>
 
-<section id="setup">
-    <h2>Getting Started with C</h2>
-    <h3>Setting Up Your Environment</h3>
-    <p>To get started with C programming, you’ll need a compiler. Popular options include GCC and Clang. You can write your code using IDEs like Code::Blocks or Visual Studio Code.</p>
-    <h3>Writing Your First Program</h3>
-    <p>Let’s write a simple C program that prints "Hello, World!":</p>
+<section id="getting-started">
+    <h2>3. Getting Started with C</h2>
+
+    <h3>3.1 Setting Up Your Environment</h3>
+    <p>To get started with C, you need to install a compiler and set up an IDE. Follow these steps:</p>
+    <ul>
+        <li><strong>Download a Compiler:</strong> Install GCC (GNU Compiler Collection) for Windows, macOS, or Linux, or use an IDE like Visual Studio which includes a compiler.</li>
+        <li><strong>Set Up an IDE:</strong> Use IDEs like Visual Studio, Code::Blocks, or CLion for an enhanced coding experience.</li>
+    </ul>
+
+    <h3>3.2 Writing Your First C Program</h3>
+    <p>Once your environment is set up, create a new C file and write your first program:</p>
     <div class="code">
         <pre>
-#include <stdio.h>
+#include &lt;stdio.h&gt;
 
 int main() {
-    printf("Hello, World!");
+    printf("Hello, World!\n");
     return 0;
 }
         </pre>
     </div>
+
+    <h3>3.3 Compiling and Running Your Program</h3>
+    <p>To compile and run your program, use the command line or your IDE's build and run feature:</p>
+    <div class="code">
+        <pre>gcc hello.c -o hello
+./hello</pre>
+    </div>
+</section>
+
+<section id="variables-datatypes">
+    <h2>4. Variables and Data Types in C</h2>
+    <p>In C, variables are used to store data, and each variable can hold different data types. C supports various data types, including:</p>
+
+    <h3>4.1 Basic Data Types</h3>
+    <ul>
+        <li><strong>int:</strong> Stores integers, e.g., <code>int age = 30;</code></li>
+        <li><strong>float:</strong> Stores floating-point numbers, e.g., <code>float salary = 85000.50f;</code></li>
+        <li><strong>double:</strong> Stores double-precision floating-point numbers, e.g., <code>double pi = 3.14159;</code></li>
+        <li><strong>char:</strong> Stores single characters, e.g., <code>char grade = 'A';</code></li>
+    </ul>
+</section>
+
+<section id="operators">
+    <h2>5. C Operators</h2>
+    <p>Operators in C perform various operations on variables and values. Here are the types of operators:</p>
+
+    <h3>5.1 Arithmetic Operators</h3>
+    <p>Used for basic arithmetic operations:</p>
+    <ul>
+        <li><code>+</code> (Addition)</li>
+        <li><code>-</code> (Subtraction)</li>
+        <li><code>*</code> (Multiplication)</li>
+        <li><code>/</code> (Division)</li>
+        <li><code>%</code> (Modulus)</li>
+        <li><code>++</code> (Increment)</li>
+        <li><code>--</code> (Decrement)</li>
+    </ul>
+    <div class="code">
+        <pre>
+int x = 5;
+int y = 2;
+printf("%d\n", x + y);  // Outputs: 7
+printf("%d\n", x % y);  // Outputs: 1
+        </pre>
+    </div>
+
+    <h3>5.2 Comparison Operators</h3>
+    <p>Used to compare values:</p>
+    <ul>
+        <li><code>==</code> (Equal to)</li>
+        <li><code>!=</code> (Not equal to)</li>
+        <li><code>&gt;</code> (Greater than)</li>
+        <li><code>&lt;</code> (Less than)</li>
+        <li><code>&gt;=</code> (Greater than or equal to)</li>
+        <li><code>&lt;=</code> (Less than or equal to)</li>
+    </ul>
+    <div class="code">
+        <pre>
+int a = 10;
+int b = 20;
+printf("%d\n", a == b);  // Outputs: 0 (false)
+printf("%d\n", a < b);   // Outputs: 1 (true)
+</pre>
+</div>
+
+<h3>5.3 Logical Operators</h3>
+<p>Used to perform logical operations:</p>
+<ul>
+<li><code>&&</code> (Logical AND)</li>
+<li><code>||</code> (Logical OR)</li>
+<li><code>!</code> (Logical NOT)</li>
+</ul>
+<div class="code">
+<pre>
+int is_adult = 1;
+int has_id = 0;
+printf("%d\n", is_adult && has_id);  // Outputs: 0 (false)
+printf("%d\n", is_adult || has_id);   // Outputs: 1 (true)
+printf("%d\n", !is_adult);         // Outputs: 0 (false)
+</pre>
+</div>
+
+<h3>5.4 Assignment Operators</h3>
+<p>Used to assign values to variables:</p>
+<ul>
+<li><code>=</code> (Assigns a value)</li>
+<li><code>+=</code> (Adds and assigns)</li>
+<li><code>-=</code> (Subtracts and assigns)</li>
+<li><code>*=</code> (Multiplies and assigns)</li>
+<li><code>/=</code> (Divides and assigns)</li>
+<li><code>%=</code> (Modulus and assigns)</li>
+</ul>
+<div class="code">
+<pre>
+int a = 5;
+a += 3;  // a = a + 3, now a is 8
+a *= 2;  // a = a * 2, now a is 16
+</pre>
+</div>
+</section>
+
+<section id="conditional-statements">
+<h2>6. Conditional Statements in C</h2>
+<p>C supports several types of conditional statements that control the flow of execution based on certain conditions.</p>
+
+<h3>6.1 if-else Statement</h3>
+<div class="code">
+<pre>
+int age = 18;
+if (age >= 18) {
+    printf("You are an adult.\n");
+} else {
+    printf("You are not an adult.\n");
+}
+</pre>
+</div>
+
+<h3>6.2 else if Statement</h3>
+<p>The <code>else if</code> statement can be used to check multiple expressions:</p>
+<div class="code">
+<pre>
+int day = 3;
+if (day == 1) {
+    printf("Monday\n");
+} else if (day == 2) {
+    printf("Tuesday\n");
+} else if (day == 3) {
+    printf("Wednesday\n");
+} else {
+    printf("Unknown day\n");
+}
+</pre>
+</div>
+</section>
+
+<section id="loops">
+<h2>7. Loops in C</h2>
+<p>Loops are used to execute a block of code repeatedly. C supports <code>for</code> and <code>while</code> loops.</p>
+
+<h3>7.1 for Loop</h3>
+<p>A <code>for</code> loop is commonly used for iterating over a sequence (like a list or range):</p>
+<div class="code">
+<pre>
+for (int i = 0; i < 5; ++i) {
+    printf("%d\n", i);  // Outputs: 0, 1, 2, 3, 4
+}
+</pre>
+</div>
+
+<h3>7.2 while Loop</h3>
+<p>The <code>while</code> loop continues to run as long as a condition is true:</p>
+<div class="code">
+<pre>
+int i = 0;
+while (i < 5) {
+    printf("%d\n", i);
+    ++i;
+}
+</pre>
+</div>
+</section>
+
+<section id="functions">
+<h2>8. Functions in C</h2>
+<p>Functions are reusable blocks of code designed to perform specific tasks. Here's how to create and call functions in C:</p>
+
+<h3>8.1 Basic Function Example</h3>
+<div class="code">
+<pre>
+int add(int a, int b) {
+    return a + b;
+}
+
+int main() {
+    int result = add(10, 20);
+    printf("Result: %d\n", result);  // Outputs: 30
+    return 0;
+}
+</pre>
+</div>
+
+<h3>8.2 Function with Default Parameters</h3>
+<p>Note: C does not support default parameters natively like C++.</p>
 </section>
 
 <section id="resources">
-    <h2>Resources for Learning C</h2>
+    <h2>9. Resources for Learning C</h2>
     <ul>
-        <li><a href="https://www.learn-c.org/">Learn C Online</a></li>
-        <li><a href="https://www.geeksforgeeks.org/c-programming-language/">GeeksforGeeks C Tutorials</a></li>
+        <li><strong>Official Documentation:</strong> The <a href="https://en.cppreference.com/w/c">C Reference</a> is a comprehensive guide to C's features.</li>
+        <li><strong>Books:</strong> "The C Programming Language" by Brian W. Kernighan and Dennis M. Ritchie and "C Primer Plus" by Stephen Prata are highly recommended for beginners.</li>
     </ul>
 </section>
 
 <footer>
-    <p>&copy; 2024 Learn C Programming</p>
+    <p>&copy; 2025 C for Beginners | All Rights Reserved</p>
 </footer>
 
 </body>
