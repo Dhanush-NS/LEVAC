@@ -15,8 +15,8 @@
         }
 
         header {
-            background-color: #f7df1e; /* Yellow header */
-            color: #000;
+            background-color: #4CAF50; /* Green header */
+            color: #fff;
             padding: 20px;
             text-align: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -59,7 +59,7 @@
         }
 
         h2 {
-            color: #f7df1e; /* Match header color */
+            color: #4CAF50; /* Match header color */
             font-size: 2rem;
         }
 
@@ -81,7 +81,7 @@
             padding: 15px;
             margin: 15px 0;
             border-radius: 8px;
-            border-left: 5px solid #f7df1e;
+            border-left: 5px solid #007ACC;
             font-family: 'Courier New', Courier, monospace;
             font-size: 1.1rem;
             color: #333;
@@ -90,8 +90,8 @@
         }
 
         footer {
-            background-color: #f7df1e;
-            color: #000;
+            background-color: #007ACC;
+            color: #fff;
             text-align: center;
             padding: 20px;
             margin-top: 30px;
@@ -124,23 +124,23 @@
 
 <section id="history">
     <h2>1. History of JavaScript</h2>
-    <p>JavaScript was created by Brendan Eich in 1995 while he was working at Netscape Communications Corporation. It was initially released under the name Mocha, then LiveScript, and finally JavaScript. It has since become one of the most widely used programming languages for web development.</p>
+    <p>JavaScript was developed by Brendan Eich in 1995 while working for Netscape Communications Corporation. Initially called Mocha, then LiveScript, it was finally renamed JavaScript.</p>
     <p>Key features include:</p>
     <ul>
-        <li><strong>Interactivity:</strong> JavaScript enables dynamic interactions on web pages, making them more engaging.</li>
-        <li><strong>Client-Side Scripting:</strong> JavaScript runs in the browser, allowing for immediate feedback and interaction without server communication.</li>
+        <li><strong>Client-side Scripting:</strong> JavaScript is primarily used for creating interactive web pages.</li>
+        <li><strong>Lightweight and Fast:</strong> JavaScript is a lightweight programming language that executes quickly in the browser.</li>
     </ul>
-    <p>JavaScript has evolved significantly with the introduction of frameworks and libraries like React, Angular, and Vue.js, making it a cornerstone of modern web development.</p>
+    <p>JavaScript has evolved significantly over the years, with ECMAScript standards ensuring its continuous development and improvement.</p>
 </section>
 
 <section id="features">
     <h2>2. Key Features of JavaScript</h2>
     <ul>
-        <li><strong>Versatility:</strong> JavaScript can be used for front-end and back-end development with the help of Node.js.</li>
-        <li><strong>Rich Ecosystem:</strong> JavaScript has a vast array of libraries and frameworks that simplify development.</li>
-        <li><strong>Event-Driven:</strong> JavaScript is designed to handle events, making it ideal for interactive web applications.</li>
-        <li><strong>Community Support:</strong> JavaScript has a large and active community, providing extensive documentation and support.</li>
-        <li><strong>Cross-Platform:</strong> JavaScript can run on various platforms, including web browsers, servers, and even mobile devices.</li>
+        <li><strong>Interactivity:</strong> JavaScript adds interactivity to web pages, allowing dynamic content updates.</li>
+        <li><strong>Event-driven:</strong> JavaScript can handle and react to user events like clicks and keypresses.</li>
+        <li><strong>Platform Independence:</strong> JavaScript runs in any web browser, making it platform-independent.</li>
+        <li><strong>Versatile:</strong> JavaScript can be used for both client-side and server-side development (e.g., using Node.js).</li>
+        <li><strong>Rich Libraries:</strong> JavaScript has a vast ecosystem of libraries and frameworks (e.g., React, Angular, Vue.js).</li>
     </ul>
 </section>
 
@@ -151,34 +151,22 @@
     <p>To get started with JavaScript, you need a web browser and a text editor. Follow these steps:</p>
     <ul>
         <li><strong>Choose a Text Editor:</strong> Use editors like Visual Studio Code, Sublime Text, or Atom for an enhanced coding experience.</li>
-        <li><strong>Open Your Browser's Console:</strong> You can write and test JavaScript code directly in your browser's console (press F12 or right-click and choose "Inspect").</li>
+        <li><strong>Open Your Browser:</strong> Modern browsers like Chrome, Firefox, or Edge have built-in JavaScript engines.</li>
     </ul>
 
     <h3>3.2 Writing Your First JavaScript Program</h3>
-    <p>Create a new HTML file and write your first JavaScript program:</p>
+    <p>Once your environment is set up, create a new HTML file and write your first JavaScript program:</p>
     <div class="code">
         <pre>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JavaScript Hello World</title>
-</head>
-<body>
-    <script>
-        console.log("Hello, World!");
-    </script>
-</body>
-</html>
+    Hello, World!
         </pre>
     </div>
 
     <h3>3.3 Running Your Program</h3>
-    <p>Open the HTML file in your web browser and open the console to see the output:</p>
-    <div class="code">
-        <pre>Right-click on the page, select "Inspect", and go to the "Console" tab.</pre>
-    </div>
+    <ul>
+        <li><strong>Open Your HTML File:</strong> Open the HTML file in your web browser. You will see "Hello, World!" on the web page.</li>
+        <li><strong>View Console Output:</strong> Open the browser's Developer Tools (usually F12 or right-click and select "Inspect") and go to the "Console" tab to see the "Hello, World!" message.</li>
+    </ul>
 </section>
 
 <section id="variables-datatypes">
@@ -187,11 +175,11 @@
 
     <h3>4.1 Basic Data Types</h3>
     <ul>
-        <li><strong>Number:</strong> Stores numeric values, e.g., <code>let age = 30;</code></li>
+        <li><strong>Number:</strong> Stores numbers, e.g., <code>let age = 30;</code></li>
         <li><strong>String:</strong> Stores text, e.g., <code>let name = "John";</code></li>
         <li><strong>Boolean:</strong> Stores <code>true</code> or <code>false</code> values, e.g., <code>let isJavaScriptFun = true;</code></li>
-        <li><strong>Object:</strong> Stores collections of data, e.g., <code>let person = { name: "Alice", age: 25 };</code></li>
-        <li><strong>Array:</strong> Stores lists of values, e.g., <code>let colors = ["red", "green", "blue"];</code></li>
+        <li><strong>Undefined:</strong> A variable that has been declared but not assigned a value, e.g., <code>let x;</code></li>
+        <li><strong>Null:</strong> Represents the intentional absence of any value, e.g., <code>let y = null;</code></li>
     </ul>
 </section>
 
@@ -224,10 +212,10 @@ console.log(x % y);  // Outputs: 1
     <ul>
         <li><code>==</code> (Equal to)</li>
         <li><code>!=</code> (Not equal to)</li>
-        <li><code>&gt;</code> (Greater than)</li>
-        <li><code>&lt;</code> (Less than)</li>
-        <li><code>&gt;=</code> (Greater than or equal to)</li>
-        <li><code>&lt;=</code> (Less than or equal to)</li>
+        <li><code>></code> (Greater than)</li>
+        <li><code><</code> (Less than)</li>
+        <li><code>>=</code> (Greater than or equal to)</li>
+        <li><code><=</code> (Less than or equal to)</li>
     </ul>
     <div class="code">
         <pre>
@@ -250,8 +238,8 @@ console.log(a < b);   // Outputs: true
 let isAdult = true;
 let hasID = false;
 console.log(isAdult && hasID);  // Outputs: false
-console.log(isAdult || hasID);   // Outputs: true
-console.log(!isAdult);         // Outputs: false
+console.log(isAdult || hasID);  // Outputs: true
+console.log(!isAdult);          // Outputs: false
 </pre>
 </div>
 
@@ -316,7 +304,7 @@ if (day == 1) {
 <p>A <code>for</code> loop is commonly used for iterating over a sequence (like a list or range):</p>
 <div class="code">
 <pre>
-for (let i = 0; i < 5; ++i) {
+for (let i = 0; i < 5; i++) {
     console.log(i);  // Outputs: 0, 1, 2, 3, 4
 }
 </pre>
@@ -329,7 +317,7 @@ for (let i = 0; i < 5; ++i) {
 let i = 0;
 while (i < 5) {
     console.log(i);
-    ++i;
+    i++;
 }
 </pre>
 </div>
@@ -347,7 +335,7 @@ function add(a, b) {
 }
 
 let result = add(10, 20);
-console.log("Result:", result);  // Outputs: 30
+console.log("Result: " + result);  // Outputs: 30
 </pre>
 </div>
 
@@ -356,7 +344,7 @@ console.log("Result:", result);  // Outputs: 30
 <div class="code">
 <pre>
 function greet(name = "World") {
-    console.log("Hello,", name);
+    console.log("Hello, " + name);
 }
 
 greet();          // Outputs: Hello, World
