@@ -119,6 +119,7 @@
     <a href="#introduction">Introduction</a>
     <a href="#data-structures">Data Structures</a>
     <a href="#algorithms">Algorithms</a>
+    <a href="#advanced-topics">Advanced Topics</a>
     <a href="#resources">Resources</a>
 </nav>
 
@@ -372,8 +373,112 @@ print(sorted_arr)  # Outputs: [5, 6, 11, 12, 13]
     </div>
 </section>
 
+<section id="advanced-topics">
+    <h2>4. Advanced Topics</h2>
+    <p>Here are some advanced data structures and algorithms that are widely used in computer science:</p>
+
+    <h3>4.1 Hash Tables</h3>
+    <p>Hash tables are used to store key-value pairs. They provide efficient insertion, deletion, and lookup operations.</p>
+    <div class="code">
+        <pre>
+# Hash table using Python dictionary
+hash_table = {}
+
+# Inserting key-value pairs
+hash_table["name"] = "Alice"
+hash_table["age"] = 25
+hash_table["city"] = "New York"
+
+# Accessing values
+print(hash_table["name"])  # Outputs: Alice
+
+# Deleting a key-value pair
+del hash_table["age"]
+
+# Checking if a key exists
+print("age" in hash_table)  # Outputs: False
+        </pre>
+    </div>
+
+    <h3>4.2 Binary Trees</h3>
+    <p>A binary tree is a tree data structure in which each node has at most two children, referred to as the left child and the right child.</p>
+    <div class="code">
+        <pre>
+# Node class
+class Node:
+    def __init__(self, key):
+        self.left = None
+        self.right = None
+        self.val = key
+
+# Inorder traversal
+def inorder(root):
+    if root:
+        # Traverse the left subtree
+        inorder(root.left)
+        # Visit the root
+        print(root.val, end=" ")
+        # Traverse the right subtree
+        inorder(root.right)
+
+# Insert a node
+def insert(root, key):
+    if root is None:
+        return Node(key)
+    else:
+        if root.val < key:
+            root.right = insert(root.right, key)
+        else:
+            root.left = insert(root.left, key)
+    return root
+
+# Example usage
+root = Node(50)
+root = insert(root, 30)
+root = insert(root, 20)
+root = insert(root, 40)
+root = insert(root, 70)
+root = insert(root, 60)
+root = insert(root, 80)
+
+# Print inorder traversal
+inorder(root)  # Outputs: 20 30 40 50 60 70 80
+        </pre>
+    </div>
+
+    <h3>4.3 Graphs</h3>
+    <p>A graph is a collection of nodes called vertices, and the connections between them called edges. Graphs can be used to represent various real-world problems.</p>
+    <div class="code">
+        <pre>
+# Graph represented as an adjacency list
+graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'D', 'E'],
+    'C': ['A', 'F'],
+    'D': ['B'],
+    'E': ['B', 'F'],
+    'F': ['C', 'E']
+}
+
+# Function to perform BFS
+def bfs(graph, start):
+    visited = set()
+    queue = [start]
+    while queue:
+        vertex = queue.pop(0)
+        if vertex not in visited:
+            print(vertex, end=" ")
+            visited.add(vertex)
+            queue.extend(set(graph[vertex]) - visited)
+
+# Example usage
+bfs(graph, 'A')  # Outputs: A B C D E F
+        </pre>
+    </div>
+</section>
+
 <section id="resources">
-    <h2>4. Resources for Learning DSA</h2>
+    <h2>5. Resources for Learning DSA</h2>
     <ul>
         <li><strong>Official Documentation:</strong> The <a href="https://docs.python.org/3/">Python Documentation</a> is a comprehensive guide to Python's features.</li>
         <li><strong>Books:</strong> "Introduction to Algorithms" by Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and Clifford Stein is highly recommended for learning algorithms.</li>
