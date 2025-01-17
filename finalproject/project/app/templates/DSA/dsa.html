@@ -3,115 +3,386 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C Programming for Beginners</title>
+    <title>DSA for Beginners</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eaf0f9; /* Soft background */
             color: #333;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
         }
+
         header {
-            background-color: #333;
+            background-color: #4CAF50; /* Green header */
             color: #fff;
+            padding: 20px;
             text-align: center;
-            padding: 10px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
+        h1 {
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
         nav {
-            background-color: #444;
-            padding: 10px;
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            background-color: #333;
+            padding: 10px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
         nav a {
             color: #fff;
-            padding: 10px;
             text-decoration: none;
-            display: inline-block;
+            padding: 15px 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: background-color 0.3s;
         }
+
+        nav a:hover {
+            background-color: #ff9800; /* Bright hover effect */
+            border-radius: 5px;
+        }
+
         section {
-            margin: 20px;
+            max-width: 900px;
+            margin: 30px auto;
             padding: 20px;
             background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
         }
-        h1, h2 {
-            color: #333;
+
+        h2 {
+            color: #4CAF50; /* Match header color */
+            font-size: 2rem;
         }
-        p {
-            line-height: 1.6;
+
+        p, ul {
+            font-size: 1.1rem;
+            color: #555;
         }
+
+        ul {
+            margin-left: 20px;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+
         .code {
-            background-color: #e8e8e8;
-            padding: 10px;
-            font-family: "Courier New", Courier, monospace;
-            border-left: 5px solid #333;
+            background-color: #f0f4c3; /* Light yellow */
+            padding: 15px;
             margin: 15px 0;
+            border-radius: 8px;
+            border-left: 5px solid #007ACC;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.1rem;
+            color: #333;
+            white-space: pre-wrap;
+            overflow-x: auto;
         }
+
         footer {
-            background-color: #333;
+            background-color: #007ACC;
             color: #fff;
             text-align: center;
-            padding: 10px 0;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        section:hover {
+            transform: scale(1.02); /* Slight zoom effect */
+            transition: transform 0.3s;
+        }
+
+        footer p {
+            font-size: 1.1rem;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Learn C Programming: A Beginner's Guide</h1>
+    <h1>Data Structures and Algorithms (DSA) for Beginners</h1>
 </header>
 
 <nav>
     <a href="#introduction">Introduction</a>
-    <a href="#features">Key Features</a>
-    <a href="#setup">Getting Started</a>
+    <a href="#data-structures">Data Structures</a>
+    <a href="#algorithms">Algorithms</a>
     <a href="#resources">Resources</a>
 </nav>
 
 <section id="introduction">
-    <h2>Introduction to C</h2>
-    <p>C is a powerful general-purpose programming language created by Dennis Ritchie in 1972. It’s widely used for system programming, game development, and embedded systems. Its efficiency and performance make it one of the most popular languages today.</p>
+    <h2>1. Introduction to DSA</h2>
+    <p>Data Structures and Algorithms (DSA) are fundamental concepts in computer science that help in efficiently organizing and manipulating data. Understanding DSA is crucial for solving complex problems and optimizing code performance.</p>
 </section>
 
-<section id="features">
-    <h2>Key Features of C</h2>
-    <ul>
-        <li><strong>Low-Level Access:</strong> C provides access to low-level memory operations and is close to hardware.</li>
-        <li><strong>Efficient:</strong> C programs execute quickly and use minimal system resources.</li>
-        <li><strong>Portable:</strong> C code is highly portable across platforms.</li>
-    </ul>
-</section>
+<section id="data-structures">
+    <h2>2. Data Structures</h2>
+    <p>Data structures are ways to store and organize data in a computer so that it can be used efficiently. Here are some basic data structures:</p>
 
-<section id="setup">
-    <h2>Getting Started with C</h2>
-    <h3>Setting Up Your Environment</h3>
-    <p>To get started with C programming, you’ll need a compiler. Popular options include GCC and Clang. You can write your code using IDEs like Code::Blocks or Visual Studio Code.</p>
-    <h3>Writing Your First Program</h3>
-    <p>Let’s write a simple C program that prints "Hello, World!":</p>
+    <h3>2.1 Arrays</h3>
+    <p>Arrays are a collection of elements stored at contiguous memory locations. They are used to store multiple values in a single variable.</p>
     <div class="code">
         <pre>
-#include <stdio.h>
+# Declaring an array
+fruits = ["Apple", "Banana", "Cherry"]
 
-int main() {
-    printf("Hello, World!");
-    return 0;
-}
+# Accessing array elements
+print(fruits[0])  # Outputs: Apple
+
+# Adding an element to the array
+fruits.append("Orange")
+print(fruits)  # Outputs: ['Apple', 'Banana', 'Cherry', 'Orange']
+        </pre>
+    </div>
+
+    <h3>2.2 Linked Lists</h3>
+    <p>A linked list is a linear data structure where each element is a separate object, called a node. Each node contains data and a reference (or link) to the next node in the sequence.</p>
+    <div class="code">
+        <pre>
+# Node class
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+# LinkedList class
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    # Add a node to the end of the list
+    def append(self, data):
+        new_node = Node(data)
+        if self.head is None:
+            self.head = new_node
+        else:
+            current = self.head
+            while current.next:
+                current = current.next
+            current.next = new_node
+
+    # Print the list
+    def print_list(self):
+        current = self.head
+        while current:
+            print(current.data)
+            current = current.next
+
+# Example usage
+list = LinkedList()
+list.append(1)
+list.append(2)
+list.append(3)
+list.print_list()  # Outputs: 1 2 3
+        </pre>
+    </div>
+
+    <h3>2.3 Stacks</h3>
+    <p>A stack is a linear data structure that follows the Last In First Out (LIFO) principle. Elements can be added and removed only from the top of the stack.</p>
+    <div class="code">
+        <pre>
+# Stack class
+class Stack:
+    def __init__(self):
+        self.items = []
+
+    # Add an element to the stack
+    def push(self, item):
+        self.items.append(item)
+
+    # Remove and return the top element
+    def pop(self):
+        if not self.items:
+            return "Underflow"
+        return self.items.pop()
+
+    # Return the top element without removing it
+    def peek(self):
+        if not self.items:
+            return "No elements in Stack"
+        return self.items[-1]
+
+    # Check if the stack is empty
+    def is_empty(self):
+        return len(self.items) == 0
+
+    # Print the stack
+    def print_stack(self):
+        print(" ".join(map(str, self.items)))
+
+# Example usage
+stack = Stack()
+stack.push(10)
+stack.push(20)
+stack.push(30)
+stack.print_stack()  # Outputs: 10 20 30
+print(stack.pop())  # Outputs: 30
+print(stack.peek())  # Outputs: 20
+        </pre>
+    </div>
+
+    <h3>2.4 Queues</h3>
+    <p>A queue is a linear data structure that follows the First In First Out (FIFO) principle. Elements are added at the rear and removed from the front.</p>
+    <div class="code">
+        <pre>
+# Queue class
+class Queue:
+    def __init__(self):
+        self.items = []
+
+    # Add an element to the queue
+    def enqueue(self, item):
+        self.items.append(item)
+
+    # Remove and return the front element
+    def dequeue(self):
+        if not self.items:
+            return "Underflow"
+        return self.items.pop(0)
+
+    # Return the front element without removing it
+    def front(self):
+        if not self.items:
+            return "No elements in Queue"
+        return self.items[0]
+
+    # Check if the queue is empty
+    def is_empty(self):
+        return len(self.items) == 0
+
+    # Print the queue
+    def print_queue(self):
+        print(" ".join(map(str, self.items)))
+
+# Example usage
+queue = Queue()
+queue.enqueue(10)
+queue.enqueue(20)
+queue.enqueue(30)
+queue.print_queue()  # Outputs: 10 20 30
+print(queue.dequeue())  # Outputs: 10
+print(queue.front())  # Outputs: 20
+        </pre>
+    </div>
+</section>
+
+<section id="algorithms">
+    <h2>3. Algorithms</h2>
+    <p>Algorithms are step-by-step procedures or formulas for solving problems. Here are some basic algorithms:</p>
+
+    <h3>3.1 Linear Search</h3>
+    <p>Linear search is a simple search algorithm that checks each element in the array until the target element is found or the array ends.</p>
+    <div class="code">
+        <pre>
+def linear_search(arr, target):
+    for i in range(len(arr)):
+        if arr[i] == target:
+            return i
+    return -1
+
+# Example usage
+arr = [2, 4, 6, 8, 10]
+target = 6
+result = linear_search(arr, target)
+print(result)  # Outputs: 2
+        </pre>
+    </div>
+
+    <h3>3.2 Binary Search</h3>
+    <p>Binary search is an efficient search algorithm that works on sorted arrays. It repeatedly divides the search interval in half.</p>
+    <div class="code">
+        <pre>
+def binary_search(arr, target):
+    left, right = 0, len(arr) - 1
+
+    while left <= right:
+        mid = (left + right) // 2
+
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return -1
+
+# Example usage
+arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+target = 7
+result = binary_search(arr, target)
+print(result)  # Outputs: 6
+        </pre>
+    </div>
+
+    <h3>3.3 Bubble Sort</h3>
+    <p>Bubble sort is a simple sorting algorithm that repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order.</p>
+    <div class="code">
+        <pre>
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n - 1):
+        for j in range(n - i - 1):
+            if arr[j] > arr[j + 1]:
+                # Swap arr[j] and arr[j + 1]
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+    return arr
+
+# Example usage
+arr = [64, 34, 25, 12, 22, 11, 90]
+sorted_arr = bubble_sort(arr)
+print(sorted_arr)  # Outputs: [11, 12, 22, 25, 34, 64, 90]
+        </pre>
+    </div>
+
+    <h3>3.4 Insertion Sort</h3>
+    <p>Insertion sort is a simple sorting algorithm that builds the final sorted array one item at a time. It is much less efficient on large lists than more advanced algorithms such as quicksort or merge sort.</p>
+    <div class="code">
+        <pre>
+def insertion_sort(arr):
+    n = len(arr)
+    for i in range(1, n):
+        key = arr[i]
+        j = i - 1
+
+        # Move elements of arr[0..i-1], that are greater than key, to one position ahead of their current position
+        while j >= 0 and arr[j] > key:
+            arr[j + 1] = arr[j]
+            j -= 1
+        arr[j + 1] = key
+    return arr
+
+# Example usage
+arr = [12, 11, 13, 5, 6]
+sorted_arr = insertion_sort(arr)
+print(sorted_arr)  # Outputs: [5, 6, 11, 12, 13]
         </pre>
     </div>
 </section>
 
 <section id="resources">
-    <h2>Resources for Learning C</h2>
+    <h2>4. Resources for Learning DSA</h2>
     <ul>
-        <li><a href="https://www.learn-c.org/">Learn C Online</a></li>
-        <li><a href="https://www.geeksforgeeks.org/c-programming-language/">GeeksforGeeks C Tutorials</a></li>
+        <li><strong>Official Documentation:</strong> The <a href="https://docs.python.org/3/">Python Documentation</a> is a comprehensive guide to Python's features.</li>
+        <li><strong>Books:</strong> "Introduction to Algorithms" by Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and Clifford Stein is highly recommended for learning algorithms.</li>
+        <li><strong>Online Courses:</strong> Websites like Coursera, Udacity, and edX offer excellent courses on data structures and algorithms.</li>
     </ul>
 </section>
 
 <footer>
-    <p>&copy; 2024 Learn C Programming</p>
+    <p>&copy; 2025 DSA for Beginners | All Rights Reserved</p>
 </footer>
 
 </body>
