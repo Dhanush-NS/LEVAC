@@ -11,6 +11,15 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <style>
+        body{
+            background-color: bisque;
+        }
+        .logoname {
+            color:#e68900;
+            font-size: xx-large;
+            text-align: center;
+            
+        }
         .articles {
             background: url("{% static 'images/hero-bg.jpg' %}") no-repeat center center/cover;
             height: 500px;
@@ -49,7 +58,9 @@
     {% block content %}
 
     
-        <span id="logoname">LEVAC</span>
+        <div class="logoname">
+            <h1>LEVAC</h1>
+        </div>
         <div class="nav-buttons">
             <a id="signupbutton" href="/login">Login</a>
             <a id="loginbutton" href="/signup">Register</a>

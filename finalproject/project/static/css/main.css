@@ -123,6 +123,7 @@ body {
     .nav-buttons {
         flex-direction:column-reverse;
         align-items: flex-start;
+       
     }
 
     #signupbutton, #loginbutton {
