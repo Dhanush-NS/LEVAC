@@ -113,7 +113,7 @@ body {
 
 /* Container for the buttons */
 .nav-buttons {
-    margin-left: 85vw;
+    margin-left: 85%;
     flex-direction:row-reverse;
 
 }
