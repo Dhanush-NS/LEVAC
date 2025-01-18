@@ -10,17 +10,58 @@
     <title>Navigation Bar Example</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <style>
+        .articles {
+            background: url("{% static 'images/hero-bg.jpg' %}") no-repeat center center/cover;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: rgb(58, 146, 71);
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .articles h1 {
+            font-size: 48px;
+            margin: 0;
+        }
+        .articles p {
+            font-size: 24px;
+            margin: 20px 0 40px;
+        }
+
+        .articles a {
+            background-color: #ff9800;
+            color: white;
+            padding: 14px 28px;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 5px;
+        }
+
+        .articles a:hover {
+            background-color: #e68900;
+        }
+    </style>
 </head>
 <body>
+    {% block content %}
+
     
         <span id="logoname">LEVAC</span>
         <div class="nav-buttons">
             <a id="signupbutton" href="/login">Login</a>
             <a id="loginbutton" href="/signup">Register</a>
         </div>
+            <div class="articles">
+                <div>
+                    <h1>Welcome to LEVAC</h1>
+                    <p>Your ultimate e-learning platform for mastering programming languages</p>
+                    <a href="{% url 'base'%}">Explore Articles</a>
+                </div>
+            </div>
 
-
-    {% block content %}
     {% if messages %}
         <div class="messages">
             {% for message in messages %}
