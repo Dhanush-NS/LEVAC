@@ -90,20 +90,26 @@ def login_view(request):
     else:
         return render(request, "REG/login.html")
     
+@login_required
 def edit_view(request):
-    user = request.user
+    user = request.user  # Get the currently logged-in user
 
-    if request.method == "POST":
-        new_username = request.POST.get("edit_username")  # The new username
-        new_name = request.POST.get("edit_name")  # The new name
+    if request.method == "POST":  # If the form is submitted
+        new_username = request.POST.get("edit_username")  # Get the new username from the form
+        new_name = request.POST.get("edit_name")  # Get the new name from the form
+
+        # Validate that the new_name is not empty
+        if not new_name:
+            messages.error(request, "Name cannot be empty.")
+            return redirect('edit')
 
         # Check if the new username already exists
-        if User.objects.filter(username=new_username).exists():
+        if User.objects.filter(username=new_username).exists() and new_username != user.username:
             messages.error(request, "Username already exists, choose another")
             return redirect('edit')
 
         else:
-            old_username = user.username
+            old_username = user.username  # Save the old username
 
             # Update the current user's username
             user.username = new_username
@@ -119,8 +125,7 @@ def edit_view(request):
             except Student.DoesNotExist:
                 messages.error(request, "Student record does not exist.")
         
-        return redirect('edit')
-
+        return redirect('base')
     else:
         # Handle GET request to retrieve the student's current details
         try:
@@ -129,8 +134,6 @@ def edit_view(request):
             student = None
 
     return render(request, 'REG/edit.html', {'student': student})
-
-
 
 # Logout view to logout user
 @never_cache
