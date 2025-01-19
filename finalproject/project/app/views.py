@@ -95,7 +95,7 @@ def edit_view(request):
 
     if request.method == "POST":
         new_username = request.POST.get("edit_username")  # The new username
-        new_name = request.POST.get("name")  # The new name
+        new_name = request.POST.get("edit_name")  # The new name
 
         # Check if the new username already exists
         if User.objects.filter(username=new_username).exists():
