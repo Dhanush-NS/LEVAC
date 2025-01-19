@@ -113,7 +113,7 @@ body {
 
 /* Container for the buttons */
 .nav-buttons {
-    margin-left: 85%;
+    margin-left: 85vw;
     flex-direction:row-reverse;
 
 }
@@ -123,7 +123,6 @@ body {
     .nav-buttons {
         flex-direction:column-reverse;
         align-items: flex-start;
-       
     }
 
     #signupbutton, #loginbutton {
