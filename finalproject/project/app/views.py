@@ -196,3 +196,7 @@ def dsavideo(request):
 @login_required
 def cppvideo(request):
     return render(request,'CPP/cppvideo.html')
+
+@login_required
+def leetcode(request):
+    return render(request,'LEETCODE/leetcode.html')
