@@ -24,12 +24,10 @@
   <!-- ********************nav bar ************************** -->
 
 <!-- **************************English python videos************************************** -->
-<div class="video-gallery" id="videoshowEnglish" style="display: none;">
+<div class="video-gallery" id="videoshowEnglish" style="display: none; ">
   
-  <div class="video-item">
+  <div class="video-item" >
     <iframe src="https://www.youtube.com/embed/QXeEoD0pB3E?si=Z491Gl3dq9xeKwn5" frameborder="0" allowfullscreen></iframe>
-    
-    
   </div>
  
 
@@ -120,6 +118,18 @@
 
 
   // *********************************Display Hidden video *******************************************
+
+  // *********************************Display video larger *******************************************
+
+   // JavaScript to handle video enlargement on click
+   var videos = document.getElementsByClassName("video-item");
+   for (var i = 0; i < videos.length; i++) {
+       videos[i].addEventListener('click', function() {
+           this.classList.toggle('enlarge');
+       });
+   }
+
+  // *********************************Display video larger *******************************************
 
   
  </script>
