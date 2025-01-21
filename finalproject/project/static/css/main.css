@@ -212,5 +212,8 @@ img{
  }
 
 .python{
-    color: red;
+    color: black;
+    font-size: 70px;
+    text-align: center;
+    
 }
