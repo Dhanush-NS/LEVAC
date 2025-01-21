@@ -209,6 +209,8 @@ img{
    .dropbtn:hover {
     background-color: #777;
     border-radius: 10px;
-    
-    
-  }
+ }
+
+.python{
+    color: red;
+}
