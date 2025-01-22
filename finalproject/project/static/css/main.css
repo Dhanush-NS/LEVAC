@@ -216,10 +216,16 @@ img{
     font-size: 70px;
     text-align: center;
 }
+
 .problems{
     text-align: center;
+    margin-top: 6vw;
 }
 .problem{
     border: 1px solid black;
-    padding: 1%;
+    padding: 1vw;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: larger;
 }
