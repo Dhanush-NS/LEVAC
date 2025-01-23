@@ -218,8 +218,10 @@ img{
 }
 
 .problems{
+    display: grid;
     text-align: center;
     margin-top: 6vw;
+    
 }
 .problem{
     border: 1px solid black;
