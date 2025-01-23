@@ -221,6 +221,8 @@ img{
     display: grid;
     text-align: center;
     margin-top: 6vw;
+    grid-template-columns: auto auto auto;
+    gap: 1vw;
     
 }
 .problem{
