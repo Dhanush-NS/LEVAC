@@ -66,7 +66,13 @@
                 Welcome, Guest
             {% endif %}
         </a>
-        <a title="Profile" href="{% url 'edit' %}"><img style="margin-bottom: -8px; margin-right: -3px; " src="{% static 'images/profile.png'%}" alt="profile" height="33px" width="33px"></a>
+        <div class="dropprofile">
+            <img class="dropbtnprofile" src="{% static 'images/profile.png'%}" alt="profile" height="33px" width="33px">
+            <div class="dropdown-content-profile">
+            <a class="dropbtn" href="{% url 'edit' %}">Edit</a>
+            <a class="dropbtn" href="{% url 'logout' %}">Logout</a>
+        </div>
+        </div>
 
     </div>
     <div id="editor-container"></div>
