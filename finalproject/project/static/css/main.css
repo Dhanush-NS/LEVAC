@@ -212,7 +212,7 @@ img{
  }
 
 .python{
-    color: black;
+    color: rgb(128, 128, 128);
     font-size: 70px;
     text-align: center;
 }
@@ -223,7 +223,11 @@ img{
     margin-top: 6vw;
     grid-template-columns: auto auto auto;
     gap: 1vw;
+    width: 90vw;
+    align-items: center;
+    margin-left: 4.5vw;
     
+        
 }
 .problem{
     border: 1px solid black;
@@ -232,4 +236,10 @@ img{
     text-decoration: none;
     border-radius: 4px;
     font-size: larger;
+}
+.problem:hover{
+    background-color: #333;
+    color: white;
+    transform: scale(1.02); /* Slight zoom effect */
+    transition: ease 0.3s;
 }
