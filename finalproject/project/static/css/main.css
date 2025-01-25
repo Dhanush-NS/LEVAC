@@ -207,8 +207,9 @@ img{
 
   /* Hover effect */
    .dropbtn:hover {
-    background-color: red;
+    background-color: #ddd;
     border-radius: 10px;
+    color: black;
  }
 
 .python{
