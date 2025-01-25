@@ -207,7 +207,7 @@ img{
 
   /* Hover effect */
    .dropbtn:hover {
-    background-color: #777;
+    background-color: red;
     border-radius: 10px;
  }
 

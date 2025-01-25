@@ -54,11 +54,9 @@
             <div class="dropdown">
                 <button id="geminiButton" class="dropbtn">Gemini Assistant (do)</button>
             </div>
-            <div class="dropdown">
-                <a class="dropbtn" href="{% url 'logout' %}">Logout</a>
-            </div>
+            
         </div>
-        <a class="navbar-brand" href="" style="margin-left: 32%;">
+        <a class="navbar-brand" href="" style="margin-left: 42%;">
             {%load static%}
             {% if user.is_authenticated %}
                 Welcome, {{ user.username }} 
