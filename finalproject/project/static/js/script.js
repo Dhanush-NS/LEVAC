@@ -68,6 +68,9 @@
 
 // //********************************* End login button  *****************************************
 
+
+
+
 //*********************************  Signup Validation  *****************************************
 // Update the validateForm function to show error messages
 function validateForm() {
