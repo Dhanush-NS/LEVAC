@@ -69,6 +69,17 @@
 // //********************************* End login button  *****************************************
 
 
+document.addEventListener("DOMContentLoaded", function() {
+    // Simulate loading delay
+    setTimeout(function() {
+        // Hide the skeleton loader and show the actual content
+        const card = document.getElementById("card");
+        const content = document.getElementById("content");
+        card.style.display = "none";
+        content.style.display = "block";
+    }, 2000); // Adjust the delay as needed
+});
+
 
 
 //*********************************  Signup Validation  *****************************************
