@@ -13,6 +13,22 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from django.contrib.auth import logout as auth_logout
+from django.conf import settings
+
+
+genai.configure(api_key=settings.GOOGLE_GENAI_API_KEY)
+model = genai.GenerativeModel('gemini-pro')
+chat = model.start_chat(history=[])
+
+def chat_view(request):
+    if request.method == 'POST':
+        user_input = request.POST.get('message')
+        try:
+            response = chat.send_message(user_input)
+            return JsonResponse({'response': response.text})
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    return render(request, 'chat.html')
 
 @login_required
 @never_cache

@@ -11,14 +11,45 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <style>
-        
+        body{
+            background-color: whitesmoke;
+        }
         .logoname {
             color:#e68900;
             font-size: xx-large;
             text-align: center;
             
         }
-        
+        .articles {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: rgb(58, 146, 71);
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .articles h1 {
+            font-size: 48px;
+            margin: 0;
+        }
+        .articles p {
+            font-size: 24px;
+            margin: 20px 0 40px;
+        }
+
+        .articles a {
+            background-color: #ff9800;
+            color: white;
+            padding: 14px 28px;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 5px;
+        }
+
+        .articles a:hover {
+            background-color: #e68900;
+        }
     </style>
 </head>
 <body>
