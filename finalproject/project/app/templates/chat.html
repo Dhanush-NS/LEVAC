@@ -5,9 +5,69 @@
     <meta charset="UTF-8">
     <title>Gemini Chat Assistant</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #chat-container {
+            width: 400px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        #chat-box {
+            height: 400px;
+            padding: 20px;
+            overflow-y: auto;
+            border-bottom: 1px solid #ccc;
+        }
+        #chat-box p {
+            margin: 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #chat-box p strong {
+            display: block;
+        }
+        #chat-box p:nth-child(odd) {
+            background-color: #e9f7fe;
+        }
+        #chat-box p:nth-child(even) {
+            background-color: #f1f1f1;
+        }
+        #user-input {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        #send-button {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+        #send-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to the Gemini Chat Assistant!</h1>
     <div id="chat-container">
         <div id="chat-box"></div>
         <input type="text" id="user-input" placeholder="Type your message...">
@@ -29,12 +89,22 @@
                         },
                         success: function(data) {
                             $('#chat-box').append('<p><strong>Assistant:</strong> ' + data.response + '</p>');
+                            $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight); // Scroll to the bottom
                         },
                         error: function(xhr) {
                             $('#chat-box').append('<p><strong>Error:</strong> ' + xhr.responseJSON.error + '</p>');
+                            $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight); // Scroll to the bottom
                         }
                     });
                     $('#user-input').val('');
+                }
+            });
+
+            // Allow sending messages with Enter key
+            $('#user-input').keypress(function(e) {
+                if (e.which === 13) {
+                    $('#send-button').click();
+                    return false; // Prevent the default action
                 }
             });
         });
