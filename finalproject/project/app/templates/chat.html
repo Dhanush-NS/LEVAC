@@ -1,0 +1,43 @@
+<!-- chat.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gemini Chat Assistant</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Welcome to the Gemini Chat Assistant!</h1>
+    <div id="chat-container">
+        <div id="chat-box"></div>
+        <input type="text" id="user-input" placeholder="Type your message...">
+        <button id="send-button">Send</button>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#send-button').click(function() {
+                var userInput = $('#user-input').val();
+                if (userInput) {
+                    $('#chat-box').append('<p><strong>You:</strong> ' + userInput + '</p>');
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url "chat_view" %}',
+                        data: {
+                            'message': userInput,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        success: function(data) {
+                            $('#chat-box').append('<p><strong>Assistant:</strong> ' + data.response + '</p>');
+                        },
+                        error: function(xhr) {
+                            $('#chat-box').append('<p><strong>Error:</strong> ' + xhr.responseJSON.error + '</p>');
+                        }
+                    });
+                    $('#user-input').val('');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
