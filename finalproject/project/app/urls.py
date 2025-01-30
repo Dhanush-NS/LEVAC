@@ -1,10 +1,10 @@
 from django.urls import path
 from .views import  (mainpage,base,signup,login_view,edit_view,logout,java,python,c,dsa,
-cpp,js,pyvideo,javavideo,cvideo,jsvideo,dsavideo,cppvideo, leetcode)
+cpp,js,pyvideo,javavideo,cvideo,jsvideo,dsavideo,cppvideo, leetcode, chat_view)
 urlpatterns = [
     path('',mainpage ,name='mainpage'),
     path('base/',base ,name='base'),
-
+    path('chat/', chat_view, name='chat_view'),
     # Registration urls
     path('signup/',signup ,name='signup'),
     path('login/',login_view ,name='login'),
