@@ -22,12 +22,14 @@
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             overflow: hidden;
+            position: relative; /* Added for spinner positioning */
         }
         #chat-box {
             height: 400px;
             padding: 20px;
             overflow-y: auto;
             border-bottom: 1px solid #ccc;
+            
         }
         #chat-box p {
             margin: 0;
@@ -65,11 +67,30 @@
         #send-button:hover {
             background-color: #0056b3;
         }
+        #spinner {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #007bff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
     <div id="chat-container">
+        <h3 style="align-items: center; text-align:center">Ask Gemini</h3>
         <div id="chat-box"></div>
+        <div id="spinner"></div>
         <input type="text" id="user-input" placeholder="Type your message...">
         <button id="send-button">Send</button>
     </div>
@@ -80,6 +101,8 @@
                 var userInput = $('#user-input').val();
                 if (userInput) {
                     $('#chat-box').append('<p><strong>You:</strong> ' + userInput + '</p>');
+                    $('#spinner').show(); // Show the spinner
+
                     $.ajax({
                         type: 'POST',
                         url: '{% url "chat_view" %}',
@@ -95,6 +118,9 @@
                         error: function(xhr) {
                             $('#chat-box').append('<p><strong>Error:</strong> ' + xhr.responseJSON.error + '</p>');
                             $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight); // Scroll to the bottom
+                        },
+                        complete: function() {
+                            $('#spinner').hide(); // Hide the spinner
                         }
                     });
                     $('#user-input').val('');
