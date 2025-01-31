@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
+            background: linear-gradient(135deg, #71b7e6, #9b59b6);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -20,21 +20,22 @@
             border: 1px solid #ccc;
             border-radius: 10px;
             background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             position: relative; /* Added for spinner positioning */
+            animation: fadeIn 1s ease-in-out; /* Animation for fade-in effect */
         }
         #chat-box {
             height: 400px;
             padding: 20px;
             overflow-y: auto;
             border-bottom: 1px solid #ccc;
-            
         }
         #chat-box p {
             margin: 0;
             padding: 10px;
             border-radius: 5px;
+            animation: slideIn 0.5s ease-in-out; /* Animation for sliding messages */
         }
         #chat-box p strong {
             display: block;
@@ -63,6 +64,7 @@
             border-radius: 5px;
             cursor: pointer;
             box-sizing: border-box;
+            transition: background-color 0.3s ease; /* Animation for button hover effect */
         }
         #send-button:hover {
             background-color: #0056b3;
@@ -84,11 +86,18 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        @keyframes slideIn {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(0); }
+        }
     </style>
 </head>
 <body>
     <div id="chat-container">
-        <h3 style="align-items: center; text-align:center">Ask Gemini</h3>
         <div id="chat-box"></div>
         <div id="spinner"></div>
         <input type="text" id="user-input" placeholder="Type your message...">
