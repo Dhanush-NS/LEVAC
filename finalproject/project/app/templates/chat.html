@@ -88,7 +88,8 @@
                             'csrfmiddlewaretoken': '{{ csrf_token }}'
                         },
                         success: function(data) {
-                            $('#chat-box').append('<p><strong>Assistant:</strong> ' + data.response + '</p>');
+                            var formattedResponse = formatResponse(data.response);
+                            $('#chat-box').append('<p><strong>Assistant:</strong> ' + formattedResponse + '</p>');
                             $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight); // Scroll to the bottom
                         },
                         error: function(xhr) {
@@ -107,6 +108,19 @@
                     return false; // Prevent the default action
                 }
             });
+
+            function formatResponse(response) {
+                // Custom function to format the response in a point-wise format
+                var lines = response.split('*');
+                var formatted = '<ul>';
+                lines.forEach(function(line) {
+                    if (line.trim() !== '') {
+                        formatted += '<li>' + line.trim() + '</li>';
+                    }
+                });
+                formatted += '</ul>';
+                return formatted;
+            }
         });
     </script>
 </body>
