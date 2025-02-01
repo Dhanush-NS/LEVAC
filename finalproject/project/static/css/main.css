@@ -58,8 +58,71 @@ body {
     display: none; /* Initially hide the content */
     display: flexboxr;
 }
+#logopic{
+    height: 150px;
+    width: 150px;
+    border-radius: 15px;
+}
+
+/* General styles for the buttons */
+#signupbutton, #loginbutton {
+    color: white;
+    border: 2px solid grey;
+    border-radius: 5px;
+    padding: 13px;
+    cursor: pointer;
+    text-decoration: none;
+    background-color: rgb(136, 55, 233);
+    font-size: 17px;
+    margin: 5px;
+}
+
+#logoname {
+    font-size: 54px;
+    font-weight: bold;
+    
+}
+
+/* Container for the buttons */
+.nav-buttons {
+    margin-left: 85vw;
+    flex-direction:row-reverse;
+
+}
+
+@media (max-width: 480px) {
+    /* Stack buttons vertically on smaller screens */
+    .nav-buttons {
+        flex-direction:column-reverse;
+        align-items: flex-start;
+    }
+
+    #signupbutton, #loginbutton {
+        width: 100%;
+        text-align: center;
+    }
+
+    #logoname {
+        text-align: center;
+        width: 100%;
+    }
+}
 
 
+#messages{
+    color: red;
+    font-size: large;
+    text-align: center;
+    border: 1px solid black;
+    padding: 6px;
+    list-style-type: none;
+    width: 25%;
+    margin: 0 auto;
+    border-radius: 10px;
+    margin-top: 17%;
+    background-color: black;
+}
+/* ****************************************************************************************** */
 /* Navigation bar styling */
 .navbar {
     overflow: hidden;
@@ -139,74 +202,9 @@ body {
     display: block;
     
 }
+/* ********************************************************************************************** */
 
-#logopic{
-    height: 150px;
-    width: 150px;
-    border-radius: 15px;
-}
-
-/* General styles for the buttons */
-#signupbutton, #loginbutton {
-    color: white;
-    border: 2px solid grey;
-    border-radius: 5px;
-    padding: 13px;
-    cursor: pointer;
-    text-decoration: none;
-    background-color: rgb(136, 55, 233);
-    font-size: 17px;
-    margin: 5px;
-}
-
-
-
-#logoname {
-    font-size: 54px;
-    font-weight: bold;
-    
-}
-
-/* Container for the buttons */
-.nav-buttons {
-    margin-left: 85vw;
-    flex-direction:row-reverse;
-
-}
-
-@media (max-width: 480px) {
-    /* Stack buttons vertically on smaller screens */
-    .nav-buttons {
-        flex-direction:column-reverse;
-        align-items: flex-start;
-    }
-
-    #signupbutton, #loginbutton {
-        width: 100%;
-        text-align: center;
-    }
-
-    #logoname {
-        text-align: center;
-        width: 100%;
-    }
-}
-
-
-#messages{
-    color: red;
-    font-size: large;
-    text-align: center;
-    border: 1px solid black;
-    padding: 6px;
-    list-style-type: none;
-    width: 25%;
-    margin: 0 auto;
-    border-radius: 10px;
-    margin-top: 17%;
-    background-color: black;
-}
-
+/* ************************************************************************************************* */
 #editor-container {
     width: 100%;
     height: 500px;
