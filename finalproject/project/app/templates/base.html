@@ -12,14 +12,18 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- <link rel="stylesheet" href="{% static 'css/main.css' %}"> -->
-    <!-- <style>
-        #editor-container {
-            width: 100%;
-            height: 500px;
-            border: 1px solid #ddd;
-            display: none; /* Initially hidden */
+    <style>
+        /* Custom CSS to ensure proper alignment in mobile view */
+        @media (max-width: 992px) {
+            .navbar-nav .nav-item .dropdown-menu {
+                text-align: left;
+            }
+            .navbar-nav .nav-item .dropdown-toggle {
+                width: 100%;
+                text-align: left;
+            }
         }
-    </style> -->
+    </style>
 </head>
 <body>
     {% block content %}
@@ -30,10 +34,19 @@
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarnav">
                 <span class="navbar-toggler-icon"></span>
             </button>
+                <span class="text-white p-2">
+                    {%load static%}
+                {% if user.is_authenticated %}
+                    Welcome, {{ user.username }} 
+                {% else %}
+                    Welcome, Guest
+                {% endif %}
+            </span>
+            
             <div class="collapse navbar-collapse" id="navbarnav">
                 <ul class="navbar-nav ms-auto">
 
-                	<li class="nav-item dropdown">
+                	<li class="nav-item dropdown float-start">
                     <a class="nav-link active btn dropdown-toggle" data-bs-toggle="dropdown" href="">Articles</a>
                         <ul class="dropdown-menu">
                           <li><a class="dropdown-item"  target="_blank" href="{% url 'python' %}">Python</a></li>
@@ -65,93 +78,21 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="{% url 'chat_view'%}">Gemini Assistant</a>
                     </li>
-                    <a class="navbar-brand" href="" style="margin-left: 42%;">
-                        {%load static%}
-                        {% if user.is_authenticated %}
-                            Welcome, {{ user.username }} 
-                        {% else %}
-                            Welcome, Guest
-                        {% endif %}
-                    </a>
-                    <div class="dropprofile">
-                        <img class="dropbtnprofile" src="{% static 'images/profile.png'%}" alt="profile" height="30px" width="30nuhpx">
-                        <div class="dropdown-content-profile">
-                        <a class="dropbtn" href="{% url 'edit' %}">Edit Profile</a>
-                        <a class="dropbtn" href="{% url 'logout' %}">Logout</a>
-                    </div>
+                    
 
             </ul>
             </div>
+            <span class="nav-item dropdown">
+                <img class="nav-link active btn dropdown-toggle" data-bs-toggle="dropdown" src="{% static 'images/profile.png'%}" alt="profile" height="50px" width="50px">
+                <ul class="dropdown-menu">
+                <a class="dropdown-item" href="{% url 'edit' %}">Edit Profile</a>
+                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                </ul>
+            </span>
         </div>
     </nav>
 
 
-
-    <div class="navbar">
-        <div class="nav-items">
-            <div class="dropdown">
-                <button class="dropbtn">Articles</button>
-                <div class="dropdown-content">
-                    <a target="_blank" href="{% url 'python' %}">Python</a>
-                    <a target="_blank" href="{% url 'java' %}">Java</a>
-                    <a target="_blank" href="{% url 'c' %}">C</a>
-                    <a target="_blank" href="{% url 'cpp' %}">C++</a>
-                    <a target="_blank" href="{% url 'js' %}">JavaScript</a>
-                    <a target="_blank" href="{%url 'dsa'%}">DSA</a>
-                </div>
-            </div>
-            <div class="dropdown">
-                <button class="dropbtn">Videos</button>
-                <div class="dropdown-content">
-                    <a href="{% url 'pyvideo' %}">Python Tutor</a>
-                    <a href="{% url 'javavideo' %}">Java Tutor</a>
-                    <a href="{% url 'jsvideo'%}">JavaScript Tutor</a>
-                    <a href="{% url 'cvideo'%}">C Tutor</a>
-                    <a href="{%url 'cppvideo'%}">Cpp Tutor</a>
-                    <a href="#">MySQL Tutor</a>
-                </div>
-            </div>
-            <div class="dropdown">
-                <button class="dropbtn" id="showEditorButton">Code Editor</button>
-            </div>
-            <div class="dropdown">
-                <a class="dropbtn" href="{% url 'leetcode' %}">Solve Problems</a>
-            </div>
-            <div class="dropdown">
-                <a href="{% url 'chat_view'%}" id="geminiButton" class="dropbtn">Gemini Assistant</a>
-            </div>
-        </div>
-        
-        </div>
-
-    </div>
-    <div id="editor-container"></div>
-
-    <div id="geminiResponse"></div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
-    <script>
-        // Initialize Monaco Editor
-        let editor;
-        require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs' } });
-        require(['vs/editor/editor.main'], function () {
-            editor = monaco.editor.create(document.getElementById('editor-container'), {
-                value: "print('Hello, World!')",
-                language: 'python',
-                theme: 'vs-dark'
-            });
-        });
-
-        // Toggle editor visibility
-        document.getElementById('showEditorButton').addEventListener('click', function () {
-            const editorContainer = document.getElementById('editor-container');
-            if (editorContainer.style.display === 'none') {
-                editorContainer.style.display = 'block';
-            } else {
-                editorContainer.style.display = 'none';
-            }
-        });
-    </script>
 
     <script src="{% static 'js/script.js' %}"></script>
     {% endblock %}
