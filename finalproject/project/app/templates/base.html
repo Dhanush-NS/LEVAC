@@ -23,6 +23,14 @@
                 text-align: left;
             }
         }
+        .hovernav:hover{
+            background-color: #4CAF50;
+
+        }
+        .dropdown-item:hover{
+            background-color: #4CAF50;
+
+        }
     </style>
 </head>
 <body>
@@ -34,64 +42,68 @@
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarnav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-                <span class="text-white p-2">
-                    {%load static%}
+            <span class="navbar-text text-white p-2 ms-auto d-lg-none">
+                {% load static %}
                 {% if user.is_authenticated %}
                     Welcome, {{ user.username }} 
                 {% else %}
                     Welcome, Guest
                 {% endif %}
             </span>
-            
             <div class="collapse navbar-collapse" id="navbarnav">
-                <ul class="navbar-nav ms-auto">
-
-                	<li class="nav-item dropdown float-start">
-                    <a class="nav-link active btn dropdown-toggle" data-bs-toggle="dropdown" href="">Articles</a>
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item"  target="_blank" href="{% url 'python' %}">Python</a></li>
-                          <li><a class="dropdown-item"  target="_blank" href="{% url 'java' %}">Java</a></li>
-                          <li><a class="dropdown-item"  target="_blank" href="{% url 'c' %}">C</a></li>
-                          <li><a class="dropdown-item"  target="_blank" href="{% url 'cpp' %}">C++</a></li>
-                          <li><a class="dropdown-item"  target="_blank" href="{% url 'js' %}">JavaScript</a></li>
-                          <li><a class="dropdown-item"  target="_blank" href="{%url 'dsa'%}">DSA</a></li>
-                        </ul>
-                    </li>
-                    
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item dropdown">
-                        <a class="nav-link active btn dropdown-toggle" data-bs-toggle="dropdown" href="">Videos</a>
+                        <a class="hovernav nav-link active btn dropdown-toggle  p-2 m-2" data-bs-toggle="dropdown" href="#">Articles</a>
                         <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" target="_blank" href="{% url 'pyvideo' %}">Python Tutor</a></li>
-                        <li><a class="dropdown-item" target="_blank" href="{% url 'javavideo' %}">Java Tutor</a></li>
-                        <li><a class="dropdown-item" target="_blank" href="{% url 'jsvideo'%}">JavaScript Tutor</a></li>
-                        <li><a class="dropdown-item" target="_blank" href="{% url 'cvideo'%}">C Tutor</a></li>
-                        <li><a class="dropdown-item" target="_blank" href="{%url 'cppvideo'%}">Cpp Tutor</a></li>
-                        <li><a class="dropdown-item" target="_blank" href="#">MySQL Tutor</a></li>
+                            <li><a class="dropdown-item" target="_blank" href="{% url 'python' %}">Python</a></li>
+                            <li><a class="dropdown-item" target="_blank" href="{% url 'java' %}">Java</a></li>
+                            <li><a class="dropdown-item" target="_blank" href="{% url 'c' %}">C</a></li>
+                            <li><a class="dropdown-item" target="_blank" href="{% url 'cpp' %}">C++</a></li>
+                            <li><a class="dropdown-item" target="_blank" href="{% url 'js' %}">JavaScript</a></li>
+                            <li><a class="dropdown-item" target="_blank" href="{% url 'dsa' %}">DSA</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="hovernav nav-link active btn dropdown-toggle  p-2 m-2" data-bs-toggle="dropdown" href="#">Videos</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" target="_blank" href="{% url 'pyvideo' %}">Python Tutor</a></li>
+                            <li><a class="dropdown-item" target="_blank" href="{% url 'javavideo' %}">Java Tutor</a></li>
+                            <li><a class="dropdown-item" target="_blank" href="{% url 'jsvideo' %}">JavaScript Tutor</a></li>
+                            <li><a class="dropdown-item" target="_blank" href="{% url 'cvideo' %}">C Tutor</a></li>
+                            <li><a class="dropdown-item" target="_blank" href="{% url 'cppvideo' %}">Cpp Tutor</a></li>
+                            <li><a class="dropdown-item" target="_blank" href="#">MySQL Tutor</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="">Code Editor</a>
+                        <a class="hovernav nav-link active  p-2 rounded m-2" href="#">Code Editor</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'leetcode' %}"> Solve Problems</a>
+                        <a class="hovernav nav-link active  p-2 rounded m-2" href="{% url 'leetcode' %}">Solve Problems</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'chat_view'%}">Gemini Assistant</a>
+                        <a class="hovernav nav-link active  p-2 rounded m-2" href="{% url 'chat_view' %}">Gemini Assistant</a>
                     </li>
-                    
-
-            </ul>
-            </div>
-            <span class="nav-item dropdown">
-                <img class="nav-link active btn dropdown-toggle" data-bs-toggle="dropdown" src="{% static 'images/profile.png'%}" alt="profile" height="50px" width="50px">
-                <ul class="dropdown-menu">
-                <a class="dropdown-item" href="{% url 'edit' %}">Edit Profile</a>
-                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                 </ul>
-            </span>
+                <span class="navbar-text text-white p-2 d-none d-lg-block">
+                    {% if user.is_authenticated %}
+                        Welcome, {{ user.username }} 
+                    {% else %}
+                        Welcome, Guest
+                    {% endif %}
+                </span>
+                
+                <span class="nav-item dropdown">
+                    <a class="nav-link active btn dropdown-toggle d-inline m-2" data-bs-toggle="dropdown" href="#">
+                        <img src="{% static 'images/profile.png' %}" alt="profile" height="40px" width="40px">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end p-3">
+                        <li><a class="dropdown-item rounded" href="{% url 'edit' %}">Edit Profile</a></li>
+                        <li><a class="dropdown-item rounded " href="{% url 'logout' %}">Logout</a></li>
+                    </ul>
+                </span>
+            </div>
         </div>
     </nav>
-
 
 
     <script src="{% static 'js/script.js' %}"></script>
