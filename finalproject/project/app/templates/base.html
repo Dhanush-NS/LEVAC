@@ -31,6 +31,9 @@
             background-color: #4CAF50;
 
         }
+        .navbar-text img {
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
@@ -49,6 +52,15 @@
                 {% else %}
                     Welcome, Guest
                 {% endif %}
+            </span>
+            <span class="nav-item dropdown">
+                <a class="nav-link active btn dropdown-toggle d-lg-none m-2" data-bs-toggle="dropdown" href="#">
+                    <img src="{% static 'images/profile.png' %}" alt="profile" height="40px" width="40px">
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end p-3">
+                    <li><a class="dropdown-item rounded" href="{% url 'edit' %}">Edit Profile</a></li>
+                    <li><a class="dropdown-item rounded " href="{% url 'logout' %}">Logout</a></li>
+                </ul>
             </span>
             <div class="collapse navbar-collapse" id="navbarnav">
                 <ul class="navbar-nav me-auto">
@@ -93,7 +105,7 @@
                 </span>
                 
                 <span class="nav-item dropdown">
-                    <a class="nav-link active btn dropdown-toggle d-inline m-2" data-bs-toggle="dropdown" href="#">
+                    <a class="nav-link active btn dropdown-toggle d-lg-block m-2" data-bs-toggle="dropdown" href="#">
                         <img src="{% static 'images/profile.png' %}" alt="profile" height="40px" width="40px">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end p-3">
