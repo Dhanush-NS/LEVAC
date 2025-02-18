@@ -21,6 +21,21 @@
             font-size: 1.8rem;
             font-weight: 600;
         }
+        .text{
+            margin-top: 15%;
+            font-weight:bolder;
+            opacity: 0;
+            animation: fadeIn 3s forwards;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .btn{}
+
+        @keyframes fadeIn {
+            
+            to {
+                opacity: 4;
+            }
+        }
         
     </style>
 </head>
@@ -46,8 +61,13 @@
             </div>
         </div>
     </nav>
+    <h1 class="text text-center display-5 ">Learn Smarter, Code Faster, Without Distractions!</h1>
+    <h6 class="text-center mt-5 display-8">"Empowering learners with a distraction-free platform featuring curated educational content, interactive coding,<br> and AI-powered assistance for seamless learning." </h6>
+    <center>
+    <button type="button" class="btn text-white mt-5">Explore Features</button>
 
-    {% block content %}
+    </center>    
+{% block content %}
     {% endblock %}
 
    
