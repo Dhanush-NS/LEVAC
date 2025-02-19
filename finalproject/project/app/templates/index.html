@@ -60,7 +60,10 @@
         .cardcontainer{
             margin-top: 8%;
         }
-        
+        .content{
+            margin-top: 8%;
+            font-weight: 400;
+        }
         
     </style>
 </head>
@@ -95,37 +98,42 @@
     <div class="cardcontainer container">
         <div class="row">
             <!-- Card 1 -->
-            <div class="col-md-4">
+            <div class="col-md-4 g-4">
                 <div class="card text-center shadow-lg">
                     <div class="card-body">
                         <i class="fas fa-book-reader fa-3x mb-3 text-primary"></i>
-                        <h5 class="card-title">Ad-Free Learning</h5>
+                        <h5 class="card-title">Ad-Free Learning &nbsp; &nbsp;<img class="rounded" src="{% static 'images/idea.gif'%}" width="40px" height="40px" alt=""></h5>
                         <p class="card-text">Enjoy a distraction-free learning experience with high-quality content.</p>
                     </div>
                 </div>
             </div>
+            
             <!-- Card 2 -->
-            <div class="col-md-4">
+            <div class="col-md-4 g-4">
                 <div class="card text-center shadow-lg">
                     <div class="card-body">
                         <i class="fas fa-language fa-3x mb-3 text-success"></i>
-                        <h5 class="card-title">Multi-Language Support</h5>
+                        <h5 class="card-title">Multi-Language Support &nbsp; &nbsp;<img class="rounded" src="{% static 'images/social-media.gif'%}" width="40px" height="40px" alt=""></h5>
                         <p class="card-text">Learn in English, Kannada, Telugu, or Hindi from your favorite educators.</p>
                     </div>
                 </div>
             </div>
             <!-- Card 3 -->
-            <div class="col-md-4">
+            <div class="col-md-4 g-4">
                 <div class="card text-center shadow-lg">
                     <div class="card-body">
                         <i class="fas fa-robot fa-3x mb-3 text-warning"></i>
-                        <h5 class="card-title">AI-Powered Doubt Solving</h5>
+                        <h5 class="card-title">AI-Powered Doubt Solving &nbsp; &nbsp;<img class="rounded" src="{% static 'images/artificial-intelligence.gif'%}" width="40px" height="40px" alt=""></h5>
                         <p class="card-text">Instant solutions to your doubts with AI-powered assistance.</p>
                     </div>
                 </div>
-            </div>
+            </div>                
         </div>
     </div>
+    <p class="content display-5 text-center ">“1000+ Hours of Content”</p>
+
+   
+
       
 {% block content %}
     {% endblock %}
