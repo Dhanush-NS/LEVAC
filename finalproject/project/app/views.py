@@ -137,7 +137,7 @@ def edit_view(request):
                 student.username = new_username
                 student.name = new_name
                 student.save()
-                messages.success(request, "Profile updated successfully")
+                # messages.success(request, "Profile updated successfully")
             except Student.DoesNotExist:
                 messages.error(request, "Student record does not exist.")
         
@@ -157,7 +157,7 @@ def logout(request):
     # Logout user and clear session
     auth_logout(request)
     request.session.flush()  # Ensure all session data is cleared
-    messages.success(request, "You have been logged out successfully.")
+    # messages.success(request, "You have been logged out successfully.")
     return redirect("mainpage")
 
 #*******************************************tutor views
