@@ -55,7 +55,7 @@ We welcome contributions! To get started:
 ---
 
 ## 📬 Contact
-For any queries or collaborations, reach out at: **nsdhanush35@gmail.com**
+For any queries or collaborations, reach out at: **nsdhanush5@gmail.com**
 
 ### ⭐ Show Some Love
 If you found this project helpful, don't forget to ⭐ **star the repo**! 😃
