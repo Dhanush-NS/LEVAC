@@ -64,11 +64,289 @@
             margin-top: 8%;
             font-weight: 400;
         }
-        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .wave {
+            position: absolute;
+            opacity: 0.1;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, #4CAF50, #81C784);
+            animation: wave 15s infinite linear;
+            transform-origin: 50% 50%;
+        }
+
+        .wave:nth-child(2) {
+            animation-delay: -5s;
+            opacity: 0.05;
+        }
+
+        .wave:nth-child(3) {
+            animation-delay: -10s;
+            opacity: 0.07;
+        }
+
+        @keyframes wave {
+            from { transform: rotate(0deg) scale(1.5); }
+            to { transform: rotate(360deg) scale(1.5); }
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: rgba(33, 37, 41, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #4CAF50;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover::after {
+            transform: scaleX(1);
+        }
+
+        .link {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #4CAF50;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .link:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* Hero Section */
+        .text {
+            margin-top: 15%;
+            font-weight: bolder;
+            opacity: 0;
+            animation: slideInFade 1.5s forwards;
+            font-family: 'Courier New', Courier, monospace;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes slideInFade {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Button Styles */
+        .btn {
+            background: linear-gradient(45deg, #1a1a1a, #333);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #4CAF50, #81C784);
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Card Styles */
+        .card {
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #4CAF50, #81C784);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .card:hover::before {
+            opacity: 0.1;
+        }
+
+        .card-body {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Counter Section */
+        .counter-wrapper {
+            margin-top: 8%;
+            position: relative;
+            overflow: hidden;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(33, 37, 41, 0.9));
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .counter-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .counter-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .counter-number {
+            font-size: 5rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #4CAF50, #81C784);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            transform: scale(0.5);
+            animation: scaleIn 0.5s forwards;
+        }
+
+        @keyframes scaleIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Footer Styles */
+        footer {
+            background: linear-gradient(135deg, #1a1a1a, #333) !important;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #4CAF50, #81C784);
+            opacity: 0.1;
+        }
+
+        .footer-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #4CAF50 !important;
+            transform: translateX(5px);
+        }
+
+        /* Scroll Indicator */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, #4CAF50, #81C784);
+            transform-origin: 0 50%;
+            transform: scaleX(0);
+            z-index: 1000;
+        }
         
     </style>
 </head>
 <body>
+    <div class="scroll-progress"></div>
+
+    <!-- Background Animation -->
+    <div class="background-animation">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
     <nav class="">
         <div class="navbar navbar-expand-lg navbar-dark bg-dark p-3">
             <!-- Toggle Button for Mobile -->
@@ -131,10 +409,13 @@
             </div>                
         </div>
     </div>
-    <p class="content display-5 text-center ">“1000+ Hours of Content”</p>
+    <p class="content display-5 text-center">
+        "<span id="counter">0</span>+ Hours of Content"
+    </p>
     <center>
         <a class="btn mt-3" href="{%url 'login'%}">Get Started For Free &nbsp;<img src="{% static 'images/right-arrow.png'%}" alt="" width="20px" height="20px"></a>
     </center>  
+    
     
     <footer class="text-white mt-5" style="background: linear-gradient(135deg, #1f4037, #99f2c8); padding: 40px 0;">
         <div class="container text-center">
@@ -169,7 +450,113 @@
     </footer>
     
 
-      
+    <script>
+        // Counter animation function
+        function animateCounter(target, duration) {
+            let start = 0;
+            const end = parseInt(target);
+            const increment = end / (duration / 16); // 16ms is roughly one frame at 60fps
+            const counter = document.getElementById('counter');
+            
+            function updateCounter() {
+                start += increment;
+                if (start >= end) {
+                    counter.textContent = end;
+                    return;
+                }
+                counter.textContent = Math.floor(start);
+                requestAnimationFrame(updateCounter);
+            }
+            
+            updateCounter();
+        }
+
+        // Intersection Observer for scroll detection
+        const observer1 = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    if (entry.target.querySelector('#counter')) {
+                        animateCounter(1000, 2000); // 2000ms = 2 second duration
+                        observer1.unobserve(entry.target); // Only trigger once
+                    }
+                }
+            });
+        }, {
+            threshold: 0.5 // Trigger when 50% of the element is visible
+        });
+
+        // Observe the content element
+        document.addEventListener('DOMContentLoaded', () => {
+            const contentElement = document.querySelector('.content');
+            observer1.observe(contentElement);
+        });
+        // Scroll Progress Indicator
+        window.addEventListener('scroll', () => {
+            const scroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const progress = document.querySelector('.scroll-progress');
+            const scrolled = (scroll / height) * 100;
+            progress.style.transform = `scaleX(${scrolled / 100})`;
+        });
+
+        // Counter Animation
+        function animateCounter(target, duration) {
+            let start = 0;
+            const end = parseInt(target);
+            const increment = end / (duration / 16);
+            const counter = document.getElementById('counter');
+            
+            function updateCounter() {
+                start += increment;
+                if (start >= end) {
+                    counter.textContent = end;
+                    return;
+                }
+                counter.textContent = Math.floor(start);
+                requestAnimationFrame(updateCounter);
+            }
+            
+            updateCounter();
+        }
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.3,
+            rootMargin: '0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    if (entry.target.querySelector('#counter')) {
+                        animateCounter(1000, 2500);
+                        observer.unobserve(entry.target);
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', () => {
+            // Observe elements for animations
+            document.querySelectorAll('.card, .counter-wrapper, .content').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Add parallax effect
+            document.addEventListener('mousemove', (e) => {
+                const cards = document.querySelectorAll('.card');
+                const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+                const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+                
+                cards.forEach(card => {
+                    card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+                });
+            });
+        });
+    </script>
 {% block content %}
     {% endblock %}
 

@@ -178,3 +178,4 @@ function validateForm() {
     togglePasswordVisibility("loginpassword", "toggleLoginPassword");
     
 //**************************************** password eye visibility *********************************************
+
