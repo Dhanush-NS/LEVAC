@@ -14,7 +14,35 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from django.contrib.auth import logout as auth_logout
 from django.conf import settings
+from django.http import JsonResponse
+from .models import CodeSnippet  
+import subprocess
 
+def save_code(request):
+    if request.method == "POST":
+        language = request.POST.get("language")
+        code = request.POST.get("code")
+
+        # Save code in the database
+        snippet = CodeSnippet.objects.create(language=language, code=code)
+
+        return JsonResponse({"message": "Code saved successfully", "id": snippet.id})
+
+def run_code(request):
+    if request.method == "POST":
+        code = request.POST.get("code")
+        language = request.POST.get("language")
+
+        if language == "python":
+            try:
+                result = subprocess.run(["python", "-c", code], capture_output=True, text=True, timeout=5)
+                return JsonResponse({"output": result.stdout, "error": result.stderr})
+            except subprocess.TimeoutExpired:
+                return JsonResponse({"output": "", "error": "Execution timeout!"})
+
+        return JsonResponse({"output": "", "error": "Unsupported language"})
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
 
 genai.configure(api_key=settings.GOOGLE_GENAI_API_KEY)
 model = genai.GenerativeModel('gemini-pro')
@@ -216,3 +244,7 @@ def cppvideo(request):
 @login_required
 def leetcode(request):
     return render(request,'LEETCODE/leetcode.html')
+
+@login_required
+def editor(request):
+    return render(request,'editor.html')

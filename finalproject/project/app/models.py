@@ -28,4 +28,21 @@ class Login(models.Model):
     password = models.CharField(max_length=60)
     login_datetime = models.DateTimeField(auto_now_add=True)  # Automatically set on creation
 
-  
+class CodeSnippet(models.Model):
+    code = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Snippet {self.id}"
+
+class CodeSnippet(models.Model):
+    language = models.CharField(
+        max_length=50, 
+        choices=[("python", "Python"), ("javascript", "JavaScript")],
+        default="python"  # ✅ Add a default value
+    )
+    code = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Snippet ({self.language}) - {self.created_at}"

@@ -34,6 +34,77 @@
         .navbar-text img {
             margin-left: 10px;
         }
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-top: 2rem;
+            color: white;
+        }
+        .hero-section h1 {
+            font-size: 3em;
+            margin-bottom: 1rem;
+            animation: fadeInDown 1s ease-in-out;
+        }
+        .hero-section p {
+            font-size: 1.5em;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-in-out;
+        }
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2rem;
+        }
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            width: 250px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        .card img {
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        .card-title {
+            font-size: 1.2em;
+            margin-bottom: 0.5rem;
+            color: #1f4037;
+        }
+        .card-text {
+            color: #555;
+        }
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body>
@@ -87,7 +158,7 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="hovernav nav-link active  p-2 rounded m-2" href="#">Code Editor</a>
+                        <a class="hovernav nav-link active  p-2 rounded m-2" href="{% url 'editor' %}">Code Editor</a>
                     </li>
                     <li class="nav-item">
                         <a class="hovernav nav-link active  p-2 rounded m-2" href="{% url 'leetcode' %}">Solve Problems</a>
@@ -116,7 +187,38 @@
             </div>
         </div>
     </nav>
+    <div class="hero-section">
+        <h1>Welcome to LEVAC</h1>
+        <p>Explore articles, tutorials, and solve programming challenges</p>
+    </div>
 
+    <div class="card-container">
+        <div class="card">
+            <img src="{% static 'images/article.gif' %}" alt="Articles" width="100%" height="50%" >
+            <h2 class="card-title">Articles</h2>
+            <p class="card-text">Dive into a variety of articles on different programming languages and concepts.</p>
+        </div>
+        <div class="card">
+            <img src="{% static 'images/video-player.gif' %}" alt="Videos" width="100%" height="50%">
+            <h2 class="card-title">Videos</h2>
+            <p class="card-text">Watch tutorials and improve your skills with our curated video content.</p>
+        </div>
+        <div class="card">
+            <img src="{% static 'images/programmer.gif' %}" alt="Code Editor" width="100%" height="50%">
+            <h2 class="card-title">Code Editor</h2>
+            <p class="card-text">Write and test your code directly in our online code editor.</p>
+        </div>
+        <div class="card">
+            <img src="{% static 'images/problems.gif' %}" alt="Solve Problems" width="100%" height="50%">
+            <h2 class="card-title">Solve Problems</h2>
+            <p class="card-text">Challenge yourself with a variety of coding problems and enhance your skills.</p>
+        </div>
+        <div class="card">
+            <img src="{% static 'images/assistant.gif' %}" alt="Gemini Assistant" width="100%" height="50%">
+            <h2 class="card-title">Gemini Assistant</h2>
+            <p class="card-text">Get help and guidance with our AI-powered Gemini Assistant.</p>
+        </div>
+    </div>
 
     <script src="{% static 'js/script.js' %}"></script>
     {% endblock %}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Code Editor</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Ace Editor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        body {
+            background-color: #1e1e1e;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+            max-width: 900px;
+            background: #2c2c2c;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        #editor {
+            width: 100%;
+            height: 300px;
+            border-radius: 5px;
+        }
+        select {
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        button {
+            width: 100px;
+            margin-top: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .btn-primary:hover {
+            background-color: #ff9800;
+            border-color: #ff9800;
+        }
+        pre {
+            background: #252525;
+            padding: 10px;
+            border-radius: 5px;
+            overflow: auto;
+            color: #00ff00;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container text-center">
+    <h2 class="mb-3">Online Code Editor</h2>
+    
+    <!-- Language Selection -->
+    <div class="mb-3">
+        <label for="language" class="form-label">Choose Language:</label>
+        <select id="language" class="form-select">
+            <option value="python">Python</option>
+            <option value="javascript">JavaScript</option>
+        </select>
+    </div>
+
+    <!-- Code Editor -->
+    <div id="editor">print("Hello, World!")</div>
+
+    <!-- Action Buttons -->
+    <div class="d-flex justify-content-center gap-3 mt-3">
+        <button class="btn btn-success" onclick="saveCode()">Save</button>
+        <button class="btn btn-primary" onclick="runCode()">Run</button>
+    </div>
+
+    <!-- Output Section -->
+    <h4 class="mt-4">Output:</h4>
+    <pre id="output"></pre>
+</div>
+
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/python");
+
+    $("#language").change(function() {
+        var lang = $(this).val();
+        var mode = lang === "javascript" ? "ace/mode/javascript" : "ace/mode/python";
+        editor.session.setMode(mode);
+    });
+
+    function saveCode() {
+        $.post("/save_code/", {
+            language: $("#language").val(),
+            code: editor.getValue(),
+            csrfmiddlewaretoken: "{{ csrf_token }}"
+        }, function(response) {
+            alert(response.message);
+        });
+    }
+
+    function runCode() {
+        $.post("/run_code/", {
+            language: $("#language").val(),
+            code: editor.getValue(),
+            csrfmiddlewaretoken: "{{ csrf_token }}"
+        }, function(response) {
+            $("#output").text(response.output || response.error);
+        });
+    }
+</script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
