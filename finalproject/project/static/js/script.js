@@ -156,26 +156,3 @@ function validateForm() {
     // }, 3000);  // Adjust time as needed (3000 ms = 3 seconds)
 
 
-//**************************************** password eye visibility *********************************************
-    function togglePasswordVisibility(passwordFieldId, toggleIconId) {
-        const passwordField = document.getElementById(passwordFieldId);
-        const toggleIcon = document.getElementById(toggleIconId);
-    
-        toggleIcon.addEventListener("click", function () {
-            if (passwordField.type === "password") {
-                passwordField.type = "text";  // Show password
-                toggleIcon.src = 'static/images/openeye.png';
-            } else {
-                passwordField.type = "password";  // Hide password
-                toggleIcon.src = 'static/images/hidden.png';
-            }
-        });
-    }
-    
-    // Initialize toggle for each password field
-    togglePasswordVisibility("password1", "togglePassword1");
-    togglePasswordVisibility("password2", "togglePassword2");
-    togglePasswordVisibility("loginpassword", "toggleLoginPassword");
-    
-//**************************************** password eye visibility *********************************************
-

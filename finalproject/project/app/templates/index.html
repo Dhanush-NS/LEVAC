@@ -129,12 +129,10 @@
             height: 2px;
             background: #4CAF50;
             transform: scaleX(0);
-            transition: transform 0.3s ease;
+            transition: transform 0.1s ease;
         }
 
-        .logo:hover::after {
-            transform: scaleX(1);
-        }
+       
 
         .link {
             position: relative;
@@ -260,6 +258,7 @@
             background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(33, 37, 41, 0.9));
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         }
 
         .counter-background {
@@ -353,7 +352,7 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <span class=" logo text-white display-7 " href="{%url 'mainpage'%}">LEVAC</span>
+            <span class="logo text-white display-7 " href="{%url 'mainpage'%}">LEVAC</span>
             <!-- Navbar Links -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
