@@ -64,6 +64,9 @@
 <div class="container text-center">
     <h2 class="mb-3">Online Code Editor</h2>
     
+    <!-- Hidden CSRF Token -->
+    <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
+
     <!-- Language Selection -->
     <div class="mb-3">
         <label for="language" class="form-label">Choose Language:</label>
@@ -78,8 +81,8 @@
 
     <!-- Action Buttons -->
     <div class="d-flex justify-content-center gap-3 mt-3">
-        <button class="btn btn-success" onclick="saveCode()">Save</button>
-        <button class="btn btn-primary" onclick="runCode()">Run</button>
+        <button id="save-btn" class="btn btn-success">Save</button>
+        <button id="run-btn" class="btn btn-primary">Run</button>
     </div>
 
     <!-- Output Section -->
@@ -90,33 +93,97 @@
 <script>
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
-    editor.session.setMode("ace/mode/python");
+
+    function setEditorMode(language) {
+        var mode = language === "javascript" ? "ace/mode/javascript" : "ace/mode/python";
+        editor.session.setMode(mode);
+        editor.setValue(language === "javascript" ? 'console.log("Hello, World!");' : 'print("Hello, World!")', -1);
+    }
+
+    // Set default mode
+    setEditorMode("python");
 
     $("#language").change(function() {
-        var lang = $(this).val();
-        var mode = lang === "javascript" ? "ace/mode/javascript" : "ace/mode/python";
-        editor.session.setMode(mode);
+        var selectedLang = $(this).val();
+        setEditorMode(selectedLang);
     });
 
     function saveCode() {
-        $.post("/save_code/", {
-            language: $("#language").val(),
-            code: editor.getValue(),
-            csrfmiddlewaretoken: "{{ csrf_token }}"
-        }, function(response) {
-            alert(response.message);
+        let language = $("#language").val();
+        let code = editor.getValue();
+        let csrfToken = $("#csrf_token").val();  // Get CSRF token
+
+        $.ajax({
+            url: "/save_code/",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                language: language,
+                code: code
+            }),
+            headers: {
+                "X-CSRFToken": csrfToken  // CSRF Token for security
+            },
+            success: function(response) {
+                alert(response.message || "Code saved successfully!");
+            },
+            error: function(xhr) {
+                alert("Error: " + (xhr.responseJSON ? xhr.responseJSON.error : "Failed to save"));
+            }
         });
     }
 
     function runCode() {
-        $.post("/run_code/", {
-            language: $("#language").val(),
-            code: editor.getValue(),
-            csrfmiddlewaretoken: "{{ csrf_token }}"
-        }, function(response) {
-            $("#output").text(response.output || response.error);
-        });
+        let lang = $("#language").val();
+        let code = editor.getValue();
+        let csrfToken = $("#csrf_token").val();
+
+        if (lang === "javascript") {
+            try {
+                let consoleOutput = [];
+                let originalConsoleLog = console.log;
+
+                console.log = function (...args) {
+                    consoleOutput.push(args.join(" "));
+                    originalConsoleLog.apply(console, args);
+                };
+
+                eval(code); // Execute JavaScript code
+
+                console.log = originalConsoleLog; // Restore original console.log
+
+                $("#output").text(consoleOutput.join("\n") || "Code executed successfully.");
+            } catch (error) {
+                $("#output").text("Error: " + error.message);
+            }
+        } else {
+            // Python execution via backend
+            $.ajax({
+                url: "/run_code/",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    language: lang,
+                    code: code
+                }),
+                headers: {
+                    "X-CSRFToken": csrfToken
+                },
+                success: function(response) {
+                    $("#output").text(response.output || response.error);
+                },
+                error: function(xhr) {
+                    $("#output").text("Error: " + (xhr.responseJSON ? xhr.responseJSON.error : "Failed to execute"));
+                }
+            });
+        }
     }
+
+    // Ensure click event is properly attached
+    $(document).ready(function() {
+        $("#save-btn").click(saveCode);
+        $("#run-btn").click(runCode);
+    });
 </script>
 
 <!-- Bootstrap JS -->

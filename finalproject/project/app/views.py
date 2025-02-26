@@ -18,6 +18,7 @@ from django.http import JsonResponse
 from .models import CodeSnippet  
 import subprocess
 
+
 def save_code(request):
     if request.method == "POST":
         language = request.POST.get("language")
@@ -43,6 +44,7 @@ def run_code(request):
         return JsonResponse({"output": "", "error": "Unsupported language"})
 
     return JsonResponse({"error": "Invalid request"}, status=400)
+    
 
 genai.configure(api_key=settings.GOOGLE_GENAI_API_KEY)
 model = genai.GenerativeModel('gemini-pro')
