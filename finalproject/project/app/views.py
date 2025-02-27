@@ -23,7 +23,7 @@ def save_code(request):
     if request.method == "POST":
         language = request.POST.get("language")
         code = request.POST.get("code")
-
+        print("code saved")
         # Save code in the database
         snippet = CodeSnippet.objects.create(language=language, code=code)
 
