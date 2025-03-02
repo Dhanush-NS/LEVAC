@@ -6,162 +6,218 @@
     <title>Problems</title>
     {% load static %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- <link rel="stylesheet" href="{% static 'css/main.css' %}"> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
-        .python{
+        .python {
             color: rgb(8, 8, 8);
             font-weight: bold;
         }
-        h4{
+        h4 {
             text-align: center;
             border-bottom: 5px solid rgb(195, 126, 222);
             border-radius: 5px 3px 3px 5px;
             width: 40%;
             margin: 0 auto;
             color: rgb(52, 50, 50);
-            
         }
-        .card{
+        .card {
             background-color: black;
             cursor: pointer;
         }
-        .card:hover{
+        .card:hover {
             background-color: #4CAF50;
         }
-        .link{
+        .link {
             text-decoration: none;
-
         }
     </style>
 </head>
 <body>
-    {% block content%}
-    <h1 class=" python display-1 text-center p-4 mt-4 ">Ultimate Python Problems</h1>
+    {% block content %}
+    <h1 class="python display-1 text-center p-4 mt-4">Ultimate Python Problems</h1>
     <h4>Problem Solving: Everything from Basics to Advanced</h4>
     
-   
     <div class="container mt-5">
-        <div class="row g-3">
-            <div class="col-md-3">
-                <div class="card card  text-white text-center">
+        <div class="row g-5">
+            <!-- Existing Problems -->
+            <div class="col-md-5">
+                <div class="card text-white text-center">
                     <div class="card-body">
-                        <div>
                         <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/py-hello-world/problem?isFullScreen=true">1. Print Hello World</a>
-                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card card  text-white text-center">
+            <div class="col-md-5">
+                <div class="card text-white text-center">
                     <div class="card-body">
                         <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/py-if-else/problem?isFullScreen=true">2. If-else</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card card  text-white text-center">
+            <div class="col-md-5">
+                <div class="card text-white text-center">
                     <div class="card-body">
                         <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/python-arithmetic-operators/problem?isFullScreen=true">3. Arithmetic Operator</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card card  text-white text-center">
+            <div class="col-md-5">
+                <div class="card text-white text-center">
                     <div class="card-body">
                         <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/python-division/problem?isFullScreen=true">4. Division Problem</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card card  text-white text-center">
+            <div class="col-md-5">
+                <div class="card text-white text-center">
                     <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/list-comprehensions/problem?isFullScreen=true">5. list-comprehensions</a>
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/list-comprehensions/problem?isFullScreen=true">5. List Comprehensions</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card card  text-white text-center">
+            <div class="col-md-5">
+                <div class="card text-white text-center">
                     <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/find-second-maximum-number-in-a-list/problem?isFullScreen=true">6. find-second-maximum-number</a>
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/find-second-maximum-number-in-a-list/problem?isFullScreen=true">6. Find Second Maximum Number</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card card  text-white text-center">
+            <div class="col-md-5">
+                <div class="card text-white text-center">
                     <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/nested-list/problem?isFullScreen=true">7. nested list</a>
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/nested-list/problem?isFullScreen=true">7. Nested List</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card card  text-white text-center">
+            <div class="col-md-5">
+                <div class="card text-white text-center">
                     <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/finding-the-percentage/problem?isFullScreen=true">8. finding-the-percentage</a>
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/finding-the-percentage/problem?isFullScreen=true">8. Finding the Percentage</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card card  text-white text-center">
+            <div class="col-md-5">
+                <div class="card text-white text-center">
                     <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/python-lists/problem?isFullScreen=true">9. python lists</a>
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/python-lists/problem?isFullScreen=true">9. Python Lists</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card card  text-white text-center">
+            <div class="col-md-5">
+                <div class="card text-white text-center">
                     <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/python-tuples/problem?isFullScreen=true">10. python tuples</a>
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/python-tuples/problem?isFullScreen=true">10. Python Tuples</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card card  text-white text-center">
+            <div class="col-md-5">
+                <div class="card text-white text-center">
                     <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/swap-case/problem?isFullScreen=true">11. sWAP cASE </a>
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/swap-case/problem?isFullScreen=true">11. sWAP cASE</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card card  text-white text-center">
+            <div class="col-md-5">
+                <div class="card text-white text-center">
                     <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/python-string-split-and-join/problem?isFullScreen=true">12. python string split and join</a>
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/python-string-split-and-join/problem?isFullScreen=true">12. Python String Split and Join</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card card  text-white text-center">
+            <div class="col-md-5">
+                <div class="card text-white text-center">
                     <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/whats-your-name/problem?isFullScreen=true">13. whats-your-name</a>
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/whats-your-name/problem?isFullScreen=true">13. What's Your Name</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card card  text-white text-center">
+            <div class="col-md-5">
+                <div class="card text-white text-center">
                     <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/find-a-string/problem?isFullScreen=true">14. Find a String</a>                    
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/find-a-string/problem?isFullScreen=true">14. Find a String</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card card  text-white text-center">
+            <div class="col-md-5">
+                <div class="card text-white text-center">
                     <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/python-string-formatting/problem?isFullScreen=true">15. Python string formatting</a>
-                   
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/python-string-formatting/problem?isFullScreen=true">15. Python String Formatting</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card card  text-white text-center">
+            <div class="col-md-5">
+                <div class="card text-white text-center">
                     <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/text-alignment/problem?isFullScreen=true">14. Text Aligment</a>                    
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/text-alignment/problem?isFullScreen=true">16. Text Alignment</a>
                     </div>
                 </div>
             </div>
-
-
+            <!-- New Problems from Data Structures -->
+            <div class="col-md-5">
+                <div class="card text-white text-center">
+                    <div class="card-body">
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/array-left-rotation/problem?isFullScreen=true">17. Array Left Rotation</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card text-white text-center">
+                    <div class="card-body">
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/2d-array/problem?isFullScreen=true">18. 2D Array - DS</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card text-white text-center">
+                    <div class="card-body">
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/maximum-subarray/problem?isFullScreen=true">19. Maximum Subarray</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card text-white text-center">
+                    <div class="card-body">
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/left-rotation/problem?isFullScreen=true">20. Left Rotation</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card text-white text-center">
+                    <div class="card-body">
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/print-the-elements-of-a-linked-list/problem?isFullScreen=true">21. Print the Elements of a Linked List</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card text-white text-center">
+                    <div class="card-body">
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/insert-a-node-at-the-tail-of-a-linked-list/problem?isFullScreen=true">22. Insert a Node in tail of Linked List</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card text-white text-center">
+                    <div class="card-body">
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/insert-a-node-at-a-specific-position-in-a-linked-list/problem?isFullScreen=true">23. Insert a Node in a Linked List</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card text-white text-center">
+                    <div class="card-body">
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/delete-a-node-from-a-linked-list/problem?isFullScreen=true">24. Delete a Node</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card text-white text-center">
+                    <div class="card-body">
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/reverse-a-linked-list/problem?isFullScreen=true">25. Reverse a Linked List</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    {%endblock%}
+    {% endblock %}
 </body>
 </html>
