@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,6 +31,14 @@
         .link {
             text-decoration: none;
         }
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; /* Center the cards */
+        }
+        .card {
+            margin: 10px; /* Add some margin between cards */
+        }
     </style>
 </head>
 <body>
@@ -38,7 +47,7 @@
     <h4>Problem Solving: Everything from Basics to Advanced</h4>
     
     <div class="container mt-5">
-        <div class="row g-5">
+        <div class="card-container">
             <!-- Existing Problems -->
             <div class="col-md-5">
                 <div class="card text-white text-center">
@@ -88,6 +97,7 @@
                         <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/nested-list/problem?isFullScreen=true">7. Nested List</a>
                     </div>
                 </div>
+
             </div>
             <div class="col-md-5">
                 <div class="card text-white text-center">
@@ -184,40 +194,40 @@
             <div class="col-md-5">
                 <div class="card text-white text-center">
                     <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/print-the-elements-of-a-linked-list/problem?isFullScreen=true">21. Print the Elements of a Linked List</a>
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/array-manipulation/problem?isFullScreen=true">21. Array Manipulation</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-5">
                 <div class="card text-white text-center">
                     <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/insert-a-node-at-the-tail-of-a-linked-list/problem?isFullScreen=true">22. Insert a Node in tail of Linked List</a>
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/ctci-ice-cream-parlor/problem?isFullScreen=true">22. Ice Cream Parlor</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-5">
                 <div class="card text-white text-center">
                     <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/insert-a-node-at-a-specific-position-in-a-linked-list/problem?isFullScreen=true">23. Insert a Node in a Linked List</a>
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/ctci-bfs-shortest-reach/problem?isFullScreen=true">23. BFS: Shortest Reach</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-5">
                 <div class="card text-white text-center">
                     <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/delete-a-node-from-a-linked-list/problem?isFullScreen=true">24. Delete a Node</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/reverse-a-linked-list/problem?isFullScreen=true">25. Reverse a Linked List</a>
+                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/ctci-connected-cell-in-a-grid/problem?isFullScreen=true">24. Connected Cell in a Grid</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    {% endblock %}
+    {%endblock%}
+    <footer>
+        <div class="container text-center">
+            <p>&copy; 2023 Problem Cards. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
