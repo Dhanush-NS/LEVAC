@@ -3,17 +3,90 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Python videos</title>
-  {% load static%}
+  <title>Java Videos and Code Editor</title>
+  {% load static %}
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- <link rel="stylesheet" href="{% static 'css/main.css' %}"> -->
- 
+  <style>
+    /* Split screen layout for desktop */
+    .split-screen {
+      display: flex;
+      height: calc(100vh - 56px); /* Account for navbar height */
+    }
+    .video-side {
+      width: 50%;
+      overflow-y: auto;
+      border-right: 1px solid #dee2e6;
+    }
+    .editor-side {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Responsive layout for mobile */
+    @media (max-width: 768px) {
+      .split-screen {
+        flex-direction: column; /* Stack video and editor vertically */
+        height: auto;
+      }
+      .video-side, .editor-side {
+        width: 100%; /* Full width for both sections */
+      }
+      .video-side {
+        border-right: none;
+        border-bottom: 1px solid #dee2e6;
+      }
+    }
+
+    /* Code editor and output styling */
+    #codeEditor {
+      width: 100%;
+      height: 300px; /* Fixed height for mobile */
+      font-family: monospace;
+      padding: 10px;
+      border: 1px solid #ccc;
+      resize: none;
+    }
+    #output {
+      width: 100%;
+      height: 150px; /* Fixed height for mobile */
+      background-color: #f8f9fa;
+      padding: 10px;
+      border: 1px solid #ccc;
+      overflow-y: auto;
+      font-family: monospace;
+    }
+
+    /* Video styling */
+    .video-item {
+      margin-bottom: 20px;
+    }
+    .video-item iframe {
+      width: 100%;
+      height: 300px;
+    }
+    .enlarge iframe {
+      height: 450px;
+    }
+
+    /* Run button styling */
+    .btn-run {
+      background-color: #28a745;
+      color: white;
+      padding: 5px 15px;
+      border: none;
+      margin: 10px 0;
+    }
+    .btn-run:hover {
+      background-color: #218838;
+    }
+  </style>
 </head>
 <body>
   {% block content %}
 
-  <!-- ********************nav bar ************************** -->
+  <!-- Navigation Bar -->
   <nav class="sticky-top">
     <div class="navbar navbar-expand-lg navbar-dark bg-dark">
       <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarnav">
@@ -21,142 +94,207 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarnav">
         <ul class="navbar-nav me-auto">
-
-            <li class="nav-item">
-                <a class="hovernav nav-link active  p-2 rounded m-2" href="#" id="englishvideo">English</a>
-            </li>
-
-            <li class="nav-item">
-                <a class="hovernav nav-link active  p-2 rounded m-2" href="#" id="kannadavideo">Kannada</a>
-            </li>
-
-            <li class="nav-item">
-                <a class="hovernav nav-link active  p-2 rounded m-2" href="#" id="teluguvideo">Telugu</a>
-            </li>
-
-            <li class="nav-item">
-                <a class="hovernav nav-link active  p-2 rounded m-2" href="#" id="hindivideo">Hindi</a>
-            </li>
-
-            <li class="nav-item">
-                <a target="_blank" class="hovernav nav-link active  p-2 rounded m-2" href="{%url 'java'%}">Java Article</a>
-            </li>
-
-            <li class="nav-item">
-                <a class="hovernav nav-link active  p-2 rounded m-2" href="">Code Editor</a>
-            </li>
-
+          <li class="nav-item">
+            <a class="hovernav nav-link active p-2 rounded m-2" href="#" id="englishvideo">English</a>
+          </li>
+          <li class="nav-item">
+            <a class="hovernav nav-link active p-2 rounded m-2" href="#" id="kannadavideo">Kannada</a>
+          </li>
+          <li class="nav-item">
+            <a class="hovernav nav-link active p-2 rounded m-2" href="#" id="teluguvideo">Telugu</a>
+          </li>
+          <li class="nav-item">
+            <a class="hovernav nav-link active p-2 rounded m-2" href="#" id="hindivideo">Hindi</a>
+          </li>
+          <li class="nav-item">
+            <a target="_blank" class="hovernav nav-link active p-2 rounded m-2" href="{% url 'java' %}">Java Article</a>
+          </li>
+          <li class="nav-item">
+            <a class="hovernav nav-link active p-2 rounded m-2" href="#" id="codeEditorButton">Code Editor</a>
+          </li>
         </ul>
-
       </div>
     </div>
   </nav>
-  <!-- ********************nav bar ************************** -->
 
-<!-- **************************English java videos************************************** -->
-<div class="video-gallery" id="videoshowEnglish" style="display: none;">
-  
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/QXeEoD0pB3E?si=Z491Gl3dq9xeKwn5" frameborder="0" allowfullscreen></iframe>
-    
-    
-  </div>
- 
-
-</div>
-<!-- **************************English java videos************************************** -->
-
-<!-- **************************Kannada java videos************************************** -->
-<div class="video-gallery" id="videoshowKannada" style="display: none;">
-  
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/8c74mXV2lJ0?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
-  </div>
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/jr1FF9-VAJs?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
-  </div>
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/0qo3QEidzjA?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
-  </div>
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/YOUR_FOURTH_VIDEO_ID?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
-  </div>
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/8c74mXV2lJ0?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
-  </div>
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/jr1FF9-VAJs?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
-  </div>
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/0qo3QEidzjA?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
-  </div>
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/YOUR_FOURTH_VIDEO_ID?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
+  <!-- Main Container for Video Galleries -->
+  <div class="container-fluid p-0" id="mainContainer">
+    <!-- **************************English Java videos************************************** -->
+    <div class="video-gallery" id="videoshowEnglish" style="display: none;">
+      <div class="video-item p-4">
+        <iframe src="https://www.youtube.com/embed/QXeEoD0pB3E?si=Z491Gl3dq9xeKwn5" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+    <!-- **************************Kannada Java videos************************************** -->
+    <div class="video-gallery" id="videoshowKannada" style="display: none;">
+      <div class="video-item p-4">
+        <iframe src="https://www.youtube.com/embed/8c74mXV2lJ0?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
+      </div>
+      <div class="video-item p-4">
+        <iframe src="https://www.youtube.com/embed/jr1FF9-VAJs?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
+      </div>
+      <div class="video-item p-4">
+        <iframe src="https://www.youtube.com/embed/0qo3QEidzjA?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+    <!-- **************************Telugu Java videos************************************** -->
+    <div class="video-gallery" id="videoshowTelugu" style="display: none;">
+      <div class="video-item p-4">
+        <iframe src="https://www.youtube.com/embed/ZkndfcIyxMM?si=M7LWxDaSes_WbCoB" frameborder="0" allowfullscreen></iframe>
+      </div>
+      <div class="video-item p-4">
+        <iframe src="https://www.youtube.com/embed/NVzyJLL2i7A?si=_TOmptuld2oAOB7C" frameborder="0" allowfullscreen></iframe>
+      </div>
+      <div class="video-item p-4">
+        <iframe src="https://www.youtube.com/embed/SHP_aFl3R1I?si=uBTHublYsrQTeU_5" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+    <!-- **************************Hindi Java videos************************************** -->
+    <div class="video-gallery" id="videoshowHindi" style="display: none;">
+      <!-- Add your Hindi videos here -->
+    </div>
   </div>
 
-</div>
-<!-- **************************Kannada java videos************************************** -->
-
-<!-- **************************Telugu java videos************************************** -->
-<div class="video-gallery" id="videoshowTelugu" style="display: none;">
-  
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/ZkndfcIyxMM?si=M7LWxDaSes_WbCoB" frameborder="0" allowfullscreen></iframe>
+  <!-- Split screen container - Initially hidden -->
+  <div class="split-screen" id="splitScreen" style="display: none;">
+    <!-- Video Side -->
+    <div class="video-side" id="videoSide">
+      <!-- Videos will be loaded here dynamically -->
+    </div>
+    <!-- Code Editor Side -->
+    <div class="editor-side">
+      <div class="p-2">
+        <h4>Java Code Editor</h4>
+        <button class="btn btn-run" id="runButton">Run Code</button>
+      </div>
+      <textarea id="codeEditor" placeholder="Write your Java code here..."></textarea>
+      <div id="output">
+        <p>Output will appear here...</p>
+      </div>
+    </div>
   </div>
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/NVzyJLL2i7A?si=_TOmptuld2oAOB7C" frameborder="0" allowfullscreen></iframe>
-  </div>
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/SHP_aFl3R1I?si=uBTHublYsrQTeU_5" frameborder="0" allowfullscreen></iframe>
-  </div>
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/Srl4Q_6a1Rc?si=UyBUZQX2CSBlTSst" frameborder="0" allowfullscreen></iframe>
-  </div>
- 
 
-</div>
-<!-- **************************Telugu java videos************************************** -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // References to main elements
+      const mainContainer = document.getElementById("mainContainer");
+      const splitScreen = document.getElementById("splitScreen");
+      const videoSide = document.getElementById("videoSide");
+      const codeEditorButton = document.getElementById("codeEditorButton");
+      const runButton = document.getElementById("runButton");
+      const codeEditor = document.getElementById("codeEditor");
+      const output = document.getElementById("output");
 
+      // Current active video section
+      let currentVideoSection = null;
 
-
-
-
- <script>
-  // *********************************Display Hidden video *******************************************
-
-  document.addEventListener("DOMContentLoaded", function () {
-    function toggleVideoDisplay(buttonId, videoSectionId) {
+      // Function to toggle video sections
+      function toggleVideoDisplay(buttonId, videoSectionId) {
         const videoSection = document.getElementById(videoSectionId);
         const button = document.getElementById(buttonId);
 
         button.addEventListener("click", function () {
-            // Hide all video sections first
-            const allVideoSections = document.querySelectorAll(".video-gallery");
-            allVideoSections.forEach(section => {
-                section.style.display = "none"; // Hide all video sections
-            });
+          // Hide split screen if visible
+          splitScreen.style.display = "none";
+          mainContainer.style.display = "block";
 
-            // Show only the selected video section
-            videoSection.style.display = "block";
+          // Hide all video sections
+          const allVideoSections = document.querySelectorAll(".video-gallery");
+          allVideoSections.forEach(section => {
+            section.style.display = "none";
+          });
+
+          // Show only the selected video section
+          videoSection.style.display = "block";
+          currentVideoSection = videoSection;
         });
-    }
+      }
 
-    // Initialize toggling for each button and video section pair
-    toggleVideoDisplay("englishvideo", "videoshowEnglish");
-    toggleVideoDisplay("kannadavideo", "videoshowKannada");
-    toggleVideoDisplay("teluguvideo", "videoshowTelugu");
-    toggleVideoDisplay("hindivideo", "videoshowHindi");
-});
+      // Initialize video toggle buttons
+      toggleVideoDisplay("englishvideo", "videoshowEnglish");
+      toggleVideoDisplay("kannadavideo", "videoshowKannada");
+      toggleVideoDisplay("teluguvideo", "videoshowTelugu");
+      toggleVideoDisplay("hindivideo", "videoshowHindi");
 
+      // Code Editor Button Click
+      codeEditorButton.addEventListener("click", function () {
+        // Hide main container
+        mainContainer.style.display = "none";
 
-  // *********************************Display Hidden video *******************************************
+        // Show split screen
+        splitScreen.style.display = "flex";
 
-  
- </script>
+        // Clear the video side
+        videoSide.innerHTML = "";
 
-<script src="{% static 'js/script.js' %}"></script>
-{% endblock %}
+        // If there's a current video section, clone its content to the video side
+        if (currentVideoSection) {
+          videoSide.innerHTML = currentVideoSection.innerHTML;
 
+          // Reattach click events to videos
+          const videoItems = videoSide.querySelectorAll(".video-item");
+          videoItems.forEach(video => {
+            video.addEventListener('click', function () {
+              this.classList.toggle('enlarge');
+            });
+          });
+        } else {
+          // If no video section is active, show the first one
+          const firstVideoSection = document.getElementById("videoshowEnglish");
+          videoSide.innerHTML = firstVideoSection.innerHTML;
 
+          // Reattach click events to videos
+          const videoItems = videoSide.querySelectorAll(".video-item");
+          videoItems.forEach(video => {
+            video.addEventListener('click', function () {
+              this.classList.toggle('enlarge');
+            });
+          });
+        }
+      });
+
+      // Run Button Click (Simulated for front-end only)
+      runButton.addEventListener("click", function () {
+        const code = codeEditor.value;
+        output.innerHTML = "<p>Simulated Output:</p>";
+
+        // This is just a simulation - In reality, you'd send the code to a backend
+        output.innerHTML += "<pre>" + simulateJavaOutput(code) + "</pre>";
+      });
+
+      // Simple simulation of Java output (for frontend demo purposes only)
+      function simulateJavaOutput(code) {
+        let result = "Code executed successfully!\n";
+
+        // Match System.out.println statements with strings or concatenated strings
+        const printRegex = /System\.out\.println\((.*?)\);/g;
+        let match;
+        while ((match = printRegex.exec(code)) !== null) {
+          // Extract the content inside println
+          const content = match[1];
+
+          // Remove quotes if it's a string literal
+          if (content.startsWith('"') && content.endsWith('"')) {
+            result += content.slice(1, -1) + "\n";
+          } else {
+            // For other cases (e.g., variables or concatenation), just display the content
+            result += content + "\n";
+          }
+        }
+
+        return result;
+      }
+
+      // Video enlargement on click
+      var videos = document.getElementsByClassName("video-item");
+      for (var i = 0; i < videos.length; i++) {
+        videos[i].addEventListener('click', function () {
+          this.classList.toggle('enlarge');
+        });
+      }
+    });
+  </script>
+
+  {% endblock %}
 </body>
 </html>
