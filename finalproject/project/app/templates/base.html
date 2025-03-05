@@ -91,7 +91,7 @@
             gap: 1rem;
             padding: 2rem;
         }
-        .card {
+        #card2 {
             background: white;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -136,6 +136,49 @@
                 transform: translateY(0);
             }
         }
+        /* Additional styles for the Contact Us section */
+    #card1 {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        transition: transform 0.3s;
+    }
+
+    
+    #card1:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-control {
+        border-radius: 10px;
+        border: 1px solid #ced4da;
+        transition: border-color 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #4CAF50;
+        box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+    }
+
+    .btn {
+        border-radius: 10px;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .btn:hover {
+        background-color: #45a049;
+        transform: translateY(-2px);
+    }
+
+    h2 {
+        font-weight: bold;
+        color: #333;
+    }
+
+    h5.card-title {
+        color: #4CAF50;
+        margin-bottom: 20px;
+    }
     </style>
 </head>
 <body>
@@ -231,32 +274,62 @@
     </div>
 
     <div class="card-container">
-        <div class="card">
+        <div class="card" id="card2">
             <img src="{% static 'images/article.gif' %}" alt="Articles" width="100%" height="50%" >
             <h2 class="card-title">Articles</h2>
             <p class="card-text">Dive into a variety of articles on different programming languages and concepts.</p>
         </div>
-        <div class="card">
+        <div class="card" id="card2">
             <img src="{% static 'images/video-player.gif' %}" alt="Videos" width="100%" height="50%">
             <h2 class="card-title">Videos</h2>
             <p class="card-text">Watch tutorials and improve your skills with our curated video content.</p>
         </div>
-        <div class="card">
+        <div class="card" id="card2">
             <img src="{% static 'images/programmer.gif' %}" alt="Code Editor" width="100%" height="50%">
             <h2 class="card-title">Code Editor</h2>
             <p class="card-text">Write and test your code directly in our online code editor.</p>
         </div>
-        <div class="card">
+        <div class="card" id="card2">
             <img src="{% static 'images/problems.gif' %}" alt="Solve Problems" width="100%" height="50%">
             <h2 class="card-title">Solve Problems</h2>
             <p class="card-text">Challenge yourself with a variety of coding problems and enhance your skills.</p>
         </div>
-        <div class="card">
+        <div class="card" id="card2">
             <img src="{% static 'images/assistant.gif' %}" alt="Gemini Assistant" width="100%" height="50%">
             <h2 class="card-title">Gemini Assistant</h2>
             <p class="card-text">Get help and guidance with our AI-powered Gemini Assistant.</p>
         </div>
     </div>
+    <!-- Contact Us Section -->
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Contact Us</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card  shadow-lg border-0" id="card1">
+                <div class="card-body">
+                    <h5 class="card-title text-center">We'd love to hear from you!</h5>
+                    <form>
+                        <div class="form-group mb-3">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="message">Message</label>
+                            <textarea class="form-control" id="message" rows="4" placeholder="Enter your message" required></textarea>
+                        </div>
+                        <center>
+                        <button type="submit" class="btn btn-success btn-block mt-3">Submit</button>
+                        </center>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
     <script src="{% static 'js/script.js' %}"></script>
     {% endblock %}
