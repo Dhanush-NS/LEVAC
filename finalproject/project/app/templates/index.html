@@ -381,7 +381,11 @@
     .accordion-button:not(.collapsed) i {
         color: white; /* White color for icons in active state */
     }
-    
+    .background{
+        background-color: #a7cd8a;
+        color: white;
+        
+    }
     </style>
 </head>
 <body>
@@ -461,7 +465,7 @@
     <center>
         <a class="btn mt-5" href="{%url 'login'%}">Get Started For Free &nbsp;<img src="{% static 'images/right-arrow.png'%}" alt="" width="20px" height="20px"></a>
     </center>  
-    
+<div class="background">
     <div id="testimonialCarousel" class="carousel slide " data-bs-ride="carousel">
     <!-- Carousel Indicators -->
     <div class="carousel-indicators">
@@ -513,7 +517,7 @@
         <span class="visually-hidden">Next</span>
     </button>
 </div>
-
+</div>
    <!-- FAQ Section -->
 <div class="container mt-5">
     <h2 class="text-center mb-4">Frequently Asked Questions</h2>
