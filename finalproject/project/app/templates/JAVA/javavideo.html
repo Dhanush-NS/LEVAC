@@ -163,13 +163,12 @@
     </div>
     <!-- Code Editor Side -->
     <div class="editor-side">
-      <h4>Java Code Editor</h4>
-      
+      <div class="p-2">
+        <h4>Java Code Editor</h4>
+        <button class="btn btn-run" id="runButton">Run Code</button>
+      </div>
       <textarea id="codeEditor" placeholder="Write your Java code here..."></textarea>
       <div id="output">
-        <div class="p-2">
-          <button class="btn btn-run" id="runButton">Run Code</button>
-        </div>
         <p>Output will appear here...</p>
       </div>
     </div>
@@ -267,19 +266,13 @@
       function simulateJavaOutput(code) {
         let result = "Code executed successfully!\n";
 
-        // Match System.out.println statements with strings or concatenated strings
-        const printRegex = /System\.out\.println\((.*?)\);/g;
-        let match;
-        while ((match = printRegex.exec(code)) !== null) {
-          // Extract the content inside println
-          const content = match[1];
-
-          // Remove quotes if it's a string literal
-          if (content.startsWith('"') && content.endsWith('"')) {
-            result += content.slice(1, -1) + "\n";
-          } else {
-            // For other cases (e.g., variables or concatenation), just display the content
-            result += content + "\n";
+        // Very simplistic simulation - just for demonstration
+        if (code.includes("System.out.println")) {
+          // Extract content from print statements (very basic simulation)
+          const printRegex = /System\.out\.println\(['"](.+?)['"]\);/g;
+          let match;
+          while ((match = printRegex.exec(code)) !== null) {
+            result += match[1] + "\n";
           }
         }
 
