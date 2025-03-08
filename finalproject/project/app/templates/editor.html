@@ -3,40 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Multi-Language Code Editor</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <title>Online Code Compiler</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
     body {
-      background-color: #f0f0f0;
+      background-color: #f5f5f5;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       padding: 20px;
     }
     .container {
       background-color: #fff;
       border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
       padding: 20px;
+      max-width: 1200px;
+    }
+    .editor-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
     }
     #codeEditor {
       width: 100%;
-      height: 300px;
-      font-family: monospace;
-      padding: 10px;
-      border: 1px solid #ccc;
+      height: 400px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      padding: 12px;
+      border: 1px solid #ddd;
       border-radius: 5px;
       resize: vertical;
       font-size: 14px;
+      line-height: 1.6;
+      tab-size: 4;
+      background-color: #f8f9fa;
     }
     #output {
       width: 100%;
-      height: 150px;
-      background-color: #f8f9fa;
-      padding: 10px;
-      border: 1px solid #ccc;
+      min-height: 200px;
+      background-color: #212529;
+      color: #fff;
+      padding: 12px;
       border-radius: 5px;
       overflow-y: auto;
-      font-family: monospace;
+      font-family: 'Consolas', 'Courier New', monospace;
       font-size: 14px;
+      margin-top: 15px;
+    }
+    .output-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      margin-bottom: 5px;
     }
     .btn-run {
       background-color: #28a745;
@@ -50,120 +71,913 @@
     .btn-run:hover {
       background-color: #218838;
     }
+    .btn-clear {
+      background-color: #6c757d;
+      color: white;
+      padding: 8px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: background-color 0.3s;
+      margin-left: 10px;
+    }
+    .btn-clear:hover {
+      background-color: #5a6268;
+    }
     .language-select {
-      width: 100%;
-      padding: 8px;
+      padding: 8px 12px;
       font-size: 16px;
       border-radius: 5px;
-      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      background-color: #f8f9fa;
+      width: 200px;
     }
-    h4 {
-      color: #333;
-      margin-bottom: 15px;
+    .success-output {
+      color: #2ecc71;
+    }
+    .error-output {
+      color: #e74c3c;
+    }
+    .executing {
+      color: #f39c12;
+    }
+    .spinner {
+      margin-right: 10px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .language-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+    .badge-javascript { background-color: #f0db4f; color: #000; }
+    .badge-java { background-color: #5382a1; color: #fff; }
+    .badge-python { background-color: #306998; color: #fff; }
+    .badge-c { background-color: #555555; color: #fff; }
+    .badge-cpp { background-color: #044F88; color: #fff; }
+    .code-examples {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f8f9fa;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+    .example-button {
+      margin: 5px;
+      padding: 5px 10px;
+      background-color: #e9ecef;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .example-button:hover {
+      background-color: #dee2e6;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="editor-side">
-      <div class="p-2 d-flex justify-content-between align-items-center">
-        <h4>Code Editor</h4>
-        <button class="btn btn-run" id="runButton">Run Code</button>
+    <div class="editor-header">
+      <h4><i class="fas fa-code"></i> Online Code Compiler</h4>
+      <div>
+        <select id="languageDropdown" class="language-select">
+          <option value="javascript">JavaScript</option>
+          <option value="java">Java</option>
+          <option value="python">Python</option>
+          <option value="c">C</option>
+          <option value="cpp">C++</option>
+        </select>
+        <span id="languageBadge" class="language-badge badge-javascript">JavaScript</span>
       </div>
-      <select id="languageDropdown" class="language-select">
-        <option value="javascript">JavaScript</option>
-        <option value="java">Java</option>
-        <option value="python">Python</option>
-        <option value="c">C</option>
-        <option value="cpp">C++</option>
-      </select>
-      <textarea id="codeEditor" placeholder="Write your code here..."></textarea>
-      <div id="output">
-        <p>Output will appear here...</p>
+    </div>
+    
+    <div class="code-examples">
+      <p><strong>Quick Examples:</strong> Click to load examples for the selected language</p>
+      <div id="examplesContainer">
+        <!-- Examples will be loaded here dynamically -->
       </div>
+    </div>
+    
+    <textarea id="codeEditor" spellcheck="false" placeholder="Write your code here..."></textarea>
+    
+    <div class="output-header">
+      <h5><i class="fas fa-terminal"></i> Output</h5>
+      <div>
+        <button class="btn btn-run" id="runButton"><i class="fas fa-play"></i> Run Code</button>
+        <button class="btn btn-clear" id="clearButton"><i class="fas fa-trash"></i> Clear</button>
+      </div>
+    </div>
+    <div id="output">
+      <p>Output will appear here after running your code...</p>
     </div>
   </div>
 
   <script>
+    // Language configurations
     const languageConfigs = {
-      javascript: { defaultCode: 'console.log("Hello, World!");' },
-      java: { defaultCode: 'public class Main { public static void main(String[] args) { System.out.println("Hello, World!"); } }' },
-      python: { defaultCode: 'print("Hello, World!")' },
-      c: { defaultCode: '#include <stdio.h>\nint main() { printf("Hello, World!\\n"); return 0; }' },
-      cpp: { defaultCode: '#include <iostream>\nint main() { std::cout << "Hello, World!" << std::endl; return 0; }' }
+      javascript: {
+        defaultCode: '// Simple JavaScript example\nconsole.log("Hello, World!");\n\n// Adding two numbers\nconst a = 5;\nconst b = 10;\nconsole.log(`Sum of ${a} and ${b} is ${a + b}`);',
+        examples: [
+          { name: "Hello World", code: 'console.log("Hello, World!");' },
+          { name: "Array Operations", code: 'const numbers = [1, 2, 3, 4, 5];\nconsole.log("Original array:", numbers);\nconst doubled = numbers.map(n => n * 2);\nconsole.log("Doubled values:", doubled);\nconst sum = numbers.reduce((acc, curr) => acc + curr, 0);\nconsole.log("Sum of all values:", sum);' },
+          { name: "Simple Function", code: 'function factorial(n) {\n  if (n <= 1) return 1;\n  return n * factorial(n-1);\n}\n\nfor (let i = 1; i <= 5; i++) {\n  console.log(`Factorial of ${i} is ${factorial(i)}`);\n}' }
+        ]
+      },
+      java: {
+        defaultCode: '// Simple Java example\npublic class Main {\n  public static void main(String[] args) {\n    System.out.println("Hello, World!");\n    \n    // Adding two numbers\n    int a = 5;\n    int b = 10;\n    System.out.println("Sum of " + a + " and " + b + " is " + (a + b));\n  }\n}',
+        examples: [
+          { name: "Hello World", code: 'public class Main {\n  public static void main(String[] args) {\n    System.out.println("Hello, World!");\n  }\n}' },
+          { name: "Array Operations", code: 'public class Main {\n  public static void main(String[] args) {\n    int[] numbers = {1, 2, 3, 4, 5};\n    \n    System.out.print("Original array: ");\n    for (int n : numbers) {\n      System.out.print(n + " ");\n    }\n    System.out.println();\n    \n    System.out.print("Doubled values: ");\n    for (int n : numbers) {\n      System.out.print((n * 2) + " ");\n    }\n    System.out.println();\n    \n    int sum = 0;\n    for (int n : numbers) {\n      sum += n;\n    }\n    System.out.println("Sum of all values: " + sum);\n  }\n}' },
+          { name: "Simple Class", code: 'public class Main {\n  public static void main(String[] args) {\n    Rectangle rect = new Rectangle(5, 10);\n    System.out.println("Area: " + rect.getArea());\n    System.out.println("Perimeter: " + rect.getPerimeter());\n  }\n}\n\nclass Rectangle {\n  private int length;\n  private int width;\n  \n  public Rectangle(int length, int width) {\n    this.length = length;\n    this.width = width;\n  }\n  \n  public int getArea() {\n    return length * width;\n  }\n  \n  public int getPerimeter() {\n    return 2 * (length + width);\n  }\n}' }
+        ]
+      },
+      python: {
+        defaultCode: '# Simple Python example\nprint("Hello, World!")\n\n# Adding two numbers\na = 5\nb = 10\nprint(f"Sum of {a} and {b} is {a + b}")',
+        examples: [
+          { name: "Hello World", code: 'print("Hello, World!")' },
+          { name: "List Operations", code: 'numbers = [1, 2, 3, 4, 5]\nprint("Original list:", numbers)\n\ndoubled = [n * 2 for n in numbers]\nprint("Doubled values:", doubled)\n\nsum_of_numbers = sum(numbers)\nprint("Sum of all values:", sum_of_numbers)' },
+          { name: "Simple Function", code: 'def factorial(n):\n  if n <= 1:\n    return 1\n  return n * factorial(n-1)\n\nfor i in range(1, 6):\n  print(f"Factorial of {i} is {factorial(i)}")' }
+        ]
+      },
+      c: {
+        defaultCode: '// Simple C example\n#include <stdio.h>\n\nint main() {\n  printf("Hello, World!\\n");\n  \n  // Adding two numbers\n  int a = 5;\n  int b = 10;\n  printf("Sum of %d and %d is %d\\n", a, b, a + b);\n  \n  return 0;\n}',
+        examples: [
+          { name: "Hello World", code: '#include <stdio.h>\n\nint main() {\n  printf("Hello, World!\\n");\n  return 0;\n}' },
+          { name: "Array Operations", code: '#include <stdio.h>\n\nint main() {\n  int numbers[] = {1, 2, 3, 4, 5};\n  int size = sizeof(numbers) / sizeof(numbers[0]);\n  \n  printf("Original array: ");\n  for (int i = 0; i < size; i++) {\n    printf("%d ", numbers[i]);\n  }\n  printf("\\n");\n  \n  printf("Doubled values: ");\n  for (int i = 0; i < size; i++) {\n    printf("%d ", numbers[i] * 2);\n  }\n  printf("\\n");\n  \n  int sum = 0;\n  for (int i = 0; i < size; i++) {\n    sum += numbers[i];\n  }\n  printf("Sum of all values: %d\\n", sum);\n  \n  return 0;\n}' },
+          { name: "Simple Function", code: '#include <stdio.h>\n\nint factorial(int n) {\n  if (n <= 1) return 1;\n  return n * factorial(n-1);\n}\n\nint main() {\n  for (int i = 1; i <= 5; i++) {\n    printf("Factorial of %d is %d\\n", i, factorial(i));\n  }\n  return 0;\n}' }
+        ]
+      },
+      cpp: {
+        defaultCode: '// Simple C++ example\n#include <iostream>\n\nint main() {\n  std::cout << "Hello, World!" << std::endl;\n  \n  // Adding two numbers\n  int a = 5;\n  int b = 10;\n  std::cout << "Sum of " << a << " and " << b << " is " << (a + b) << std::endl;\n  \n  return 0;\n}',
+        examples: [
+          { name: "Hello World", code: '#include <iostream>\n\nint main() {\n  std::cout << "Hello, World!" << std::endl;\n  return 0;\n}' },
+          { name: "Vector Operations", code: '#include <iostream>\n#include <vector>\n\nint main() {\n  std::vector<int> numbers = {1, 2, 3, 4, 5};\n  \n  std::cout << "Original vector: ";\n  for (int n : numbers) {\n    std::cout << n << " ";\n  }\n  std::cout << std::endl;\n  \n  std::cout << "Doubled values: ";\n  for (int n : numbers) {\n    std::cout << (n * 2) << " ";\n  }\n  std::cout << std::endl;\n  \n  int sum = 0;\n  for (int n : numbers) {\n    sum += n;\n  }\n  std::cout << "Sum of all values: " << sum << std::endl;\n  \n  return 0;\n}' },
+          { name: "Simple Class", code: '#include <iostream>\n\nclass Rectangle {\nprivate:\n  int length;\n  int width;\n  \npublic:\n  Rectangle(int l, int w) : length(l), width(w) {}\n  \n  int getArea() {\n    return length * width;\n  }\n  \n  int getPerimeter() {\n    return 2 * (length + width);\n  }\n};\n\nint main() {\n  Rectangle rect(5, 10);\n  std::cout << "Area: " << rect.getArea() << std::endl;\n  std::cout << "Perimeter: " << rect.getPerimeter() << std::endl;\n  return 0;\n}' }
+        ]
+      }
     };
 
+    // DOM Elements
     const codeEditor = document.getElementById('codeEditor');
     const languageDropdown = document.getElementById('languageDropdown');
+    const languageBadge = document.getElementById('languageBadge');
     const runButton = document.getElementById('runButton');
+    const clearButton = document.getElementById('clearButton');
     const output = document.getElementById('output');
+    const examplesContainer = document.getElementById('examplesContainer');
+
+    // Load examples for the current language
+    function loadExamples(lang) {
+      examplesContainer.innerHTML = '';
+      languageConfigs[lang].examples.forEach(example => {
+        const button = document.createElement('button');
+        button.className = 'example-button';
+        button.textContent = example.name;
+        button.addEventListener('click', () => {
+          codeEditor.value = example.code;
+        });
+        examplesContainer.appendChild(button);
+      });
+    }
+
+    // Update language badge style
+    function updateLanguageBadge(lang) {
+      languageBadge.className = `language-badge badge-${lang}`;
+      languageBadge.textContent = lang.charAt(0).toUpperCase() + lang.slice(1);
+    }
 
     // Set default code when language changes
     languageDropdown.addEventListener('change', () => {
       const lang = languageDropdown.value;
       codeEditor.value = languageConfigs[lang].defaultCode;
-      output.innerHTML = '<p>Output will appear here...</p>';
+      output.innerHTML = '<p>Output will appear here after running your code...</p>';
+      updateLanguageBadge(lang);
+      loadExamples(lang);
+    });
+
+    // Clear button click handler
+    clearButton.addEventListener('click', () => {
+      output.innerHTML = '<p>Output cleared. Run your code to see results.</p>';
     });
 
     // Run button click handler
     runButton.addEventListener('click', () => {
       const lang = languageDropdown.value;
       const code = codeEditor.value;
-      output.innerHTML = '<p>Running...</p>';
-
-      if (lang === 'javascript') {
+      
+      output.innerHTML = '<p class="executing"><i class="fas fa-spinner spinner"></i> Executing code...</p>';
+      
+      // Small delay to show the executing state
+      setTimeout(() => {
         try {
           let result = '';
-          const originalConsoleLog = console.log;
-          console.log = (message) => { result += message + '\n'; };
-          eval(code);
-          console.log = originalConsoleLog;
-          output.innerHTML = '<pre>' + (result || 'No output') + '</pre>';
+          
+          if (lang === 'javascript') {
+            try {
+              // Capture console.log output
+              const originalConsoleLog = console.log;
+              console.log = (...args) => {
+                result += args.map(arg => 
+                  typeof arg === 'object' ? JSON.stringify(arg, null, 2) : arg
+                ).join(' ') + '\n';
+              };
+              
+              // Using Function instead of eval for better scope isolation
+              new Function(code)();
+              
+              // Restore original console.log
+              console.log = originalConsoleLog;
+              
+              output.innerHTML = '<pre class="success-output">' + (result || 'Code executed successfully, but no output was produced.') + '</pre>';
+            } catch (error) {
+              output.innerHTML = '<pre class="error-output">Error: ' + error.message + '</pre>';
+            }
+          } else {
+            // Simulate output for other languages with advanced parsing
+            result = simulateOutput(lang, code);
+            
+            if (result.includes('Error:')) {
+              output.innerHTML = '<pre class="error-output">' + result + '</pre>';
+            } else {
+              output.innerHTML = '<pre class="success-output">' + result + '</pre>';
+            }
+          }
         } catch (error) {
-          output.innerHTML = '<pre>Error: ' + error.message + '</pre>';
+          output.innerHTML = '<pre class="error-output">System Error: ' + error.message + '</pre>';
         }
-      } else {
-        output.innerHTML = '<pre>' + simulateOutput(lang, code) + '</pre>';
-      }
+      }, 500);
     });
 
-    // Simulate output for non-JavaScript languages
+    // Simulate output for non-JavaScript languages with improved parsing
     function simulateOutput(lang, code) {
-      let result = 'Code executed successfully!\n';
-
-      if (lang === 'java') {
-        const printRegex = /System\.out\.println\((.*?)\);/g;
-        let match;
-        while ((match = printRegex.exec(code)) !== null) {
-          const content = match[1];
-          result += (content.startsWith('"') && content.endsWith('"') ? content.slice(1, -1) : content) + '\n';
+      let result = '';
+      
+      try {
+        if (lang === 'java') {
+          // Check for basic Java syntax errors
+          if (!code.includes('public class') && !code.includes('class Main')) {
+            return 'Error: No public class found. Java programs must contain a class declaration.';
+          }
+          if (!code.includes('public static void main')) {
+            return 'Error: No main method found. Java programs must contain a public static void main method.';
+          }
+          
+          // Extract print statements
+          const printRegex = /System\.out\.println\((.*?)\);|System\.out\.print\((.*?)\);/g;
+          let match;
+          while ((match = printRegex.exec(code)) !== null) {
+            const content = match[1] || match[2];
+            
+            // Handle string concatenation
+            if (content.includes('+')) {
+              const parts = content.split('+').map(part => part.trim());
+              let line = '';
+              
+              for (const part of parts) {
+                if (part.startsWith('"') && part.endsWith('"')) {
+                  // String literal
+                  line += part.slice(1, -1);
+                } else if (!isNaN(Number(part))) {
+                  // Numeric literal
+                  line += part;
+                } else if (part.includes('(') && part.includes(')')) {
+                  // Expression in parentheses
+                  try {
+                    const expr = part.substring(part.indexOf('(') + 1, part.lastIndexOf(')'));
+                    if (!isNaN(Number(expr))) {
+                      line += Number(expr);
+                    } else {
+                      line += '[expression result]';
+                    }
+                  } catch (e) {
+                    line += '[expression]';
+                  }
+                } else {
+                  // Variable or other expression
+                  line += '[variable value]';
+                }
+              }
+              
+              result += line;
+            } else if (content.startsWith('"') && content.endsWith('"')) {
+              // Simple string
+              result += content.slice(1, -1);
+            } else {
+              // Variable or expression
+              result += '[variable or expression result]';
+            }
+            
+            // Add newline for println
+            if (match[0].includes('println')) {
+              result += '\n';
+            }
+          }
+        } else if (lang === 'python') {
+          // Check for basic Python syntax errors
+          const indentationCheck = /^\s+[^\s]/;
+          if (code.split('\n').some(line => line.match(indentationCheck) && !line.match(/^\s{4}|^\s{2}/))) {
+            return 'Error: Inconsistent indentation detected. Python requires consistent indentation.';
+          }
+          
+          // Extract print statements with regex that handles f-strings and multiple arguments
+          const printRegex = /print\((.*?)\)/g;
+          let match;
+          while ((match = printRegex.exec(code)) !== null) {
+            const content = match[1];
+            
+            // Handle f-strings
+            if (content.startsWith('f"') || content.startsWith("f'")) {
+              const fString = content.substring(2, content.length - 1);
+              // Simple f-string simulation (just removes the brackets)
+              result += fString.replace(/{([^}]*)}/g, '$1') + '\n';
+            }
+            // Handle regular strings
+            else if ((content.startsWith('"') && content.endsWith('"')) || 
+                     (content.startsWith("'") && content.endsWith("'"))) {
+              result += content.slice(1, -1) + '\n';
+            }
+            // Handle multiple arguments
+            else if (content.includes(',')) {
+              const args = content.split(',').map(arg => arg.trim());
+              const processedArgs = args.map(arg => {
+                if ((arg.startsWith('"') && arg.endsWith('"')) || 
+                    (arg.startsWith("'") && arg.endsWith("'"))) {
+                  return arg.slice(1, -1);
+                } else {
+                  return '[variable value]';
+                }
+              });
+              result += processedArgs.join(' ') + '\n';
+            }
+            // Everything else
+            else {
+              result += '[expression result]\n';
+            }
+          }
+        } else if (lang === 'c') {
+          // Check for C required elements
+          if (!code.includes('#include')) {
+            return 'Error: No #include directive found. C programs typically need to include standard libraries.';
+          }
+          if (!code.includes('int main')) {
+            return 'Error: No main function found. C programs must contain a main function.';
+          }
+          if (!code.includes('return')) {
+            return 'Warning: No return statement in main function. Main should return an integer value.';
+          }
+          
+          // Extract printf statements
+          const printfRegex = /printf\("(.*?)(?:"(?:\s*,\s*(.*?))?)?\);/g;
+          let match;
+          while ((match = printfRegex.exec(code)) !== null) {
+            const formatString = match[1];
+            const args = match[2];
+            
+            // Handle format specifiers
+            if (formatString.includes('%d') || formatString.includes('%f') || 
+                formatString.includes('%s') || formatString.includes('%c')) {
+              let formatted = formatString;
+              
+              // Simple simulation of format specifiers
+              if (args) {
+                const argsList = args.split(',').map(arg => arg.trim());
+                let argIndex = 0;
+                
+                formatted = formatString.replace(/%[dfsc]/g, () => {
+                  if (argIndex < argsList.length) {
+                    // Try to evaluate simple expressions
+                    if (argsList[argIndex].includes('+') || 
+                        argsList[argIndex].includes('-') || 
+                        argsList[argIndex].includes('*') || 
+                        argsList[argIndex].includes('/')) {
+                      try {
+                        const simpleExpr = argsList[argIndex]
+                          .replace(/[a-zA-Z_][a-zA-Z0-9_]*/g, '1'); // Replace variables with 1
+                        return eval(simpleExpr);
+                      } catch {
+                        return '[expression result]';
+                      }
+                    } else if (!isNaN(Number(argsList[argIndex]))) {
+                      return argsList[argIndex];
+                    } else {
+                      return '[variable value]';
+                    }
+                    argIndex++;
+                  } else {
+                    return '[missing argument]';
+                  }
+                });
+              }
+              
+              result += formatted.replace('\\n', '\n');
+            } else {
+              // No format specifiers
+              result += formatString.replace('\\n', '\n');
+            }
+          }
+        } else if (lang === 'cpp') {
+          // Check for C++ required elements
+          if (!code.includes('#include')) {
+            return 'Error: No #include directive found. C++ programs typically need to include standard libraries.';
+          }
+          if (!code.includes('int main')) {
+            return 'Error: No main function found. C++ programs must contain a main function.';
+          }
+          
+          // Extract cout statements with improved regex
+          const coutRegex = /std::cout\s*<<\s*(.*?)\s*<<\s*std::endl;|std::cout\s*<<\s*(.*?);/g;
+          let match;
+          
+          while ((match = coutRegex.exec(code)) !== null) {
+            let content = match[1] || match[2];
+            
+            // Handle chained insertion operators
+            if (content.includes('<<')) {
+              const parts = content.split('<<').map(part => part.trim());
+              let line = '';
+              
+              for (const part of parts) {
+                if (part === 'std::endl') {
+                  break; // Already handled by the regex separately
+                } else if (part.startsWith('"') && part.endsWith('"')) {
+                  line += part.slice(1, -1);
+                } else if (!isNaN(Number(part))) {
+                  line += part;
+                } else {
+                  line += '[variable or expression result]';
+                }
+              }
+              
+              result += line;
+            } else if (content.startsWith('"') && content.endsWith('"')) {
+              result += content.slice(1, -1);
+            } else {
+              result += '[expression result]';
+            }
+            
+            // Add newline for endl
+            if (match[0].includes('std::endl')) {
+              result += '\n';
+            }
+          }
         }
-      } else if (lang === 'python') {
-        const printRegex = /print\((.*?)\)/g;
-        let match;
-        while ((match = printRegex.exec(code)) !== null) {
-          const content = match[1];
-          result += (content.startsWith('"') || content.startsWith("'") ? content.slice(1, -1) : content) + '\n';
+        
+        // If no output was produced, provide a generic message
+        if (!result) {
+          return 'Code executed successfully, but no recognizable output statements were found.';
         }
-      } else if (lang === 'c') {
-        const printRegex = /printf\("(.*?)"\);/g;
-        let match;
-        while ((match = printRegex.exec(code)) !== null) {
-          result += match[1].replace('\\n', '\n') + '\n';
-        }
-      } else if (lang === 'cpp') {
-        const printRegex = /std::cout\s*<<\s*"(.*?)"\s*<<\s*std::endl;/g;
-        let match;
-        while ((match = printRegex.exec(code)) !== null) {
-          result += match[1] + '\n';
-        }
+        
+        return result;
+      } catch (error) {
+        return 'Error: Failed to parse code. ' + error.message;
       }
-
-      return result || 'No recognizable output statements found.';
     }
 
-    // Initialize with default code
-    codeEditor.value = languageConfigs[languageDropdown.value].defaultCode;
+    // Initialize with default code and examples
+    const initialLang = languageDropdown.value;
+    codeEditor.value = languageConfigs[initialLang].defaultCode;
+    updateLanguageBadge(initialLang);
+    loadExamples(initialLang);
+    
+    // Add keyboard shortcut (Ctrl+Enter) to run code
+    codeEditor.addEventListener('keydown', function(e) {
+      if (e.ctrlKey && e.key === 'Enter') {
+        e.preventDefault();
+        runButton.click();
+      }
+    });
+    // This function replaces the existing simulateOutput function
+function simulateOutput(lang, code) {
+  let result = '';
+  
+  try {
+    if (lang === 'python') {
+      // Improved Python execution simulation
+      const lines = code.split('\n');
+      const variables = {};
+      
+      // Simple Python interpreter
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        
+        // Skip comments and empty lines
+        if (line === '' || line.startsWith('#')) {
+          continue;
+        }
+        
+        // Handle variable assignments
+        if (line.includes('=') && !line.startsWith('if') && !line.startsWith('while') && !line.startsWith('for')) {
+          const parts = line.split('=').map(p => p.trim());
+          const varName = parts[0];
+          const varValue = parts[1];
+          
+          // Simple expression evaluation
+          try {
+            // Convert Python-style expressions to JavaScript
+            const jsValue = varValue
+              .replace(/\*\*/g, '^')  // Handle power operator
+              .replace(/#.*$/g, '');  // Remove inline comments
+            
+            // Handle numeric values and string literals
+            if (!isNaN(Number(jsValue))) {
+              variables[varName] = Number(jsValue);
+            } else if ((jsValue.startsWith('"') && jsValue.endsWith('"')) || 
+                       (jsValue.startsWith("'") && jsValue.endsWith("'"))) {
+              variables[varName] = jsValue.slice(1, -1);
+            } else {
+              // Try to evaluate expressions with existing variables
+              let evalValue = jsValue;
+              for (const [name, value] of Object.entries(variables)) {
+                const regex = new RegExp('\\b' + name + '\\b', 'g');
+                evalValue = evalValue.replace(regex, typeof value === 'string' ? `"${value}"` : value);
+              }
+              
+              try {
+                variables[varName] = eval(evalValue);
+              } catch {
+                variables[varName] = '[complex expression]';
+              }
+            }
+          } catch {
+            variables[varName] = '[unknown value]';
+          }
+        }
+        
+        // Handle print statements
+        else if (line.startsWith('print(') && line.endsWith(')')) {
+          const content = line.substring(6, line.length - 1);
+          
+          // Handle f-strings
+          if (content.startsWith('f"') || content.startsWith("f'")) {
+            const fString = content.substring(2, content.length - 1);
+            // Replace variables in the f-string
+            let evaluatedString = fString;
+            
+            // Find all expressions within curly braces
+            const matches = fString.match(/{([^}]*)}/g) || [];
+            for (const match of matches) {
+              const expr = match.substring(1, match.length - 1).trim();
+              
+              // Try to evaluate the expression
+              let value;
+              try {
+                // Replace variables with their values
+                let evalExpr = expr;
+                for (const [name, val] of Object.entries(variables)) {
+                  const regex = new RegExp('\\b' + name + '\\b', 'g');
+                  evalExpr = evalExpr.replace(regex, typeof val === 'string' ? `"${val}"` : val);
+                }
+                
+                value = eval(evalExpr);
+              } catch {
+                value = `[${expr}]`;
+              }
+              
+              evaluatedString = evaluatedString.replace(match, value);
+            }
+            
+            result += evaluatedString + '\n';
+          }
+          // Handle regular strings
+          else if ((content.startsWith('"') && content.endsWith('"')) || 
+                   (content.startsWith("'") && content.endsWith("'"))) {
+            result += content.slice(1, -1) + '\n';
+          }
+          // Handle variable printing
+          else if (Object.keys(variables).includes(content)) {
+            result += variables[content] + '\n';
+          }
+          // Handle multiple arguments
+          else if (content.includes(',')) {
+            const args = content.split(',').map(arg => arg.trim());
+            const processedArgs = args.map(arg => {
+              if ((arg.startsWith('"') && arg.endsWith('"')) || 
+                  (arg.startsWith("'") && arg.endsWith("'"))) {
+                return arg.slice(1, -1);
+              } else if (Object.keys(variables).includes(arg)) {
+                return variables[arg];
+              } else {
+                // Try to evaluate expressions
+                try {
+                  let evalExpr = arg;
+                  for (const [name, value] of Object.entries(variables)) {
+                    const regex = new RegExp('\\b' + name + '\\b', 'g');
+                    evalExpr = evalExpr.replace(regex, typeof value === 'string' ? `"${value}"` : value);
+                  }
+                  
+                  return eval(evalExpr);
+                } catch {
+                  return `[${arg}]`;
+                }
+              }
+            });
+            result += processedArgs.join(' ') + '\n';
+          }
+          // Everything else
+          else {
+            result += '[expression result]\n';
+          }
+        }
+      }
+    } else if (lang === 'javascript') {
+      // For JavaScript, we'll use the existing implementation that executes the code
+      result = 'JavaScript execution is handled separately.';
+    } else if (lang === 'java') {
+      // Improved Java simulation
+      // Check for basic Java syntax errors
+      if (!code.includes('public class') && !code.includes('class Main')) {
+        return 'Error: No public class found. Java programs must contain a class declaration.';
+      }
+      if (!code.includes('public static void main')) {
+        return 'Error: No main method found. Java programs must contain a public static void main method.';
+      }
+      
+      // Extract variables (simple implementation)
+      const variables = {};
+      const varRegex = /\b(int|double|String|float|long|boolean|char)\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*([^;]+);/g;
+      let varMatch;
+      
+      while ((varMatch = varRegex.exec(code)) !== null) {
+        const varType = varMatch[1];
+        const varName = varMatch[2];
+        const varValue = varMatch[3].trim();
+        
+        // Evaluate the variable value
+        if (varType === 'int' || varType === 'double' || varType === 'float' || varType === 'long') {
+          // Numeric types
+          if (!isNaN(Number(varValue))) {
+            variables[varName] = Number(varValue);
+          } else {
+            // Try simple arithmetic expressions
+            try {
+              variables[varName] = eval(varValue);
+            } catch {
+              variables[varName] = '[numeric expression]';
+            }
+          }
+        } else if (varType === 'String') {
+          // String type
+          if (varValue.startsWith('"') && varValue.endsWith('"')) {
+            variables[varName] = varValue.slice(1, -1);
+          } else {
+            variables[varName] = '[string value]';
+          }
+        } else if (varType === 'boolean') {
+          // Boolean type
+          if (varValue === 'true') variables[varName] = true;
+          else if (varValue === 'false') variables[varName] = false;
+          else variables[varName] = '[boolean value]';
+        } else {
+          // Other types
+          variables[varName] = '[value]';
+        }
+      }
+      
+      // Extract print statements with improved handling
+      const printRegex = /System\.out\.println\((.*?)\);|System\.out\.print\((.*?)\);/g;
+      let match;
+      
+      while ((match = printRegex.exec(code)) !== null) {
+        const content = match[1] || match[2];
+        
+        // Handle string concatenation with variables
+        if (content.includes('+')) {
+          const parts = content.split('+').map(part => part.trim());
+          let line = '';
+          
+          for (const part of parts) {
+            if (part.startsWith('"') && part.endsWith('"')) {
+              // String literal
+              line += part.slice(1, -1);
+            } else if (!isNaN(Number(part))) {
+              // Numeric literal
+              line += part;
+            } else if (variables[part] !== undefined) {
+              // Known variable
+              line += variables[part];
+            } else if (part.includes('(') && part.includes(')')) {
+              // Expression in parentheses
+              try {
+                const expr = part.substring(part.indexOf('(') + 1, part.lastIndexOf(')'));
+                if (!isNaN(Number(expr))) {
+                  line += Number(expr);
+                } else {
+                  line += '[expression result]';
+                }
+              } catch (e) {
+                line += '[expression]';
+              }
+            } else {
+              // Unknown variable or expression
+              line += '[variable value]';
+            }
+          }
+          
+          result += line;
+        } else if (content.startsWith('"') && content.endsWith('"')) {
+          // Simple string
+          result += content.slice(1, -1);
+        } else if (variables[content] !== undefined) {
+          // Known variable
+          result += variables[content];
+        } else {
+          // Unknown variable or expression
+          result += '[variable or expression result]';
+        }
+        
+        // Add newline for println
+        if (match[0].includes('println')) {
+          result += '\n';
+        }
+      }
+    } else if (lang === 'c' || lang === 'cpp') {
+      // Unified C/C++ simulation with more advanced features
+      const isC = lang === 'c';
+      
+      // Check for required elements
+      if (!code.includes('#include')) {
+        return `Error: No #include directive found. ${isC ? 'C' : 'C++'} programs typically need to include standard libraries.`;
+      }
+      if (!code.includes('int main')) {
+        return `Error: No main function found. ${isC ? 'C' : 'C++'} programs must contain a main function.`;
+      }
+      
+      // Extract variables (simple implementation)
+      const variables = {};
+      const varRegex = /\b(int|double|float|long|char|bool|string)\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*([^;]+);/g;
+      let varMatch;
+      
+      while ((varMatch = varRegex.exec(code)) !== null) {
+        const varType = varMatch[1];
+        const varName = varMatch[2];
+        const varValue = varMatch[3].trim();
+        
+        // Evaluate the variable value
+        if (varType === 'int' || varType === 'double' || varType === 'float' || varType === 'long') {
+          // Numeric types
+          if (!isNaN(Number(varValue))) {
+            variables[varName] = Number(varValue);
+          } else {
+            // Try simple arithmetic expressions
+            try {
+              variables[varName] = eval(varValue);
+            } catch {
+              variables[varName] = '[numeric expression]';
+            }
+          }
+        } else if (varType === 'string' || 
+                  (varValue.startsWith('"') && varValue.endsWith('"')) || 
+                  (varValue.startsWith("'") && varValue.endsWith("'"))) {
+          // String type
+          variables[varName] = varValue.slice(1, -1);
+        } else {
+          // Other types
+          variables[varName] = '[value]';
+        }
+      }
+      
+      if (isC) {
+        // C-specific: Extract printf statements
+        const printfRegex = /printf\("(.*?)(?:"(?:\s*,\s*(.*?))?)?\);/g;
+        let match;
+        
+        while ((match = printfRegex.exec(code)) !== null) {
+          const formatString = match[1];
+          const args = match[2];
+          
+          // Handle format specifiers
+          if (formatString.includes('%d') || formatString.includes('%f') || 
+              formatString.includes('%s') || formatString.includes('%c')) {
+            let formatted = formatString;
+            
+            // Improved handling of format specifiers
+            if (args) {
+              const argsList = args.split(',').map(arg => arg.trim());
+              let argIndex = 0;
+              
+              formatted = formatString.replace(/%[dfsc]/g, () => {
+                if (argIndex < argsList.length) {
+                  const arg = argsList[argIndex++];
+                  
+                  // Check if it's a variable
+                  if (variables[arg] !== undefined) {
+                    return variables[arg];
+                  }
+                  
+                  // Try to evaluate simple expressions
+                  if (arg.includes('+') || arg.includes('-') || 
+                      arg.includes('*') || arg.includes('/')) {
+                    try {
+                      // Replace any known variables in the expression
+                      let evalExpr = arg;
+                      for (const [name, value] of Object.entries(variables)) {
+                        const regex = new RegExp('\\b' + name + '\\b', 'g');
+                        evalExpr = evalExpr.replace(regex, value);
+                      }
+                      
+                      return eval(evalExpr);
+                    } catch {
+                      return '[expression result]';
+                    }
+                  } else if (!isNaN(Number(arg))) {
+                    return arg;
+                  } else {
+                    return '[variable value]';
+                  }
+                } else {
+                  return '[missing argument]';
+                }
+              });
+            }
+            
+            result += formatted.replace(/\\n/g, '\n');
+          } else {
+            // No format specifiers
+            result += formatString.replace(/\\n/g, '\n');
+          }
+        }
+      } else {
+        // C++-specific: Extract cout statements
+        const coutRegex = /std::cout\s*<<\s*(.*?)\s*(?:<<\s*std::endl)?;/g;
+        let match;
+        
+        while ((match = coutRegex.exec(code)) !== null) {
+          let content = match[1];
+          
+          // Handle chained insertion operators
+          if (content.includes('<<')) {
+            const parts = content.split('<<').map(part => part.trim());
+            let line = '';
+            
+            for (const part of parts) {
+              if (part === 'std::endl') {
+                continue; // Skip endl, we'll handle it separately
+              } else if (part.startsWith('"') && part.endsWith('"')) {
+                line += part.slice(1, -1);
+              } else if (!isNaN(Number(part))) {
+                line += part;
+              } else if (variables[part] !== undefined) {
+                line += variables[part];
+              } else {
+                // Try to evaluate expressions with variables
+                let evalExpr = part;
+                let canEvaluate = true;
+                
+                for (const name of Object.keys(variables)) {
+                  if (part.includes(name)) {
+                    const regex = new RegExp('\\b' + name + '\\b', 'g');
+                    evalExpr = evalExpr.replace(regex, variables[name]);
+                    canEvaluate = true;
+                  }
+                }
+                
+                if (canEvaluate) {
+                  try {
+                    line += eval(evalExpr);
+                  } catch {
+                    line += '[expression result]';
+                  }
+                } else {
+                  line += '[variable or expression result]';
+                }
+              }
+            }
+            
+            result += line;
+          } else if (content.startsWith('"') && content.endsWith('"')) {
+            result += content.slice(1, -1);
+          } else if (variables[content] !== undefined) {
+            result += variables[content];
+          } else {
+            result += '[expression result]';
+          }
+          
+          // Add newline for endl
+          if (match[0].includes('std::endl')) {
+            result += '\n';
+          }
+        }
+      }
+    }
+    
+    // If no output was produced, provide a generic message
+    if (!result) {
+      return `Code executed successfully, but no recognizable output statements were found in your ${lang} code.`;
+    }
+    
+    return result;
+  } catch (error) {
+    return `Error: Failed to parse code. ${error.message}`;
+  }
+}
   </script>
 </body>
 </html>
