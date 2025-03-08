@@ -3,230 +3,659 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Problems</title>
-    {% load static %}
+    <title>Python Problem Tracker</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .python {
-            color: rgb(8, 8, 8);
-            font-weight: bold;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ffffff;
+            color: #333;
+            position: relative;
+            overflow-x: hidden;
         }
-        h4 {
+        
+        /* Simplified Background Animation */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .floating-bubble {
+            position: absolute;
+            background: rgba(40, 167, 69, 0.1);
+            border-radius: 50%;
+            animation: float 30s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.2;
+            }
+            90% {
+                opacity: 0.2;
+            }
+            100% {
+                transform: translateY(-800px) translateX(200px);
+                opacity: 0;
+            }
+        }
+        
+        .main-container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 50px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(40, 167, 69, 0.2);
+        }
+        
+        h1 {
+            font-weight: 700;
+            color: #28a745;
             text-align: center;
-            border-bottom: 5px solid rgb(195, 126, 222);
-            border-radius: 5px 3px 3px 5px;
-            width: 40%;
-            margin: 0 auto;
-            color: rgb(52, 50, 50);
+            margin-bottom: 30px;
         }
-        .card {
-            background-color: black;
+        
+        /* Progress Circle */
+        .progress-circle-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        
+        .progress-circle {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+        
+        .progress-circle svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+        
+        .progress-circle-bg {
+            fill: none;
+            stroke: rgba(40, 167, 69, 0.1);
+            stroke-width: 12;
+        }
+        
+        .progress-circle-value {
+            fill: none;
+            stroke: #28a745;
+            stroke-width: 12;
+            stroke-linecap: round;
+            transition: all 1s ease;
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #28a745;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+        }
+        
+        .info-item {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: rgba(40, 167, 69, 0.05);
+            min-width: 150px;
+        }
+        
+        .info-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+            color: #28a745;
+        }
+        
+        .info-label {
+            color: #555;
+            margin: 0;
+        }
+        
+        /* Problem Cards */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .problem-card {
+            position: relative;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
             cursor: pointer;
+            transition: all 0.3s ease;
+            height: 100%;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(40, 167, 69, 0.1);
         }
-        .card:hover {
-            background-color: #4CAF50;
+        
+        .problem-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
         }
-        .link {
-            text-decoration: none;
+        
+        .problem-card.solved {
+            background: rgba(40, 167, 69, 0.1);
         }
-        .card-container {
+        
+        .problem-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .status-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+        
+        .status-solved {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+        
+        .problem-card .btn {
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+        
+        .problem-card:hover .btn {
+            opacity: 1;
+        }
+        
+        .filter-bar {
+            background-color: rgba(40, 167, 69, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 30px;
             display: flex;
             flex-wrap: wrap;
-            justify-content: center; /* Center the cards */
+            gap: 10px;
         }
-        .card {
-            margin: 10px; /* Add some margin between cards */
+        
+        .filter-bar .btn {
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-weight: 500;
+        }
+        
+        /* Loading animation */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .loader {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 8px solid rgba(40, 167, 69, 0.1);
+            border-top: 8px solid #28a745;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .progress-info {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .info-item {
+                width: 100%;
+            }
+            
+            .problem-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    {% block content %}
-    <h1 class="python display-1 text-center p-4 mt-4">Ultimate Python Problems</h1>
-    <h4>Problem Solving: Everything from Basics to Advanced</h4>
+    <!-- Loading Screen -->
+    <div class="loading" id="loadingScreen">
+        <div class="loader"></div>
+    </div>
     
-    <div class="container mt-5">
-        <div class="card-container">
-            <!-- Existing Problems -->
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/py-hello-world/problem?isFullScreen=true">1. Print Hello World</a>
-                    </div>
-                </div>
+    <!-- Simplified Background Animation -->
+    <div class="bg-animation" id="bgAnimation"></div>
+    
+    <div class="container main-container">
+        <h1>Python Problem Tracker</h1>
+        
+        <!-- Progress Circle -->
+        <div class="progress-circle-container">
+            <div class="progress-circle">
+                <svg viewBox="0 0 100 100">
+                    <circle class="progress-circle-bg" cx="50" cy="50" r="40"></circle>
+                    <circle class="progress-circle-value" cx="50" cy="50" r="40" stroke-dasharray="251.3" stroke-dashoffset="251.3" id="progressCircle"></circle>
+                </svg>
+                <div class="progress-text" id="progressText">0%</div>
             </div>
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/py-if-else/problem?isFullScreen=true">2. If-else</a>
-                    </div>
-                </div>
+        </div>
+        
+        <!-- Progress Info -->
+        <div class="progress-info">
+            <div class="info-item">
+                <p class="info-value" id="solvedCount">0</p>
+                <p class="info-label">Solved</p>
             </div>
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/python-arithmetic-operators/problem?isFullScreen=true">3. Arithmetic Operator</a>
-                    </div>
-                </div>
+            <div class="info-item">
+                <p class="info-value" id="pendingCount">24</p>
+                <p class="info-label">Pending</p>
             </div>
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/python-division/problem?isFullScreen=true">4. Division Problem</a>
-                    </div>
-                </div>
+            <div class="info-item">
+                <p class="info-value" id="totalCount">24</p>
+                <p class="info-label">Total</p>
             </div>
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/list-comprehensions/problem?isFullScreen=true">5. List Comprehensions</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/find-second-maximum-number-in-a-list/problem?isFullScreen=true">6. Find Second Maximum Number</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/nested-list/problem?isFullScreen=true">7. Nested List</a>
-                    </div>
-                </div>
-
-            </div>
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/finding-the-percentage/problem?isFullScreen=true">8. Finding the Percentage</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/python-lists/problem?isFullScreen=true">9. Python Lists</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/python-tuples/problem?isFullScreen=true">10. Python Tuples</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/swap-case/problem?isFullScreen=true">11. sWAP cASE</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/python-string-split-and-join/problem?isFullScreen=true">12. Python String Split and Join</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/whats-your-name/problem?isFullScreen=true">13. What's Your Name</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/find-a-string/problem?isFullScreen=true">14. Find a String</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/python-string-formatting/problem?isFullScreen=true">15. Python String Formatting</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/text-alignment/problem?isFullScreen=true">16. Text Alignment</a>
-                    </div>
-                </div>
-            </div>
-            <!-- New Problems from Data Structures -->
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/array-left-rotation/problem?isFullScreen=true">17. Array Left Rotation</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/2d-array/problem?isFullScreen=true">18. 2D Array - DS</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/maximum-subarray/problem?isFullScreen=true">19. Maximum Subarray</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/left-rotation/problem?isFullScreen=true">20. Left Rotation</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/array-manipulation/problem?isFullScreen=true">21. Array Manipulation</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/ctci-ice-cream-parlor/problem?isFullScreen=true">22. Ice Cream Parlor</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/ctci-bfs-shortest-reach/problem?isFullScreen=true">23. BFS: Shortest Reach</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="card text-white text-center">
-                    <div class="card-body">
-                        <a class="link text-white" target="_blank" href="https://www.hackerrank.com/challenges/ctci-connected-cell-in-a-grid/problem?isFullScreen=true">24. Connected Cell in a Grid</a>
-                    </div>
-                </div>
-            </div>
+        </div>
+        
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <button class="btn btn-success active" data-filter="all">All Problems</button>
+            <button class="btn btn-outline-success" data-filter="solved">Solved</button>
+            <button class="btn btn-outline-success" data-filter="pending">Pending</button>
+            <button class="btn btn-success ms-auto" id="markRecentBtn">
+                <i class="fas fa-check-circle me-2"></i>Mark Solved
+            </button>
+            <button class="btn btn-danger" id="resetBtn">
+                <i class="fas fa-redo me-2"></i>Reset
+            </button>
+        </div>
+        
+        <!-- Problem Grid -->
+        <div class="problem-grid" id="problemGrid">
+            <!-- Problems will be generated here -->
         </div>
     </div>
-    {%endblock%}
-    <footer>
-        <div class="container text-center">
-            <p>&copy; 2023 Problem Cards. All rights reserved.</p>
-        </div>
-    </footer>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Problem data
+        const problems = [
+            {id: 1, title: "Print Hello World", url: "https://www.hackerrank.com/challenges/py-hello-world/problem?isFullScreen=true", problemId: "py-hello-world"},
+            {id: 2, title: "If-else", url: "https://www.hackerrank.com/challenges/py-if-else/problem?isFullScreen=true", problemId: "py-if-else"},
+            {id: 3, title: "Arithmetic Operator", url: "https://www.hackerrank.com/challenges/python-arithmetic-operators/problem?isFullScreen=true", problemId: "python-arithmetic-operators"},
+            {id: 4, title: "Division Problem", url: "https://www.hackerrank.com/challenges/python-division/problem?isFullScreen=true", problemId: "python-division"},
+            {id: 5, title: "List Comprehensions", url: "https://www.hackerrank.com/challenges/list-comprehensions/problem?isFullScreen=true", problemId: "list-comprehensions"},
+            {id: 6, title: "Find Second Maximum Number", url: "https://www.hackerrank.com/challenges/find-second-maximum-number-in-a-list/problem?isFullScreen=true", problemId: "find-second-maximum-number-in-a-list"},
+            {id: 7, title: "Nested List", url: "https://www.hackerrank.com/challenges/nested-list/problem?isFullScreen=true", problemId: "nested-list"},
+            {id: 8, title: "Finding the Percentage", url: "https://www.hackerrank.com/challenges/finding-the-percentage/problem?isFullScreen=true", problemId: "finding-the-percentage"},
+            {id: 9, title: "Python Lists", url: "https://www.hackerrank.com/challenges/python-lists/problem?isFullScreen=true", problemId: "python-lists"},
+            {id: 10, title: "Python Tuples", url: "https://www.hackerrank.com/challenges/python-tuples/problem?isFullScreen=true", problemId: "python-tuples"},
+            {id: 11, title: "sWAP cASE", url: "https://www.hackerrank.com/challenges/swap-case/problem?isFullScreen=true", problemId: "swap-case"},
+            {id: 12, title: "Python String Split and Join", url: "https://www.hackerrank.com/challenges/python-string-split-and-join/problem?isFullScreen=true", problemId: "python-string-split-and-join"},
+            {id: 13, title: "What's Your Name", url: "https://www.hackerrank.com/challenges/whats-your-name/problem?isFullScreen=true", problemId: "whats-your-name"},
+            {id: 14, title: "Find a String", url: "https://www.hackerrank.com/challenges/find-a-string/problem?isFullScreen=true", problemId: "find-a-string"},
+            {id: 15, title: "Python String Formatting", url: "https://www.hackerrank.com/challenges/python-string-formatting/problem?isFullScreen=true", problemId: "python-string-formatting"},
+            {id: 16, title: "Text Alignment", url: "https://www.hackerrank.com/challenges/text-alignment/problem?isFullScreen=true", problemId: "text-alignment"},
+            {id: 17, title: "Array Left Rotation", url: "https://www.hackerrank.com/challenges/array-left-rotation/problem?isFullScreen=true", problemId: "array-left-rotation"},
+            {id: 18, title: "2D Array - DS", url: "https://www.hackerrank.com/challenges/2d-array/problem?isFullScreen=true", problemId: "2d-array"},
+            {id: 19, title: "Maximum Subarray", url: "https://www.hackerrank.com/challenges/maximum-subarray/problem?isFullScreen=true", problemId: "maximum-subarray"},
+            {id: 20, title: "Left Rotation", url: "https://www.hackerrank.com/challenges/left-rotation/problem?isFullScreen=true", problemId: "left-rotation"},
+            {id: 21, title: "Array Manipulation", url: "https://www.hackerrank.com/challenges/array-manipulation/problem?isFullScreen=true", problemId: "array-manipulation"},
+            {id: 22, title: "Ice Cream Parlor", url: "https://www.hackerrank.com/challenges/ctci-ice-cream-parlor/problem?isFullScreen=true", problemId: "ctci-ice-cream-parlor"},
+            {id: 23, title: "BFS: Shortest Reach", url: "https://www.hackerrank.com/challenges/ctci-bfs-shortest-reach/problem?isFullScreen=true", problemId: "ctci-bfs-shortest-reach"},
+            {id: 24, title: "Connected Cell in a Grid", url: "https://www.hackerrank.com/challenges/ctci-connected-cell-in-a-grid/problem?isFullScreen=true", problemId: "ctci-connected-cell-in-a-grid"}
+        ];
+        
+        // Create simplified animated background bubbles
+        function createBubbles() {
+            const bgAnimation = document.getElementById('bgAnimation');
+            const bubbleCount = 6; // Reduced number of bubbles
+            
+            for (let i = 0; i < bubbleCount; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('floating-bubble');
+                
+                // Random size (smaller)
+                const size = Math.random() * 150 + 50;
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                
+                // Random position
+                bubble.style.left = `${Math.random() * 100}%`;
+                bubble.style.top = `${Math.random() * 100 + 100}%`;
+                
+                // Slower animation
+                const speed = Math.random() * 15 + 25;
+                bubble.style.animationDuration = `${speed}s`;
+                
+                // Random delay
+                const delay = Math.random() * 10;
+                bubble.style.animationDelay = `${delay}s`;
+                
+                bgAnimation.appendChild(bubble);
+            }
+        }
+        
+        // Generate problem cards
+        function generateProblemCards() {
+            const grid = document.getElementById('problemGrid');
+            problems.forEach(problem => {
+                const card = document.createElement('div');
+                card.className = 'problem-card';
+                card.id = `card-${problem.problemId}`;
+                card.innerHTML = `
+                    <div class="problem-title">${problem.id}. ${problem.title}</div>
+                    <div class="status-badge status-pending" id="status-${problem.problemId}">Pending</div>
+                    <a href="${problem.url}" class="btn btn-outline-success mt-3" target="_blank">Solve Problem</a>
+                    <button class="btn btn-success mt-2 mark-solved-btn" data-id="${problem.problemId}">Mark Solved</button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+        
+        // Update progress display
+        function updateProgress(solvedProblems) {
+            const totalProblems = problems.length;
+            const solvedCount = solvedProblems.length;
+            const pendingCount = totalProblems - solvedCount;
+            const percentage = Math.round((solvedCount / totalProblems) * 100);
+            
+            // Update counts
+            document.getElementById('solvedCount').textContent = solvedCount;
+            document.getElementById('pendingCount').textContent = pendingCount;
+            document.getElementById('totalCount').textContent = totalProblems;
+            
+            // Update progress circle
+            const circle = document.getElementById('progressCircle');
+            const circumference = 2 * Math.PI * 40; // 2πr
+            const offset = circumference - (percentage / 100) * circumference;
+            circle.style.strokeDasharray = circumference;
+            circle.style.strokeDashoffset = offset;
+            
+            // Update progress text
+            document.getElementById('progressText').textContent = `${percentage}%`;
+        }
+        
+        // Update problem status
+        function updateProblemStatus(solvedProblems) {
+            problems.forEach(problem => {
+                const isSolved = solvedProblems.includes(problem.problemId);
+                const card = document.getElementById(`card-${problem.problemId}`);
+                const statusBadge = document.getElementById(`status-${problem.problemId}`);
+                
+                if (isSolved) {
+                    card.classList.add('solved');
+                    statusBadge.textContent = 'Solved';
+                    statusBadge.className = 'status-badge status-solved';
+                    card.querySelector('.mark-solved-btn').style.display = 'none';
+                } else {
+                    card.classList.remove('solved');
+                    statusBadge.textContent = 'Pending';
+                    statusBadge.className = 'status-badge status-pending';
+                    card.querySelector('.mark-solved-btn').style.display = 'block';
+                }
+            });
+        }
+        
+        // Fetch solved problems
+        function fetchSolvedProblems() {
+            // Initial solved problems
+            return JSON.parse(localStorage.getItem('solvedProblems')) || [
+                'py-hello-world',
+                'py-if-else',
+                'python-arithmetic-operators',
+                'python-division',
+                'list-comprehensions'
+            ];
+        }
+        
+        // Mark a problem as solved
+        function markAsSolved(problemId) {
+            let solvedProblems = JSON.parse(localStorage.getItem('solvedProblems')) || [];
+            
+            if (!solvedProblems.includes(problemId)) {
+                solvedProblems.push(problemId);
+                localStorage.setItem('solvedProblems', JSON.stringify(solvedProblems));
+                
+                // Update UI
+                updateProblemStatus(solvedProblems);
+                updateProgress(solvedProblems);
+                
+                // Show toast notification
+                showToast(`Problem marked as solved!`, 'success');
+            }
+        }
+        
+        // Reset progress
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset all progress?')) {
+                localStorage.removeItem('solvedProblems');
+                const emptyArray = [];
+                updateProblemStatus(emptyArray);
+                updateProgress(emptyArray);
+                showToast('Progress has been reset', 'danger');
+            }
+        }
+        
+        // Filter problems
+        function filterProblems(filter) {
+            const solvedProblems = JSON.parse(localStorage.getItem('solvedProblems')) || [];
+            
+            problems.forEach(problem => {
+                const card = document.getElementById(`card-${problem.problemId}`);
+                const isSolved = solvedProblems.includes(problem.problemId);
+                
+                if (filter === 'all' || (filter === 'solved' && isSolved) || (filter === 'pending' && !isSolved)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        // Show toast notification
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `alert alert-${type} position-fixed top-0 start-50 translate-middle-x mt-4`;
+            toast.style.zIndex = '1050';
+            toast.style.minWidth = '300px';
+            toast.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+            toast.innerHTML = message;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.5s ease';
+                
+                setTimeout(() => {
+                    toast.remove();
+                }, 500);
+            }, 3000);
+        }
+        
+        // Mark multiple problems as solved
+        function showSolvedModal() {
+            const solvedProblems = JSON.parse(localStorage.getItem('solvedProblems')) || [];
+            const pendingProblems = problems.filter(problem => !solvedProblems.includes(problem.problemId));
+            
+            if (pendingProblems.length === 0) {
+                showToast('All problems are already solved!', 'warning');
+                return;
+            }
+            
+            // Create modal element
+            const modal = document.createElement('div');
+            modal.className = 'position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center';
+            modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+            modal.style.zIndex = '1100';
+            
+            // Modal content
+            let modalContent = `
+                <div class="bg-white p-4 rounded-3" style="max-width: 600px; max-height: 80vh; overflow-y: auto;">
+                    <h4 class="mb-3 text-dark">Mark Problems as Solved</h4>
+                    <div class="mb-3">
+                        <button class="btn btn-sm btn-outline-success mb-3 me-2" id="selectAllBtn">Select All</button>
+                        <button class="btn btn-sm btn-outline-secondary mb-3" id="deselectAllBtn">Deselect All</button>
+                    </div>
+                    <div class="problem-checklist mb-4">
+            `;
+            
+            pendingProblems.forEach(problem => {
+                modalContent += `
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="check-${problem.problemId}" value="${problem.problemId}">
+                        <label class="form-check-label text-dark" for="check-${problem.problemId}">${problem.title}</label>
+                    </div>
+                `;
+            });
+            
+            modalContent += `
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-secondary me-2" id="cancelModalBtn">Cancel</button>
+                        <button class="btn btn-success" id="confirmModalBtn">Mark Selected</button>
+                    </div>
+                </div>
+            `;
+            
+            modal.innerHTML = modalContent;
+            document.body.appendChild(modal);
+            
+            // Modal event listeners
+            document.getElementById('cancelModalBtn').addEventListener('click', () => {
+                modal.remove();
+            });
+            
+            document.getElementById('selectAllBtn').addEventListener('click', () => {
+                const checkboxes = modal.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(cb => cb.checked = true);
+            });
+            
+            document.getElementById('deselectAllBtn').addEventListener('click', () => {
+                const checkboxes = modal.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(cb => cb.checked = false);
+            });
+            
+            document.getElementById('confirmModalBtn').addEventListener('click', () => {
+                const selectedProblems = Array.from(modal.querySelectorAll('input[type="checkbox"]:checked'))
+                    .map(cb => cb.value);
+                
+                if (selectedProblems.length > 0) {
+                    let solvedProblems = JSON.parse(localStorage.getItem('solvedProblems')) || [];
+                    
+                    selectedProblems.forEach(problemId => {
+                        if (!solvedProblems.includes(problemId)) {
+                            solvedProblems.push(problemId);
+                        }
+                    });
+                    
+                    localStorage.setItem('solvedProblems', JSON.stringify(solvedProblems));
+                    updateProblemStatus(solvedProblems);
+                    updateProgress(solvedProblems);
+                    
+                    showToast(`Marked ${selectedProblems.length} problems as solved`, 'success');
+                }
+                
+                modal.remove();
+            });
+        }
+        
+        // Initialize the application
+        function initialize() {
+            // Create background bubbles (fewer and simpler)
+            createBubbles();
+            
+            // Generate problem cards
+            generateProblemCards();
+            
+            // Fetch solved problems and update UI
+            const solvedProblems = fetchSolvedProblems();
+            updateProblemStatus(solvedProblems);
+            updateProgress(solvedProblems);
+            
+            // Mark as solved button event listeners
+            document.querySelectorAll('.mark-solved-btn').forEach(button => {
+                button.addEventListener('click', e => {
+                    e.preventDefault();
+                    const problemId = button.getAttribute('data-id');
+                    markAsSolved(problemId);
+                });
+            });
+            
+            // Filter buttons event listeners
+            document.querySelectorAll('.filter-bar .btn[data-filter]').forEach(button => {
+                button.addEventListener('click', function() {
+                    // Update active state
+                    document.querySelectorAll('.filter-bar .btn[data-filter]').forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.classList.remove('btn-success');
+                        btn.classList.add('btn-outline-success');
+                    });
+                    this.classList.add('active');
+                    this.classList.remove('btn-outline-success');
+                    this.classList.add('btn-success');
+                    
+                    // Apply filter
+                    filterProblems(this.getAttribute('data-filter'));
+                });
+            });
+            
+            // Reset button
+            document.getElementById('resetBtn').addEventListener('click', resetProgress);
+            
+            // Mark recent button
+            document.getElementById('markRecentBtn').addEventListener('click', showSolvedModal);
+            
+            // Hide loading screen
+            document.getElementById('loadingScreen').style.display = 'none';
+        }
+        
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', initialize);
+    </script>
 </body>
 </html>
