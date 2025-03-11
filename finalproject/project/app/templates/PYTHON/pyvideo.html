@@ -61,6 +61,7 @@
     /* Video styling */
     .video-item {
       margin-bottom: 20px;
+      cursor: pointer;
     }
     .video-item iframe {
       width: 100%;
@@ -68,6 +69,19 @@
     }
     .enlarge iframe {
       height: 450px;
+    }
+    
+    .video-title {
+      font-weight: 500;
+      margin-top: 8px;
+      margin-bottom: 4px;
+    }
+    
+    .video-description {
+      font-size: 0.9rem;
+      color: #666;
+      max-height: 60px;
+      overflow: hidden;
     }
 
     /* Run button styling */
@@ -80,6 +94,23 @@
     }
     .btn-run:hover {
       background-color: #218838;
+    }
+    
+    /* Loading animation */
+    .loading {
+      text-align: center;
+      padding: 20px;
+    }
+    .loading:after {
+      content: '.';
+      animation: dots 1.5s steps(5, end) infinite;
+    }
+    
+    @keyframes dots {
+      0%, 20% { color: rgba(0,0,0,0); text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
+      40% { color: black; text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
+      60% { text-shadow: .25em 0 0 black, .5em 0 0 rgba(0,0,0,0); }
+      80%, 100% { text-shadow: .25em 0 0 black, .5em 0 0 black; }
     }
   </style>
 </head>
@@ -119,71 +150,24 @@
 
   <!-- Main Container for Video Galleries -->
   <div class="container-fluid p-0" id="mainContainer">
-   <!-- **************************English python videos************************************** -->
-<div class="video-gallery" id="videoshowEnglish" style="display: none; ">
-  
-  <div class="video-item p-4 " >
-    <iframe src="https://www.youtube.com/embed/QXeEoD0pB3E?si=Z491Gl3dq9xeKwn5" frameborder="0" allowfullscreen></iframe>
-  </div>
- 
-
-</div>
-<!-- **************************English python videos************************************** -->
-
-<!-- **************************Kannada python videos************************************** -->
-<div class="video-gallery" id="videoshowKannada" style="display: none;">
-  
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/8c74mXV2lJ0?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
-  </div>
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/jr1FF9-VAJs?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
-  </div>
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/0qo3QEidzjA?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
-  </div>
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/YOUR_FOURTH_VIDEO_ID?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
-  </div>
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/8c74mXV2lJ0?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
-  </div>
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/jr1FF9-VAJs?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
-  </div>
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/0qo3QEidzjA?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
-  </div>
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/YOUR_FOURTH_VIDEO_ID?rel=0&autoplay=0" frameborder="0" allowfullscreen></iframe>
-  </div>
-
-</div>
-<!-- **************************Kannada python videos************************************** -->
-
-<!-- **************************Telugu python videos************************************** -->
-<div class="video-gallery" id="videoshowTelugu" style="display: none;">
-  
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/ZkndfcIyxMM?si=M7LWxDaSes_WbCoB" frameborder="0" allowfullscreen></iframe>
-  </div>
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/NVzyJLL2i7A?si=_TOmptuld2oAOB7C" frameborder="0" allowfullscreen></iframe>
-  </div>
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/SHP_aFl3R1I?si=uBTHublYsrQTeU_5" frameborder="0" allowfullscreen></iframe>
-  </div>
-  <div class="video-item p-4">
-    <iframe src="https://www.youtube.com/embed/Srl4Q_6a1Rc?si=UyBUZQX2CSBlTSst" frameborder="0" allowfullscreen></iframe>
-  </div>
- 
-
-</div>
-<!-- **************************Telugu python videos************************************** -->
-
-    <!-- **************************Hindi python videos************************************** -->
+    <!-- English Python Videos -->
+    <div class="video-gallery" id="videoshowEnglish" style="display: none;">
+      <div class="loading">Loading English Python videos</div>
+    </div>
+    
+    <!-- Kannada Python Videos -->
+    <div class="video-gallery" id="videoshowKannada" style="display: none;">
+      <div class="loading">Loading Kannada Python videos</div>
+    </div>
+    
+    <!-- Telugu Python Videos -->
+    <div class="video-gallery" id="videoshowTelugu" style="display: none;">
+      <div class="loading">Loading Telugu Python videos</div>
+    </div>
+    
+    <!-- Hindi Python Videos -->
     <div class="video-gallery" id="videoshowHindi" style="display: none;">
-      <!-- Add your Hindi videos here -->
+      <div class="loading">Loading Hindi Python videos</div>
     </div>
   </div>
 
@@ -208,6 +192,20 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
+      // YouTube API Key - You should store this securely on your server
+      const API_KEY = "AIzaSyCkH_yL9CNcZGOwz8dOKRX7esznHUN_Stg";
+      
+      // Channel IDs for different languages
+      const CHANNEL_IDS = {
+        english: "UC8butISFwT-Wl7EV0hUK0BQ", // freeCodeCamp
+        kannada: "UCXsJfVdrjqJUj6W291InuTg", // Kannada Python channel
+        telugu: "UCJPR4VVtjJlpMWCT8LIqJPQ",  // Telugu Python channel
+        hindi: "UCQxrHCVLZj3kkBjmeH1q-Sg"    // Hindi Python channel
+      };
+      
+      // Max results to fetch per channel
+      const MAX_RESULTS = 20;
+      
       // References to main elements
       const mainContainer = document.getElementById("mainContainer");
       const splitScreen = document.getElementById("splitScreen");
@@ -219,9 +217,109 @@
 
       // Current active video section
       let currentVideoSection = null;
+      let videosLoaded = {
+        english: false,
+        kannada: false,
+        telugu: false,
+        hindi: false
+      };
+
+      // Function to fetch videos from YouTube API with enhanced Python filtering
+      async function fetchYouTubeVideos(channelId, containerId, language) {
+        const container = document.getElementById(containerId);
+        
+        try {
+          // First get the uploads playlist ID for the channel
+          const channelResponse = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${channelId}&key=${API_KEY}`);
+          const channelData = await channelResponse.json();
+          
+          if (!channelData.items || channelData.items.length === 0) {
+            container.innerHTML = `<div class="alert alert-danger">Channel not found</div>`;
+            return;
+          }
+          
+          const uploadsPlaylistId = channelData.items[0].contentDetails.relatedPlaylists.uploads;
+          
+          // Then get the videos from the uploads playlist
+          const videosResponse = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&maxResults=${MAX_RESULTS}&playlistId=${uploadsPlaylistId}&key=${API_KEY}`);
+          const videosData = await videosResponse.json();
+          
+          if (!videosData.items || videosData.items.length === 0) {
+            container.innerHTML = `<div class="alert alert-info">No videos found</div>`;
+            return;
+          }
+          
+          // Enhanced filter for Python-related videos with language-specific keywords
+          let filteredVideos = videosData.items.filter(item => {
+            const title = item.snippet.title.toLowerCase();
+            const description = item.snippet.description ? item.snippet.description.toLowerCase() : '';
+            
+            // Language-specific keywords
+            const languageKeywords = {
+              english: ['python', 'programming', 'coding', 'tutorial', 'learn', 'course', 
+                       'basics', 'advanced', 'beginner', 'introduction', 'functions', 
+                       'classes', 'loops', 'variables', 'django', 'flask', 'pandas', 'numpy'],
+              kannada: ['python', 'ಪೈಥಾನ್', 'ಪ್ರೋಗ್ರಾಮಿಂಗ್', 'ಕೋಡಿಂಗ್', 'ಟ್ಯುಟೋರಿಯಲ್', 
+                       'ಕಲಿಯಿರಿ', 'ಕೋರ್ಸ್', 'ಮೂಲಭೂತ', 'ಸುಧಾರಿತ', 'ಪ್ರಾರಂಭಿಕ', 'ಪರಿಚಯ'],
+              telugu: ['python', 'పైథాన్', 'ప్రోగ్రామింగ్', 'కోడింగ్', 'ట్యుటోరియల్', 
+                      'నేర్చుకోండి', 'కోర్సు', 'బేసిక్స్', 'అడ్వాన్స్డ్', 'ప్రారంభ', 'పరిచయం'],
+              hindi: ['python', 'पायथन', 'प्रोग्रामिंग', 'कोडिंग', 'ट्यूटोरियल', 
+                     'सीखें', 'कोर्स', 'मूल', 'उन्नत', 'शुरुआती', 'परिचय']
+            };
+            
+            // Combine language-specific and general Python keywords
+            const keywords = [...languageKeywords[language], ...languageKeywords.english];
+            
+            // Check if title or description contains any of the keywords
+            return keywords.some(keyword => 
+                title.includes(keyword.toLowerCase()) || 
+                description.includes(keyword.toLowerCase())
+            );
+          });
+          
+          if (filteredVideos.length === 0) {
+            container.innerHTML = `<div class="alert alert-info">No Python videos found in ${language} language</div>`;
+            return;
+          }
+          
+          // Clear loading message
+          container.innerHTML = '';
+          
+          // Add videos to container
+          filteredVideos.forEach(item => {
+            const videoId = item.contentDetails.videoId;
+            const title = item.snippet.title;
+            const description = item.snippet.description;
+            
+            const videoElement = document.createElement('div');
+            videoElement.className = 'video-item p-4';
+            videoElement.innerHTML = `
+              <iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
+              <h5 class="video-title">${title}</h5>
+              <p class="video-description">${description}</p>
+            `;
+            
+            container.appendChild(videoElement);
+          });
+          
+          // Add click events to make videos enlargeable
+          const videoItems = container.querySelectorAll(".video-item");
+          videoItems.forEach(video => {
+            video.addEventListener('click', function() {
+              this.classList.toggle('enlarge');
+            });
+          });
+          
+          return true;
+        } catch (error) {
+          console.error('Error fetching YouTube videos:', error);
+          container.innerHTML = `<div class="alert alert-danger">Error loading videos: ${error.message}</div>`;
+          return false;
+        }
+      }
 
       // Function to toggle video sections
-      function toggleVideoDisplay(buttonId, videoSectionId) {
+      function toggleVideoDisplay(buttonId, videoSectionId, language) {
         const videoSection = document.getElementById(videoSectionId);
         const button = document.getElementById(buttonId);
 
@@ -239,14 +337,27 @@
           // Show only the selected video section
           videoSection.style.display = "block";
           currentVideoSection = videoSection;
+          
+          // Load videos if not already loaded
+          if (!videosLoaded[language]) {
+            fetchYouTubeVideos(CHANNEL_IDS[language], videoSectionId, language)
+              .then(success => {
+                if (success) {
+                  videosLoaded[language] = true;
+                }
+              });
+          }
         });
       }
 
       // Initialize video toggle buttons
-      toggleVideoDisplay("englishvideo", "videoshowEnglish");
-      toggleVideoDisplay("kannadavideo", "videoshowKannada");
-      toggleVideoDisplay("teluguvideo", "videoshowTelugu");
-      toggleVideoDisplay("hindivideo", "videoshowHindi");
+      toggleVideoDisplay("englishvideo", "videoshowEnglish", "english");
+      toggleVideoDisplay("kannadavideo", "videoshowKannada", "kannada");
+      toggleVideoDisplay("teluguvideo", "videoshowTelugu", "telugu");
+      toggleVideoDisplay("hindivideo", "videoshowHindi", "hindi");
+
+      // Trigger click on English videos button to show by default
+      document.getElementById("englishvideo").click();
 
       // Code Editor Button Click
       codeEditorButton.addEventListener("click", function () {
@@ -271,17 +382,8 @@
             });
           });
         } else {
-          // If no video section is active, show the first one
-          const firstVideoSection = document.getElementById("videoshowEnglish");
-          videoSide.innerHTML = firstVideoSection.innerHTML;
-
-          // Reattach click events to videos
-          const videoItems = videoSide.querySelectorAll(".video-item");
-          videoItems.forEach(video => {
-            video.addEventListener('click', function () {
-              this.classList.toggle('enlarge');
-            });
-          });
+          // If no video section is active, show a message
+          videoSide.innerHTML = "<div class='p-4'>Please select a video language from the navigation bar</div>";
         }
       });
 
@@ -308,15 +410,28 @@
           }
         }
 
-        return result;
-      }
+        // Simulate simple calculations
+        if (code.includes("+") || code.includes("-") || code.includes("*") || code.includes("/")) {
+          const calcRegex = /(\d+)\s*([+\-*/])\s*(\d+)/;
+          const calcMatch = calcRegex.exec(code);
+          if (calcMatch) {
+            const num1 = parseInt(calcMatch[1]);
+            const num2 = parseInt(calcMatch[3]);
+            const op = calcMatch[2];
+            let calcResult;
+            
+            switch(op) {
+              case '+': calcResult = num1 + num2; break;
+              case '-': calcResult = num1 - num2; break;
+              case '*': calcResult = num1 * num2; break;
+              case '/': calcResult = num1 / num2; break;
+            }
+            
+            result += `Calculation result: ${num1} ${op} ${num2} = ${calcResult}\n`;
+          }
+        }
 
-      // Video enlargement on click
-      var videos = document.getElementsByClassName("video-item");
-      for (var i = 0; i < videos.length; i++) {
-        videos[i].addEventListener('click', function () {
-          this.classList.toggle('enlarge');
-        });
+        return result;
       }
     });
   </script>
