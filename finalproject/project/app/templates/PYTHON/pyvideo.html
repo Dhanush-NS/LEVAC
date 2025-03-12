@@ -27,11 +27,11 @@
     /* Responsive layout for mobile */
     @media (max-width: 768px) {
       .split-screen {
-        flex-direction: column; /* Stack video and editor vertically */
+        flex-direction: column;
         height: auto;
       }
       .video-side, .editor-side {
-        width: 100%; /* Full width for both sections */
+        width: 100%;
       }
       .video-side {
         border-right: none;
@@ -42,7 +42,7 @@
     /* Code editor and output styling */
     #codeEditor {
       width: 100%;
-      height: 300px; /* Fixed height for mobile */
+      height: 300px;
       font-family: monospace;
       padding: 10px;
       border: 1px solid #ccc;
@@ -50,7 +50,7 @@
     }
     #output {
       width: 100%;
-      height: 150px; /* Fixed height for mobile */
+      height: 150px;
       background-color: #f8f9fa;
       padding: 10px;
       border: 1px solid #ccc;
@@ -192,18 +192,17 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      // YouTube API Key - You should store this securely on your server
-      const API_KEY = "AIzaSyCkH_yL9CNcZGOwz8dOKRX7esznHUN_Stg";
+      // YouTube API Key
+      const API_KEY = "";
       
-      // Channel IDs for different languages
-      const CHANNEL_IDS = {
-        english: "UC8butISFwT-Wl7EV0hUK0BQ", // freeCodeCamp
-        kannada: "PLlGueSbLhZoBRnTsGiDJeTXuQCALOTN07", // Kannada Python channel
+      // Channel IDs and Playlist IDs for different languages
+      const SOURCE_IDS = {
+        english: "UC8butISFwT-Wl7EV0hUK0BQ", // freeCodeCamp channel
+        kannada: "PLlGueSbLhZoBRnTsGiDJeTXuQCALOTN07", // Kannada Python playlist
         telugu: "UCJPR4VVtjJlpMWCT8LIqJPQ",  // Telugu Python channel
         hindi: "UCQxrHCVLZj3kkBjmeH1q-Sg"    // Hindi Python channel
       };
       
-      // Max results to fetch per channel
       const MAX_RESULTS = 20;
       
       // References to main elements
@@ -215,7 +214,6 @@
       const codeEditor = document.getElementById("codeEditor");
       const output = document.getElementById("output");
 
-      // Current active video section
       let currentVideoSection = null;
       let videosLoaded = {
         english: false,
@@ -224,72 +222,64 @@
         hindi: false
       };
 
-      // Function to fetch videos from YouTube API with enhanced Python filtering
-      async function fetchYouTubeVideos(channelId, containerId, language) {
+      async function fetchYouTubeVideos(sourceId, containerId, language) {
         const container = document.getElementById(containerId);
         
         try {
-          // First get the uploads playlist ID for the channel
-          const channelResponse = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${channelId}&key=${API_KEY}`);
-          const channelData = await channelResponse.json();
+          let videosResponse;
           
-          if (!channelData.items || channelData.items.length === 0) {
-            container.innerHTML = `<div class="alert alert-danger">Channel not found</div>`;
-            return;
+          // Check if sourceId is a CHANNEL (UC...) or PLAYLIST (PL...)
+          if (sourceId.startsWith('UC')) {
+            // CHANNEL LOGIC (for English, Telugu, Hindi)
+            const channelResponse = await fetch(
+              `https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${sourceId}&key=${API_KEY}`
+            );
+            const channelData = await channelResponse.json();
+            
+            if (!channelData.items?.length) {
+              container.innerHTML = `<div class="alert alert-danger">Channel not found</div>`;
+              return;
+            }
+            
+            const uploadsPlaylistId = channelData.items[0].contentDetails.relatedPlaylists.uploads;
+            videosResponse = await fetch(
+              `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=${MAX_RESULTS}&playlistId=${uploadsPlaylistId}&key=${API_KEY}`
+            );
+          } 
+          else if (sourceId.startsWith('PL')) {
+            // PLAYLIST LOGIC (for Kannada)
+            videosResponse = await fetch(
+              `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=${MAX_RESULTS}&playlistId=${sourceId}&key=${API_KEY}`
+            );
+          } 
+          else {
+            throw new Error("Invalid ID: Must be a YouTube Channel ID (UC...) or Playlist ID (PL...)");
           }
-          
-          const uploadsPlaylistId = channelData.items[0].contentDetails.relatedPlaylists.uploads;
-          
-          // Then get the videos from the uploads playlist
-          const videosResponse = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&maxResults=${MAX_RESULTS}&playlistId=${uploadsPlaylistId}&key=${API_KEY}`);
+
           const videosData = await videosResponse.json();
           
-          if (!videosData.items || videosData.items.length === 0) {
+          if (!videosData.items?.length) {
             container.innerHTML = `<div class="alert alert-info">No videos found</div>`;
             return;
           }
-          
-          // Enhanced filter for Python-related videos with language-specific keywords
-          let filteredVideos = videosData.items.filter(item => {
-            const title = item.snippet.title.toLowerCase();
-            const description = item.snippet.description ? item.snippet.description.toLowerCase() : '';
-            
-            // Language-specific keywords
-            const languageKeywords = {
-              english: ['python', 'programming', 'coding', 'tutorial', 'learn', 'course', 
-                       'basics', 'advanced', 'beginner', 'introduction', 'functions', 
-                       'classes', 'loops', 'variables', 'django', 'flask', 'pandas', 'numpy'],
-              kannada: ['python', 'ಪೈಥಾನ್', 'ಪ್ರೋಗ್ರಾಮಿಂಗ್', 'ಕೋಡಿಂಗ್', 'ಟ್ಯುಟೋರಿಯಲ್', 
-                       'ಕಲಿಯಿರಿ', 'ಕೋರ್ಸ್', 'ಮೂಲಭೂತ', 'ಸುಧಾರಿತ', 'ಪ್ರಾರಂಭಿಕ', 'ಪರಿಚಯ'],
-              telugu: ['python', 'పైథాన్', 'ప్రోగ్రామింగ్', 'కోడింగ్', 'ట్యుటోరియల్', 
-                      'నేర్చుకోండి', 'కోర్సు', 'బేసిక్స్', 'అడ్వాన్స్డ్', 'ప్రారంభ', 'పరిచయం'],
-              hindi: ['python', 'पायथन', 'प्रोग्रामिंग', 'कोडिंग', 'ट्यूटोरियल', 
-                     'सीखें', 'कोर्स', 'मूल', 'उन्नत', 'शुरुआती', 'परिचय']
-            };
-            
-            // Combine language-specific and general Python keywords
-            const keywords = [...languageKeywords[language], ...languageKeywords.english];
-            
-            // Check if title or description contains any of the keywords
-            return keywords.some(keyword => 
-                title.includes(keyword.toLowerCase()) || 
-                description.includes(keyword.toLowerCase())
-            );
-          });
-          
-          if (filteredVideos.length === 0) {
-            container.innerHTML = `<div class="alert alert-info">No Python videos found in ${language} language</div>`;
-            return;
-          }
-          
+
           // Clear loading message
           container.innerHTML = '';
-          
-          // Add videos to container
-          filteredVideos.forEach(item => {
-            const videoId = item.contentDetails.videoId;
+
+          // Display videos (filter only for channels, not playlists)
+          videosData.items.forEach(item => {
+            // Skip non-video items (like deleted videos)
+            if (!item.snippet.resourceId.videoId) return;
+            
+            const videoId = item.snippet.resourceId.videoId;
             const title = item.snippet.title;
             const description = item.snippet.description;
+            
+            // For channels only: Filter for Python-related content
+            if (sourceId.startsWith('UC')) {
+              const isPythonVideo = checkIfPythonVideo(title, description, language);
+              if (!isPythonVideo) return;
+            }
             
             const videoElement = document.createElement('div');
             videoElement.className = 'video-item p-4';
@@ -298,27 +288,41 @@
               <h5 class="video-title">${title}</h5>
               <p class="video-description">${description}</p>
             `;
-            
             container.appendChild(videoElement);
           });
-          
-          // Add click events to make videos enlargeable
+
+          // Add click events to videos
           const videoItems = container.querySelectorAll(".video-item");
           videoItems.forEach(video => {
-            video.addEventListener('click', function() {
-              this.classList.toggle('enlarge');
-            });
+            video.addEventListener('click', () => video.classList.toggle('enlarge'));
           });
-          
+
           return true;
         } catch (error) {
-          console.error('Error fetching YouTube videos:', error);
-          container.innerHTML = `<div class="alert alert-danger">Error loading videos: ${error.message}</div>`;
+          console.error('Error fetching videos:', error);
+          container.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
           return false;
         }
       }
 
-      // Function to toggle video sections
+      function checkIfPythonVideo(title, description, language) {
+        const titleLower = title.toLowerCase();
+        const descLower = description.toLowerCase();
+        
+        const languageKeywords = {
+          english: ['python', 'programming', 'coding', 'tutorial', 'learn', 'course'],
+          kannada: ['python', 'ಪೈಥಾನ್', 'ಪ್ರೋಗ್ರಾಮಿಂಗ್', 'ಕೋಡಿಂಗ್', 'ಟ್ಯುಟೋರಿಯಲ್'],
+          telugu: ['python', 'పైథాన్', 'ప్రోగ్రామింగ్', 'కోడింగ్', 'ట్యుటోరియల్'],
+          hindi: ['python', 'पायथन', 'प्रोग्रामिंग', 'कोडिंग', 'ट्यूटोरियल']
+        };
+        
+        const keywords = languageKeywords[language] || languageKeywords.english;
+        return keywords.some(keyword => 
+          titleLower.includes(keyword.toLowerCase()) || 
+          descLower.includes(keyword.toLowerCase())
+        );
+      }
+
       function toggleVideoDisplay(buttonId, videoSectionId, language) {
         const videoSection = document.getElementById(videoSectionId);
         const button = document.getElementById(buttonId);
@@ -340,7 +344,7 @@
           
           // Load videos if not already loaded
           if (!videosLoaded[language]) {
-            fetchYouTubeVideos(CHANNEL_IDS[language], videoSectionId, language)
+            fetchYouTubeVideos(SOURCE_IDS[language], videoSectionId, language)
               .then(success => {
                 if (success) {
                   videosLoaded[language] = true;
@@ -396,7 +400,6 @@
         output.innerHTML += "<pre>" + simulatePythonOutput(code) + "</pre>";
       });
 
-      // Simple simulation of Python output (for frontend demo purposes only)
       function simulatePythonOutput(code) {
         let result = "Code executed successfully!\n";
 
