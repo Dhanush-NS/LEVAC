@@ -1,4 +1,3 @@
-<!-- chat.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,55 +15,86 @@
             margin: 0;
         }
         #chat-container {
-            width: 400px;
+            width: 500px;
             border: 1px solid #ccc;
             border-radius: 10px;
             background-color: #fff;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            position: relative; /* Added for spinner positioning */
-            animation: fadeIn 1s ease-in-out; /* Animation for fade-in effect */
+            position: relative;
+            animation: fadeIn 1s ease-in-out;
         }
         #chat-box {
-            height: 400px;
+            height: 500px;
             padding: 20px;
             overflow-y: auto;
             border-bottom: 1px solid #ccc;
         }
-        #chat-box p {
-            margin: 0;
-            padding: 10px;
-            border-radius: 5px;
-            animation: slideIn 0.5s ease-in-out; /* Animation for sliding messages */
+        .message {
+            margin: 10px 0;
+            padding: 12px;
+            border-radius: 8px;
+            animation: slideIn 0.3s ease-in-out;
         }
-        #chat-box p strong {
-            display: block;
-        }
-        #chat-box p:nth-child(odd) {
+        .user-message {
             background-color: #e9f7fe;
+            border-left: 4px solid #007bff;
         }
-        #chat-box p:nth-child(even) {
-            background-color: #f1f1f1;
+        .assistant-message {
+            background-color: #f8f9fa;
+            border-left: 4px solid #28a745;
+        }
+        .message-header {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        .code-block {
+            background-color: #f5f5f5;
+            border-radius: 6px;
+            padding: 12px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            border-left: 4px solid #6c757d;
+            overflow-x: auto;
+        }
+        .explanation {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f0f8ff;
+            border-radius: 6px;
+            border-left: 4px solid #17a2b8;
+        }
+        .explanation h4 {
+            margin-top: 0;
+            color: #17a2b8;
+        }
+        .explanation ul {
+            padding-left: 20px;
         }
         #user-input {
-            width: calc(100% - 22px);
-            padding: 10px;
+            width: calc(100% - 24px);
+            padding: 12px;
             margin: 10px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 6px;
             box-sizing: border-box;
+            font-size: 16px;
         }
         #send-button {
-            width: calc(100% - 22px);
-            padding: 10px;
+            width: calc(100% - 24px);
+            padding: 12px;
             margin: 10px;
             background-color: #007bff;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
             box-sizing: border-box;
-            transition: background-color 0.3s ease; /* Animation for button hover effect */
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            font-weight: bold;
         }
         #send-button:hover {
             background-color: #0056b3;
@@ -91,8 +121,23 @@
             100% { opacity: 1; }
         }
         @keyframes slideIn {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(0); }
+            0% { transform: translateY(10px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        .copy-btn {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 12px;
+            cursor: pointer;
+            float: right;
+            margin-top: -5px;
+            margin-right: -5px;
+        }
+        .copy-btn:hover {
+            background-color: #5a6268;
         }
     </style>
 </head>
@@ -100,17 +145,37 @@
     <div id="chat-container">
         <div id="chat-box"></div>
         <div id="spinner"></div>
-        <input type="text" id="user-input" placeholder="Type your message...">
+        <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off">
         <button id="send-button">Send</button>
     </div>
 
     <script>
         $(document).ready(function() {
             $('#send-button').click(function() {
+                sendMessage();
+            });
+
+            $('#user-input').keypress(function(e) {
+                if (e.which === 13) {
+                    sendMessage();
+                    return false;
+                }
+            });
+
+            function sendMessage() {
                 var userInput = $('#user-input').val();
                 if (userInput) {
-                    $('#chat-box').append('<p><strong>You:</strong> ' + userInput + '</p>');
-                    $('#spinner').show(); // Show the spinner
+                    $('#chat-box').append(
+                        `<div class="message user-message">
+                            <div class="message-header">You:</div>
+                            <div>${escapeHtml(userInput)}</div>
+                        </div>`
+                    );
+                    $('#spinner').show();
+                    $('#user-input').val('');
+                    
+                    // Scroll to bottom
+                    $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
 
                     $.ajax({
                         type: 'POST',
@@ -120,41 +185,89 @@
                             'csrfmiddlewaretoken': '{{ csrf_token }}'
                         },
                         success: function(data) {
-                            var formattedResponse = formatResponse(data.response);
-                            $('#chat-box').append('<p><strong>Assistant:</strong> ' + formattedResponse + '</p>');
-                            $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight); // Scroll to the bottom
+                            var responseHtml = formatResponse(data.response);
+                            $('#chat-box').append(
+                                `<div class="message assitant-message">
+                                    <div class="message-header">Assistant:</div>
+                                    ${responseHtml}
+                                </div>`
+                            );
+                            // Add copy functionality to code blocks
+                            $('.code-block').each(function() {
+                                const code = $(this).text();
+                                $(this).prepend(
+                                    `<button class="copy-btn" onclick="navigator.clipboard.writeText(\`${escapeHtml(code)}\`)">Copy</button>`
+                                );
+                            });
                         },
                         error: function(xhr) {
-                            $('#chat-box').append('<p><strong>Error:</strong> ' + xhr.responseJSON.error + '</p>');
-                            $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight); // Scroll to the bottom
+                            $('#chat-box').append(
+                                `<div class="message assitant-message">
+                                    <div class="message-header">Error:</div>
+                                    <div>${xhr.responseJSON.error}</div>
+                                </div>`
+                            );
                         },
                         complete: function() {
-                            $('#spinner').hide(); // Hide the spinner
+                            $('#spinner').hide();
+                            $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
                         }
                     });
-                    $('#user-input').val('');
                 }
-            });
-
-            // Allow sending messages with Enter key
-            $('#user-input').keypress(function(e) {
-                if (e.which === 13) {
-                    $('#send-button').click();
-                    return false; // Prevent the default action
-                }
-            });
+            }
 
             function formatResponse(response) {
-                // Custom function to format the response in a point-wise format
-                var lines = response.split('*');
-                var formatted = '<ul>';
-                lines.forEach(function(line) {
-                    if (line.trim() !== '') {
-                        formatted += '<li>' + line.trim() + '</li>';
+                // Check if response contains code blocks
+                if (response.includes('```')) {
+                    const parts = response.split('```');
+                    let html = '';
+                    
+                    for (let i = 0; i < parts.length; i++) {
+                        if (i % 2 === 0) {
+                            // Regular text
+                            html += `<div>${formatText(parts[i])}</div>`;
+                        } else {
+                            // Code block
+                            const codeContent = parts[i].replace(/^[\n\r]+|[\n\r]+$/g, '');
+                            html += `<div class="code-block">${escapeHtml(codeContent)}</div>`;
+                        }
                     }
-                });
-                formatted += '</ul>';
+                    
+                    return html;
+                } else {
+                    // No code blocks, just format regular text
+                    return `<div>${formatText(response)}</div>`;
+                }
+            }
+
+            function formatText(text) {
+                // Convert markdown-like formatting to HTML
+                let formatted = escapeHtml(text);
+                
+                // Convert * to bullet points
+                if (text.includes('*')) {
+                    const lines = formatted.split('*');
+                    if (lines.length > 1) {
+                        formatted = '<ul>';
+                        for (let i = 1; i < lines.length; i++) {
+                            if (lines[i].trim() !== '') {
+                                formatted += `<li>${lines[i].trim()}</li>`;
+                            }
+                        }
+                        formatted += '</ul>';
+                    }
+                }
+                
                 return formatted;
+            }
+
+            function escapeHtml(unsafe) {
+                return unsafe
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
             }
         });
     </script>

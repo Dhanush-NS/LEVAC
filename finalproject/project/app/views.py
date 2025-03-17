@@ -48,7 +48,7 @@ def run_code(request):
     
 
 genai.configure(api_key=settings.GOOGLE_GENAI_API_KEY)
-model = genai.GenerativeModel('gemini-pro')
+model = genai.GenerativeModel('gemini-1.5-pro-latest')
 chat = model.start_chat(history=[])
 
 def chat_view(request):
