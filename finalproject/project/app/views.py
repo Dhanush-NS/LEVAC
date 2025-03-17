@@ -17,6 +17,7 @@ from django.conf import settings
 from django.http import JsonResponse
 from .models import CodeSnippet  
 import subprocess
+from django.views.decorators.csrf import csrf_exempt
 
 
 def save_code(request):
@@ -116,6 +117,7 @@ def signup(request):
         return render(request, 'REG/signup.html')
 
 
+@csrf_exempt
 
 def login_view(request):
     if request.method == "POST":
