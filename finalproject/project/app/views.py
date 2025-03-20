@@ -247,7 +247,7 @@ def cppvideo(request):
 
 @login_required
 def leetcode(request):
-    return render(request,'LEETCODE/leetcode.html')
+    return render(request,'HACKERRANK/leetcode.html')
 
 @login_required
 def editor(request):
