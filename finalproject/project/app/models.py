@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 import pytz
 from datetime import datetime
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -39,10 +40,22 @@ class CodeSnippet(models.Model):
     language = models.CharField(
         max_length=50, 
         choices=[("python", "Python"), ("javascript", "JavaScript")],
-        default="python"  # ✅ Add a default value
+        default="python"  
     )
     code = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Snippet ({self.language}) - {self.created_at}"
+    
+    
+class SolvedProblem(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='solved_problems')
+    problem_id = models.CharField(max_length=100)
+    solved_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        unique_together = ('user', 'problem_id') 
+        
+    def __str__(self):
+        return f"{self.user.username} - {self.problem_id}"
