@@ -63,13 +63,97 @@
     .video-item {
       margin-bottom: 20px;
       cursor: pointer;
+      position: relative;
     }
-    .video-item iframe {
+    .video-thumbnail {
+      position: relative;
       width: 100%;
-      height: 300px;
+      height: 180px;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
     }
-    .enlarge iframe {
-      height: 450px;
+    .video-thumbnail::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.3);
+      border-radius: 4px;
+    }
+    .play-button {
+      width: 60px;
+      height: 60px;
+      background-color: rgba(255,255,255,0.8);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+    .play-button::after {
+      content: '';
+      width: 0;
+      height: 0;
+      border-top: 15px solid transparent;
+      border-left: 20px solid #ff0000;
+      border-bottom: 15px solid transparent;
+      margin-left: 5px;
+    }
+    .video-player {
+      width: 100%;
+      display: none;
+    }
+    .video-player.active {
+      display: block;
+    }
+    .video-player iframe {
+      width: 100%;
+      height: 400px; /* Increased height for better visibility */
+    }
+    
+    /* Enhanced video player in split screen mode */
+    .split-screen .video-player iframe {
+      height: 350px; /* Make video larger in split screen */
+    }
+    
+    /* New sticky video feature when scrolling in split screen */
+    .split-screen .video-player.active.sticky {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: white;
+      padding: 10px;
+      border-bottom: 1px solid #dee2e6;
+    }
+    
+    /* Video toggle size button */
+    .video-size-toggle {
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 5px 10px;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 200;
+      cursor: pointer;
+      display: none;
+    }
+    .video-player.active .video-size-toggle {
+      display: block;
+    }
+    
+    /* Full size video */
+    .video-player.full-size iframe {
+      height: 500px;
     }
     
     .video-title {
@@ -211,7 +295,7 @@
         <h4>Python Code Editor</h4>
         <button class="btn btn-run" id="runButton">Run Code</button>
       </div>
-      <textarea id="codeEditor" placeholder="Write your Python code here..."></textarea>
+      <textarea id="codeEditor" placeholder="Write your Python code here...">print("Hello, Python!")</textarea>
       <div id="output">
         <p>Output will appear here...</p>
       </div>
@@ -219,17 +303,16 @@
   </div>
 
   <script>
-    
     document.addEventListener("DOMContentLoaded", function () {
       // YouTube API Key
-      const API_KEY = "";
+      const API_KEY = "AIzaSyCkH_yL9CNcZGOwz8dOKRX7esznHUN_Stg";
       
       // Channel IDs and Playlist IDs for different languages
       const SOURCE_IDS = {
-        english: "PLsyeobzWxl7poL9JTVyndKe62ieoN-MZ3", // freeCodeCamp channel
+        english: "PLsyeobzWxl7poL9JTVyndKe62ieoN-MZ3", // Python playlist
         kannada: "PLlGueSbLhZoBRnTsGiDJeTXuQCALOTN07", // Kannada Python playlist
         telugu: "PLS8lzSv6JRJ2OC7KVp05jqtY4MgLsitdX",  // Telugu Python playlist
-        hindi: "PLu0W_9lII9agwh1XjRt242xIpHhPT2llg"    // Hindi Python channel
+        hindi: "PLu0W_9lII9agwh1XjRt242xIpHhPT2llg"    // Hindi Python playlist
       };
       
       const MAX_RESULTS = 20;
@@ -251,8 +334,14 @@
         hindi: false
       };
 
-      // Global YouTube players
-      const players = {};
+      // Track currently playing video
+      let currentlyPlayingVideo = null;
+      let activePlayer = null;
+
+      // Initialize YouTube API
+      window.onYouTubeIframeAPIReady = function() {
+        console.log("YouTube API Ready");
+      };
 
       async function fetchYouTubeVideos(sourceId, containerId, language) {
         const container = document.getElementById(containerId);
@@ -260,33 +349,10 @@
         try {
           let videosResponse;
           
-          // Check if sourceId is a CHANNEL (UC...) or PLAYLIST (PL...)
-          if (sourceId.startsWith('UC')) {
-            // CHANNEL LOGIC (for English, Hindi)
-            const channelResponse = await fetch(
-              `https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${sourceId}&key=${API_KEY}`
-            );
-            const channelData = await channelResponse.json();
-            
-            if (!channelData.items?.length) {
-              container.innerHTML = `<div class="alert alert-danger">Channel not found</div>`;
-              return;
-            }
-            
-            const uploadsPlaylistId = channelData.items[0].contentDetails.relatedPlaylists.uploads;
-            videosResponse = await fetch(
-              `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=${MAX_RESULTS}&playlistId=${uploadsPlaylistId}&key=${API_KEY}`
-            );
-          } 
-          else if (sourceId.startsWith('PL')) {
-            // PLAYLIST LOGIC (for Kannada, Telugu)
-            videosResponse = await fetch(
-              `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=${MAX_RESULTS}&playlistId=${sourceId}&key=${API_KEY}`
-            );
-          } 
-          else {
-            throw new Error("Invalid ID: Must be a YouTube Channel ID (UC...) or Playlist ID (PL...)");
-          }
+          // Playlist logic - all our sources are now playlists
+          videosResponse = await fetch(
+            `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=${MAX_RESULTS}&playlistId=${sourceId}&key=${API_KEY}`
+          );
 
           const videosData = await videosResponse.json();
           
@@ -298,31 +364,27 @@
           // Clear loading message
           container.innerHTML = '';
 
-          // Display videos (filter only for channels, not playlists)
-          videosData.items.forEach(item => {
+          // Add videos to container
+          videosData.items.forEach((item, index) => {
             // Skip non-video items (like deleted videos)
-            if (!item.snippet.resourceId.videoId) return;
+            if (!item.snippet.resourceId?.videoId) return;
             
             const videoId = item.snippet.resourceId.videoId;
             const title = item.snippet.title;
             const description = item.snippet.description;
-            
-            // For channels only: Filter for Python-related content
-            if (sourceId.startsWith('UC')) {
-              const isPythonVideo = checkIfPythonVideo(title, description, language);
-              if (!isPythonVideo) return;
-            }
+            const thumbnail = item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.default?.url;
             
             const videoElement = document.createElement('div');
             videoElement.className = 'video-item p-4';
+            videoElement.dataset.videoId = videoId;
             videoElement.innerHTML = `
-              <iframe 
-                id="player-${videoId}"
-                src="https://www.youtube.com/embed/${videoId}?rel=0&enablejsapi=1&modestbranding=1" 
-                frameborder="0" 
-                allowfullscreen
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              ></iframe>
+              <div class="video-thumbnail" style="background-image: url('${thumbnail}')">
+                <div class="play-button"></div>
+              </div>
+              <div class="video-player" id="player-container-${videoId}">
+                <button class="video-size-toggle" id="size-toggle-${videoId}">Enlarge</button>
+                <div id="player-${videoId}"></div>
+              </div>
               <h5 class="video-title">${title}</h5>
               <p class="video-description">${description}</p>
               <div class="related-videos" id="related-${videoId}" style="display:none;">
@@ -332,9 +394,45 @@
             `;
             container.appendChild(videoElement);
 
-            // Initialize YouTube player
-            initializePlayer(videoId, sourceId);
+            // Add click event to thumbnail
+            const thumbnailElement = videoElement.querySelector('.video-thumbnail');
+            thumbnailElement.addEventListener('click', function() {
+              playVideo(videoId, sourceId);
+            });
+            
+            // Add click event to size toggle button
+            const sizeToggleButton = videoElement.querySelector(`#size-toggle-${videoId}`);
+            sizeToggleButton.addEventListener('click', function(e) {
+              e.stopPropagation();
+              const playerContainer = document.getElementById(`player-container-${videoId}`);
+              
+              if (playerContainer.classList.contains('full-size')) {
+                playerContainer.classList.remove('full-size');
+                this.textContent = 'Enlarge';
+              } else {
+                playerContainer.classList.add('full-size');
+                this.textContent = 'Reduce';
+              }
+            });
           });
+          
+          // Add scroll event listener to make video sticky in split screen
+          if (containerId === 'videoSide') {
+            videoSide.addEventListener('scroll', function() {
+              if (currentlyPlayingVideo) {
+                const playerContainer = document.getElementById(`player-container-${currentlyPlayingVideo}`);
+                if (playerContainer) {
+                  const videoItemTop = playerContainer.parentElement.offsetTop;
+                  
+                  if (videoSide.scrollTop > videoItemTop) {
+                    playerContainer.classList.add('sticky');
+                  } else {
+                    playerContainer.classList.remove('sticky');
+                  }
+                }
+              }
+            });
+          }
 
           return true;
         } catch (error) {
@@ -344,25 +442,54 @@
         }
       }
 
-      function initializePlayer(videoId, sourceId) {
-        players[videoId] = new YT.Player(`player-${videoId}`, {
-          events: {
-            'onReady': onPlayerReady,
-            'onStateChange': (event) => onPlayerStateChange(event, videoId, sourceId)
-          }
-        });
-      }
-
-      function onPlayerReady(event) {
-        // Player is ready (can add additional setup here if needed)
+      function playVideo(videoId, sourceId) {
+        // If there's a currently playing video, stop it
+        if (activePlayer) {
+          activePlayer.stopVideo();
+          document.querySelector(`.video-player.active`)?.classList.remove('active');
+          document.querySelector(`.video-player.active.sticky`)?.classList.remove('sticky');
+        }
+        
+        // Show the player for this video
+        const playerContainer = document.getElementById(`player-container-${videoId}`);
+        playerContainer.classList.add('active');
+        
+        // Create new player if not exists
+        if (!window[`player_${videoId}`]) {
+          window[`player_${videoId}`] = new YT.Player(`player-${videoId}`, {
+            videoId: videoId,
+            playerVars: {
+              'autoplay': 1,
+              'modestbranding': 1,
+              'rel': 0
+            },
+            events: {
+              'onStateChange': (event) => onPlayerStateChange(event, videoId, sourceId)
+            }
+          });
+        } else {
+          // Play existing player
+          window[`player_${videoId}`].playVideo();
+        }
+        
+        currentlyPlayingVideo = videoId;
+        activePlayer = window[`player_${videoId}`];
+        
+        // Auto-scroll to the video in split screen
+        if (splitScreen.style.display === 'flex') {
+          const videoItem = playerContainer.parentElement;
+          videoItem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       }
 
       function onPlayerStateChange(event, videoId, sourceId) {
         const relatedContainer = document.getElementById(`related-${videoId}`);
         
         if (event.data == YT.PlayerState.PAUSED) {
+          // Show related videos when paused
           showRelatedVideos(videoId, sourceId);
-        } else {
+        } else if (event.data == YT.PlayerState.PLAYING) {
+          // Hide related videos when playing
           relatedContainer.style.display = 'none';
         }
       }
@@ -382,19 +509,25 @@
             if (data.items?.length) {
               videosContainer.innerHTML = '';
               data.items.forEach(item => {
-                if (item.snippet.resourceId.videoId !== videoId) { // Don't show current video
+                if (item.snippet.resourceId?.videoId && item.snippet.resourceId.videoId !== videoId) {
+                  const relatedVideoId = item.snippet.resourceId.videoId;
+                  const thumbnail = item.snippet.thumbnails?.default?.url;
                   const truncatedTitle = item.snippet.title.length > 50 
                     ? item.snippet.title.substring(0, 50) + '...' 
                     : item.snippet.title;
                   
-                  videosContainer.innerHTML += `
-                    <div class="related-video">
-                      <a href="#" onclick="playRelatedVideo('${item.snippet.resourceId.videoId}', '${videoId}'); return false;">
-                        <img src="${item.snippet.thumbnails.default.url}" alt="${truncatedTitle}">
-                        <span>${truncatedTitle}</span>
-                      </a>
-                    </div>
+                  const relatedVideoElement = document.createElement('div');
+                  relatedVideoElement.className = 'related-video';
+                  relatedVideoElement.innerHTML = `
+                    <img src="${thumbnail}" alt="${truncatedTitle}">
+                    <span>${truncatedTitle}</span>
                   `;
+                  
+                  relatedVideoElement.addEventListener('click', function() {
+                    playVideo(relatedVideoId, sourceId);
+                  });
+                  
+                  videosContainer.appendChild(relatedVideoElement);
                 }
               });
             }
@@ -407,41 +540,19 @@
         relatedContainer.style.display = 'block';
       }
 
-      // Make playRelatedVideo available globally
-      window.playRelatedVideo = function(newVideoId, currentVideoId) {
-        const currentIframe = document.querySelector(`#player-${currentVideoId}`);
-        currentIframe.src = `https://www.youtube.com/embed/${newVideoId}?rel=0&enablejsapi=1&modestbranding=1`;
-        document.getElementById(`related-${currentVideoId}`).style.display = 'none';
-        
-        // Update the player instance
-        if (players[currentVideoId]) {
-          players[currentVideoId].loadVideoById(newVideoId);
-        }
-      };
-
-      function checkIfPythonVideo(title, description, language) {
-        const titleLower = title.toLowerCase();
-        const descLower = description.toLowerCase();
-        
-        const languageKeywords = {
-          english: ['python', 'programming', 'coding', 'tutorial', 'learn', 'course'],
-          kannada: ['python', 'ಪೈಥಾನ್', 'ಪ್ರೋಗ್ರಾಮಿಂಗ್', 'ಕೋಡಿಂಗ್', 'ಟ್ಯುಟೋರಿಯಲ್'],
-          telugu: ['python', 'పైథాన్', 'ప్రోగ్రామింగ్', 'కోడింగ్', 'ట్యుటోరియల్'],
-          hindi: ['python', 'पायथन', 'प्रोग्रामिंग', 'कोडिंग', 'ट्यूटोरियल']
-        };
-        
-        const keywords = languageKeywords[language] || languageKeywords.english;
-        return keywords.some(keyword => 
-          titleLower.includes(keyword.toLowerCase()) || 
-          descLower.includes(keyword.toLowerCase())
-        );
-      }
-
       function toggleVideoDisplay(buttonId, videoSectionId, language) {
         const videoSection = document.getElementById(videoSectionId);
         const button = document.getElementById(buttonId);
 
         button.addEventListener("click", function () {
+          // Stop any playing video
+          if (activePlayer) {
+            activePlayer.stopVideo();
+            document.querySelector(`.video-player.active`)?.classList.remove('active');
+            activePlayer = null;
+            currentlyPlayingVideo = null;
+          }
+          
           // Hide split screen if visible
           splitScreen.style.display = "none";
           mainContainer.style.display = "block";
@@ -479,6 +590,14 @@
 
       // Code Editor Button Click
       codeEditorButton.addEventListener("click", function () {
+        // Stop any playing video
+        if (activePlayer) {
+          activePlayer.stopVideo();
+          document.querySelector(`.video-player.active`)?.classList.remove('active');
+          activePlayer = null;
+          currentlyPlayingVideo = null;
+        }
+        
         // Hide main container
         mainContainer.style.display = "none";
 
@@ -490,56 +609,68 @@
 
         // If there's a current video section, clone its content to the video side
         if (currentVideoSection) {
-          videoSide.innerHTML = currentVideoSection.innerHTML;
-
-          // Reinitialize players for the cloned iframes
-          const videoItems = videoSide.querySelectorAll(".video-item");
-          videoItems.forEach(video => {
-            const iframe = video.querySelector("iframe");
-            const videoId = iframe.src.match(/embed\/([^?]+)/)[1];
-            initializePlayer(videoId, SOURCE_IDS[currentVideoSection.id.replace('videoshow', '').toLowerCase()]);
-            
-            // Reattach click events to videos
-            video.addEventListener('click', function () {
-              this.classList.toggle('enlarge');
-            });
-          });
+          // Instead of direct cloning, let's rebuild the video section to maintain player functionality
+          const language = currentVideoSection.id.replace('videoshow', '').toLowerCase();
+          videoSide.innerHTML = `<div class="loading">Loading videos...</div>`;
+          
+          fetchYouTubeVideos(SOURCE_IDS[language], 'videoSide', language);
         } else {
           // If no video section is active, show a message
           videoSide.innerHTML = "<div class='p-4'>Please select a video language from the navigation bar</div>";
         }
       });
 
-      // Run Button Click (Simulated for front-end only)
+      // Run Button Click (Improved simulation)
       runButton.addEventListener("click", function () {
         const code = codeEditor.value;
-        output.innerHTML = "<p>Simulated Output:</p>";
+        output.innerHTML = "<p>Output:</p>";
 
-        // This is just a simulation - In reality, you'd send the code to a backend
-        output.innerHTML += "<pre>" + simulatePythonOutput(code) + "</pre>";
+        // Enhanced code execution simulation
+        output.innerHTML += "<pre>" + executePythonCode(code) + "</pre>";
       });
 
-      function simulatePythonOutput(code) {
-        let result = "Code executed successfully!\n";
-
-        // Very simplistic simulation - just for demonstration
-        if (code.includes("print")) {
-          // Extract content from print statements (very basic simulation)
-          const printRegex = /print\(['"](.+?)['"]\)/g;
-          let match;
-          while ((match = printRegex.exec(code)) !== null) {
-            result += match[1] + "\n";
+      function executePythonCode(code) {
+        // More sophisticated execution simulation
+        let result = "";
+        let hasOutput = false;
+        
+        try {
+          // Print statements
+          if (code.includes("print")) {
+            const printRegex = /print\s*\(\s*([^)]+)\s*\)/g;
+            let match;
+            while ((match = printRegex.exec(code)) !== null) {
+              let content = match[1];
+              // Handle string literals with quotes
+              if ((content.startsWith('"') && content.endsWith('"')) || 
+                  (content.startsWith("'") && content.endsWith("'"))) {
+                content = content.substring(1, content.length - 1);
+              }
+              // Handle variables (simplified)
+              else if (code.includes(`${content} =`)) {
+                const varRegex = new RegExp(`${content}\\s*=\\s*([^;\\n]+)`);
+                const varMatch = varRegex.exec(code);
+                if (varMatch) {
+                  content = varMatch[1].trim();
+                  // If it's a string, remove quotes
+                  if ((content.startsWith('"') && content.endsWith('"')) || 
+                      (content.startsWith("'") && content.endsWith("'"))) {
+                    content = content.substring(1, content.length - 1);
+                  }
+                }
+              }
+              result += content + "\n";
+              hasOutput = true;
+            }
           }
-        }
-
-        // Simulate simple calculations
-        if (code.includes("+") || code.includes("-") || code.includes("*") || code.includes("/")) {
-          const calcRegex = /(\d+)\s*([+\-*/])\s*(\d+)/;
-          const calcMatch = calcRegex.exec(code);
-          if (calcMatch) {
-            const num1 = parseInt(calcMatch[1]);
-            const num2 = parseInt(calcMatch[3]);
-            const op = calcMatch[2];
+          
+          // Basic arithmetic operations
+          const mathRegex = /(\w+)\s*=\s*(\d+)\s*([+\-*/])\s*(\d+)/g;
+          while ((match = mathRegex.exec(code)) !== null) {
+            const varName = match[1];
+            const num1 = parseFloat(match[2]);
+            const op = match[3];
+            const num2 = parseFloat(match[4]);
             let calcResult;
             
             switch(op) {
@@ -549,10 +680,88 @@
               case '/': calcResult = num1 / num2; break;
             }
             
-            result += `Calculation result: ${num1} ${op} ${num2} = ${calcResult}\n`;
+            // If the result is directly printed
+            if (code.includes(`print(${varName})`) && !code.includes(`print("${varName}")`)) {
+              result += calcResult + "\n";
+              hasOutput = true;
+            }
           }
+          
+          // Basic conditionals (simple if statements)
+          if (code.includes("if") && code.includes(":")) {
+            const ifRegex = /if\s+(.+?):/;
+            const ifMatch = ifRegex.exec(code);
+            if (ifMatch) {
+              const condition = ifMatch[1].trim();
+              // Very simplified evaluation
+              let conditionMet = false;
+              if (condition.includes("==")) {
+                const parts = condition.split("==").map(p => p.trim());
+                conditionMet = parts[0] === parts[1];
+              } else if (condition.includes(">")) {
+                const parts = condition.split(">").map(p => p.trim());
+                conditionMet = parseFloat(parts[0]) > parseFloat(parts[1]);
+              } else if (condition.includes("<")) {
+                const parts = condition.split("<").map(p => p.trim());
+                conditionMet = parseFloat(parts[0]) < parseFloat(parts[1]);
+              }
+              
+              if (conditionMet) {
+                const ifBodyRegex = /if\s+.*?:(.+?)(?:else:|$)/s;
+                const ifBodyMatch = ifBodyRegex.exec(code);
+                if (ifBodyMatch) {
+                  result += "Condition is True - executing if block\n";
+                  hasOutput = true;
+                }
+              } else if (code.includes("else:")) {
+                result += "Condition is False - executing else block\n";
+                hasOutput = true;
+              }
+            }
+          }
+          
+          // Handle loops (basic for loop)
+          if (code.includes("for") && code.includes("range")) {
+            const forRegex = /for\s+(\w+)\s+in\s+range\s*\(\s*(\d+)\s*\)/;
+            const forMatch = forRegex.exec(code);
+            if (forMatch) {
+              const varName = forMatch[1];
+              const rangeEnd = parseInt(forMatch[2]);
+              
+              result += "Loop output:\n";
+              for (let i = 0; i < rangeEnd; i++) {
+                if (code.includes(`print(${varName})`)) {
+                  result += i + "\n";
+                }
+                else if (code.includes("print")) {
+                  const printInLoopRegex = new RegExp(`for\\s+${varName}\\s+in\\s+range.*?print\\s*\\(\\s*([^)]+)\\s*\\)`, 's');
+                  const printMatch = printInLoopRegex.exec(code);
+                  if (printMatch) {
+                    let content = printMatch[1];
+                    if (content.includes(varName)) {
+                      content = content.replace(varName, i);
+                    }
+                    if ((content.startsWith('"') && content.endsWith('"')) || 
+                        (content.startsWith("'") && content.endsWith("'"))) {
+                      content = content.substring(1, content.length - 1);
+                    }
+                    result += content + "\n";
+                  }
+                }
+              }
+              hasOutput = true;
+            }
+          }
+          
+          // If no output was generated, provide a default message
+          if (!hasOutput) {
+            result = "Code executed successfully! (No output)";
+          }
+          
+        } catch (error) {
+          result = "Error: " + error.message;
         }
-
+        
         return result;
       }
     });
