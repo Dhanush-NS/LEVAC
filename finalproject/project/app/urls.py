@@ -33,9 +33,6 @@ urlpatterns = [
     path('dsavideo/',dsavideo,name='dsavideo'),
     path('cppvideo/',cppvideo,name='cppvideo'),
    
-    path('api/solved-problems/', get_solved_problems, name='get_solved_problems'),
-    path('api/mark-solved/', mark_problem_solved, name='mark_problem_solved'),
-    path('api/mark-multiple-solved/',mark_problems_solved, name='mark_problems_solved'),
-    path('api/reset-progress/', reset_progress, name='reset_progress'),
+  
     
 ]

@@ -14,11 +14,10 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from django.contrib.auth import logout as auth_logout
 from django.conf import settings
+from django.http import JsonResponse
 from .models import CodeSnippet  
 import subprocess
 from django.views.decorators.csrf import csrf_exempt
-from .models import SolvedProblem
-from django.views.decorators.http import require_http_methods
 
 
 def save_code(request):
@@ -253,65 +252,3 @@ def hackerrank(request):
 @login_required
 def editor(request):
     return render(request,'editor.html')
-@login_required
-@require_http_methods(["GET"])
-def get_solved_problems(request):
-    """Get all problems solved by the current user"""
-    solved_problems = SolvedProblem.objects.filter(user=request.user).values_list('problem_id', flat=True)
-    return JsonResponse(list(solved_problems), safe=False)
-
-@login_required
-@require_http_methods(["POST"])
-def mark_problem_solved(request):
-    """Mark a problem as solved for the current user"""
-    try:
-        data = json.loads(request.body)
-        problem_id = data.get('problem_id')
-        
-        if not problem_id:
-            return JsonResponse({'error': 'Problem ID is required'}, status=400)
-        
-        # Create if not exists
-        obj, created = SolvedProblem.objects.get_or_create(
-            user=request.user,
-            problem_id=problem_id
-        )
-        
-        return JsonResponse({'success': True, 'message': 'Problem marked as solved'})
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
-
-@login_required
-@require_http_methods(["POST"])
-def mark_problems_solved(request):
-    """Mark multiple problems as solved for the current user"""
-    try:
-        data = json.loads(request.body)
-        problem_ids = data.get('problem_ids', [])
-        
-        if not problem_ids:
-            return JsonResponse({'error': 'Problem IDs are required'}, status=400)
-        
-        # Create solved problem entries for each problem ID
-        for problem_id in problem_ids:
-            SolvedProblem.objects.get_or_create(
-                user=request.user,
-                problem_id=problem_id
-            )
-        
-        return JsonResponse({
-            'success': True, 
-            'message': f'Marked {len(problem_ids)} problems as solved'
-        })
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
-
-@login_required
-@require_http_methods(["POST"])
-def reset_progress(request):
-    """Reset all progress for the current user"""
-    try:
-        SolvedProblem.objects.filter(user=request.user).delete()
-        return JsonResponse({'success': True, 'message': 'Progress has been reset'})
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)

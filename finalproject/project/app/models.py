@@ -27,7 +27,7 @@ class Student(models.Model):
 class Login(models.Model):
     username = models.CharField(max_length=10)
     password = models.CharField(max_length=60)
-    login_datetime = models.DateTimeField(auto_now_add=True)  # Automatically set on creation
+    login_datetime = models.DateTimeField(auto_now_add=True)
 
 class CodeSnippet(models.Model):
     code = models.TextField()
@@ -48,14 +48,4 @@ class CodeSnippet(models.Model):
     def __str__(self):
         return f"Snippet ({self.language}) - {self.created_at}"
     
-    
-class SolvedProblem(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='solved_problems')
-    problem_id = models.CharField(max_length=100)
-    solved_at = models.DateTimeField(auto_now_add=True)
-    
-    class Meta:
-        unique_together = ('user', 'problem_id') 
-        
-    def __str__(self):
-        return f"{self.user.username} - {self.problem_id}"
+
