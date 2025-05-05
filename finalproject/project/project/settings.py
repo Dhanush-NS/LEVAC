@@ -13,6 +13,15 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 
+import dj_database_url
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default='postgresql://my_db_9thk_user:7uVd8AVf4hYE0njlZHL3892RbmrjHKTV@localhost:5432/my-db',
+        conn_max_age=600
+    )
+}
+
 #Google Gemini api key
 GOOGLE_GENAI_API_KEY = os.getenv('GOOGLE_GENAI_API_KEY', '')
 
@@ -27,8 +36,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-o&(943*+oi)6hktq)p8s=^ullyb2@tpmeyh)y*f@v+rts35vpx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+DEBUG = False
+ALLOWED_HOSTS = ['*']  # For initial testing, replace with your render URL later
 
 
 
