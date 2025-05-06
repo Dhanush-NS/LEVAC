@@ -2,10 +2,10 @@ import os
 import re
 import requests
 import google.generativeai as genai
-from .models import Student,Login
+from .models import Student, Login
 from django.contrib import messages
 from django.http import JsonResponse
-from django.shortcuts import render, redirect, HttpResponse ,get_object_or_404
+from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import auth, User
@@ -26,7 +26,11 @@ def save_code(request):
         code = request.POST.get("code")
         
         # Save code in the database
-        snippet = CodeSnippet.objects.create(language=language, code=code)
+        snippet = CodeSnippet.objects.create(
+            language=language, 
+            code=code,
+            user=request.user if request.user.is_authenticated else None
+        )
 
         return JsonResponse({"message": "Code saved successfully", "id": snippet.id})
 
@@ -68,10 +72,13 @@ def base(request):
 
 def mainpage(request):
     if request.user.is_authenticated:
-        return render(request,'base.html',{'user':request.user})
+        try:
+            student = Student.objects.get(username=request.user.username)
+            return render(request, 'base.html', {'user': request.user, 'student': student})
+        except Student.DoesNotExist:
+            return render(request, 'base.html', {'user': request.user})
     else:
-
-        return render(request,'index.html')
+        return render(request, 'index.html')
 
 
 def signup(request):
@@ -82,6 +89,7 @@ def signup(request):
         username = request.POST.get("username")
         password1 = request.POST.get("password1")
         password2 = request.POST.get("password2")
+        profile_photo = request.FILES.get("profile_photo")
 
         if password1 == password2:
             if Student.objects.filter(email=email).exists() or User.objects.filter(email=email).exists():
@@ -106,6 +114,10 @@ def signup(request):
                                   username=username, 
                                   password1=password1, 
                                   password2=password2)
+                
+                if profile_photo:
+                    student.profile_photo = profile_photo
+                
                 student.save()
 
                 return redirect('login')
@@ -118,7 +130,6 @@ def signup(request):
 
 
 @csrf_exempt
-
 def login_view(request):
     if request.method == "POST":
         username = request.POST.get("login_username")
@@ -142,16 +153,23 @@ def login_view(request):
 def edit_view(request):
     user = request.user  # Get the currently logged-in user
 
+    # Try to get the student record for this user
+    try:
+        student = Student.objects.get(username=user.username)
+    except Student.DoesNotExist:
+        student = None
+
     if request.method == "POST":  # If the form is submitted
         new_username = request.POST.get("edit_username")  # Get the new username from the form
         new_name = request.POST.get("edit_name")  # Get the new name from the form
+        new_photo = request.FILES.get("profile_photo")  # Get uploaded profile photo if any
 
         # Validate that the new_name is not empty
         if not new_name:
             messages.error(request, "Name cannot be empty.")
             return redirect('edit')
 
-        # Check if the new username already exists
+        # Check if the new username already exists (unless it's the current username)
         if User.objects.filter(username=new_username).exists() and new_username != user.username:
             messages.error(request, "Username already exists, choose another")
             return redirect('edit')
@@ -164,22 +182,20 @@ def edit_view(request):
             user.save()
 
             # Update the Student record if it exists
-            try:   
-                student = Student.objects.get(username=old_username)
+            if student:   
                 student.username = new_username
                 student.name = new_name
+                
+                # Process profile photo if uploaded
+                if new_photo:
+                    student.profile_photo = new_photo
+                
                 student.save()
-                # messages.success(request, "Profile updated successfully")
-            except Student.DoesNotExist:
+                messages.success(request, "Profile updated successfully")
+            else:
                 messages.error(request, "Student record does not exist.")
         
         return redirect('base')
-    else:
-        # Handle GET request to retrieve the student's current details
-        try:
-            student = Student.objects.get(username=user.username)
-        except Student.DoesNotExist:
-            student = None
 
     return render(request, 'REG/edit.html', {'student': student})
 
@@ -252,3 +268,13 @@ def hackerrank(request):
 @login_required
 def editor(request):
     return render(request,'editor.html')
+
+@login_required
+def profile_view(request):
+    """View to display user profile information"""
+    try:
+        student = Student.objects.get(username=request.user.username)
+        return render(request, 'REG/profile.html', {'student': student})
+    except Student.DoesNotExist:
+        messages.error(request, "Profile not found")
+        return redirect('base')

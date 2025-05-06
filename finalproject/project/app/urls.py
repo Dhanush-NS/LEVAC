@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import  (mainpage,base,signup,login_view,edit_view,logout,java,python,c,dsa,
-cpp,js,pyvideo,javavideo,cvideo,jsvideo,dsavideo,cppvideo, hackerrank, chat_view, editor, save_code, run_code,get_solved_problems,mark_problems_solved,mark_problem_solved,reset_progress)
+cpp,js,pyvideo,javavideo,cvideo,jsvideo,dsavideo,cppvideo, hackerrank, chat_view, editor, save_code, run_code,profile_view)
 urlpatterns = [
     path('',mainpage ,name='mainpage'),
     path('base/',base ,name='base'),
@@ -13,6 +13,7 @@ urlpatterns = [
     path('login/',login_view ,name='login'),
     path('edit/',edit_view ,name='edit'),
     path('logout/',logout,name='logout'),
+    path('profile/', profile_view, name='profile'),
 
 
     # tutor urls

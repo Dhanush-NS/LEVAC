@@ -15,12 +15,12 @@ import os
 
 import dj_database_url
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default='postgresql://my_db_9thk_user:7uVd8AVf4hYE0njlZHL3892RbmrjHKTV@localhost:5432/my-db',
-        conn_max_age=600
-    )
-}
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=os.environ.get('postgresql://my_db_9thk_user:7uVd8AVf4hYE0njlZHL3892RbmrjHKTV@localhost:5432/my-db'),
+#         conn_max_age=600
+#     )
+# }
 
 #Google Gemini api key
 GOOGLE_GENAI_API_KEY = os.getenv('GOOGLE_GENAI_API_KEY', '')
@@ -148,6 +148,11 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
+# For production on Render
+# if not DEBUG:
+#     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -160,3 +165,7 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 # Prevent session data from being cached
 SESSION_CACHE_ALIAS = 'default'
+
+# Media files (Uploaded files)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

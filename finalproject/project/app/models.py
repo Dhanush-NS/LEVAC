@@ -13,6 +13,7 @@ class Student(models.Model):
     username = models.CharField(max_length=10)
     password1 = models.CharField(max_length=128)
     password2 = models.CharField(max_length=128)
+    profile_photo = models.ImageField(upload_to='profile_photos/', null=True, blank=True, default='profile_photos/default.png')
     signup_time = models.TimeField()
     signup_date = models.DateField(default=timezone.now)
 
@@ -21,20 +22,13 @@ class Student(models.Model):
         self.signup_time = datetime.now(india_timezone).time()  # sets time in India timezone
         super(Student, self).save(*args, **kwargs)
 
-    def __Str__(self):
+    def __str__(self):  # Fixed from __Str__ to __str__
         return f"{self.name}{self.phone}{self.email}"
     
 class Login(models.Model):
     username = models.CharField(max_length=10)
     password = models.CharField(max_length=60)
     login_datetime = models.DateTimeField(auto_now_add=True)
-
-class CodeSnippet(models.Model):
-    code = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Snippet {self.id}"
 
 class CodeSnippet(models.Model):
     language = models.CharField(
@@ -44,8 +38,7 @@ class CodeSnippet(models.Model):
     )
     code = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f"Snippet ({self.language}) - {self.created_at}"
-    
-
