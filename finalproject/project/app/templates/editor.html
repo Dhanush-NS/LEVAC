@@ -141,6 +141,53 @@
     .example-button:hover {
       background-color: #dee2e6;
     }
+    /* Chatbot styling */
+    .chatbot-button {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 1000;
+    }
+    
+    .chat-icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: #4CAF50;
+      color: white;
+      text-decoration: none;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .chat-icon i {
+      font-size: 24px;
+    }
+    
+    .chat-icon:hover {
+      background-color: #45a049;
+      transform: scale(1.1);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      color: white;
+      text-decoration: none;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    .chat-icon {
+      animation: pulse 2s infinite;
+    }
+    
+    .chat-icon:hover {
+      animation: none;
+    }
   </style>
 </head>
 <body>
@@ -158,13 +205,19 @@
         <span id="languageBadge" class="language-badge badge-javascript">JavaScript</span>
       </div>
     </div>
+     <!-- Chatbot section -->
+  <div class="chatbot-button">
+    <a href="{% url 'chat'%}" class="chat-icon">
+        <i class="fas fa-robot"></i>
+    </a>
+  </div>
     
-    <div class="code-examples">
+    <!-- <div class="code-examples">
       <p><strong>Quick Examples:</strong> Click to load examples for the selected language</p>
       <div id="examplesContainer">
-        <!-- Examples will be loaded here dynamically -->
+        Examples will be loaded here dynamically
       </div>
-    </div>
+    </div> -->
     
     <textarea id="codeEditor" spellcheck="false" placeholder="Write your code here..."></textarea>
     
@@ -192,7 +245,7 @@
         ]
       },
       java: {
-        defaultCode: '// Simple Java example\npublic class Main {\n  public static void main(String[] args) {\n    System.out.println("Hello, World!");\n    \n    // Adding two numbers\n    int a = 5;\n    int b = 10;\n    System.out.println("Sum of " + a + " and " + b + " is " + (a + b));\n  }\n}',
+        defaultCode: '// Simple Java example\npublic class Main {\n  public static void main(String[] args) {\n    System.out.println("Hello, World!");\n ',
         examples: [
           { name: "Hello World", code: 'public class Main {\n  public static void main(String[] args) {\n    System.out.println("Hello, World!");\n  }\n}' },
           { name: "Array Operations", code: 'public class Main {\n  public static void main(String[] args) {\n    int[] numbers = {1, 2, 3, 4, 5};\n    \n    System.out.print("Original array: ");\n    for (int n : numbers) {\n      System.out.print(n + " ");\n    }\n    System.out.println();\n    \n    System.out.print("Doubled values: ");\n    for (int n : numbers) {\n      System.out.print((n * 2) + " ");\n    }\n    System.out.println();\n    \n    int sum = 0;\n    for (int n : numbers) {\n      sum += n;\n    }\n    System.out.println("Sum of all values: " + sum);\n  }\n}' },

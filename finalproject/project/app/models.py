@@ -13,7 +13,8 @@ class Student(models.Model):
     username = models.CharField(max_length=10)
     password1 = models.CharField(max_length=128)
     password2 = models.CharField(max_length=128)
-    profile_photo = models.ImageField(upload_to='profile_photos/', null=True, blank=True, default='profile_photos/default.png')
+    bio = models.CharField(max_length=255,blank=True,default=" ")
+    profile_photo = models.ImageField(default='profile.png')
     signup_time = models.TimeField()
     signup_date = models.DateField(default=timezone.now)
 

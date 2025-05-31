@@ -103,6 +103,18 @@
             margin-top: -15px;
             margin-bottom: 10px;
         }
+        .availability-message {
+        font-size: 15px;
+        margin-top: -15px;
+        margin-bottom: 10px;
+    }
+    .available {
+        color: #28a745; /* Green */
+    }
+    .taken {
+        color: #dc3545; /* Red */
+    }
+        
     </style>
 </head>
 <body>
@@ -122,12 +134,12 @@
             <small class="error-message" id="phone-error">Please enter a valid phone number</small>
 
             <label for="signupemail">Email</label>
-            <input type="email" name="email" id="signupemail" class="form-control" placeholder="Enter your email" required>
-            <small class="error-message" id="email-error">Please enter a valid email</small>
+            <input type="email" name="email" id="signupemail" class="form-control" placeholder="Enter your email" required oninput="checkEmailAvailability()">
+            <div id="email-availability" class="availability-message"></div>
 
             <label for="username">Username</label>
-            <input type="text" name="username" id="username" class="form-control" placeholder="Enter your username" maxlength="7" required>
-            <small class="error-message" id="username-error">Username must be less than 7 characters</small>
+            <input type="text" name="username" id="username" class="form-control" placeholder="Enter your username" maxlength="7" required oninput="checkUsernameAvailability()">
+            <div id="username-availability" class="availability-message"></div>
 
             <label for="password1">Password</label>
             <div style="position: relative;">
@@ -142,6 +154,7 @@
                 <img id="togglePassword2" src="{% static 'images/hidden.png' %}" alt="eye" width="20px" height="20px" class="password-toggle" onclick="togglePassword('password2', 'togglePassword2')">
             </div>
             <small class="error-message" id="password2-error">Passwords do not match</small>
+            
 
             <button type="submit" class="signupbtn">Signup</button>
         </form>
@@ -162,26 +175,100 @@
     function togglePasswordVisibility(passwordFieldId, toggleIconId) {
         const passwordField = document.getElementById(passwordFieldId);
         const toggleIcon = document.getElementById(toggleIconId);
-    
+
+        if (toggleIcon){
         toggleIcon.addEventListener("click", function () {
             if (passwordField.type === "password") {
                 passwordField.type = "text";  // Show password
-                toggleIcon.src = 'static/images/openeye.png';
+                toggleIcon.src ='/static/images/openeye.png';
             } else {
                 passwordField.type = "password";  // Hide password
-                toggleIcon.src = 'static/images/hidden.png';
+                toggleIcon.src = '/static/images/hidden.png';
             }
         });
+        }
     }
-    
+
     // Initialize toggle for each password field
     togglePasswordVisibility("password1", "togglePassword1");
     togglePasswordVisibility("password2", "togglePassword2");
-    togglePasswordVisibility("loginpassword", "toggleLoginPassword");
-    
+    togglePasswordVisibility("password", "toggleLogin");
+
 //**************************************** password eye visibility *********************************************
+// Username availability check
+function checkUsernameAvailability() {
+    const username = document.getElementById('username').value;
+    const availabilityDiv = document.getElementById('username-availability');
+    
+    if (username.length < 3) {
+        availabilityDiv.textContent = '';
+        return;
+    }
+
+    fetch(`/check_username/?username=${encodeURIComponent(username)}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.is_taken) {
+                availabilityDiv.textContent = 'Username already taken';
+                availabilityDiv.className = 'availability-message taken';
+            } else {
+                availabilityDiv.textContent = 'Username available';
+                availabilityDiv.className = 'availability-message available';
+            }
+        });
+}
+
+// Email availability check
+function checkEmailAvailability() {
+    const email = document.getElementById('signupemail').value;
+    const availabilityDiv = document.getElementById('email-availability');
+    
+    // Simple email validation
+    if (!email.includes('@') || !email.includes('.')) {
+        availabilityDiv.textContent = '';
+        return;
+    }
+
+    fetch(`/check_email/?email=${encodeURIComponent(email)}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.is_taken) {
+                availabilityDiv.textContent = 'Email already registered';
+                availabilityDiv.className = 'availability-message taken';
+            } else {
+                availabilityDiv.textContent = 'Email available';
+                availabilityDiv.className = 'availability-message available';
+            }
+        });
+}
+
+// Add debounce to prevent too many requests
+function debounce(func, timeout = 500) {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
+}
+
+// Apply debounce to the input events
+document.getElementById('username').addEventListener('input', debounce(checkUsernameAvailability));
+document.getElementById('signupemail').addEventListener('input', debounce(checkEmailAvailability));
 
 
+function validateForm() {
+    const usernameMessage = document.getElementById('username-availability');
+    const emailMessage = document.getElementById('email-availability');
+    
+    if (usernameMessage.classList.contains('taken') || 
+        emailMessage.classList.contains('taken')) {
+        alert('Please fix the highlighted fields before submitting');
+        return false;
+    }
+    
+    // Add any additional validation checks here if needed
+    return true;
+}
     </script>
     <script src="{% static 'js/script.js' %}"></script>
 

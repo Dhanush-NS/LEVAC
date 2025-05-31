@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+# Load environment variables before using them
+load_dotenv()
 
 import dj_database_url
 
@@ -23,7 +27,7 @@ import dj_database_url
 # }
 
 #Google Gemini api key
-GOOGLE_GENAI_API_KEY = os.getenv('GOOGLE_GENAI_API_KEY', '')
+GEMINI_KEY = os.getenv('Gemini_api_key')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -36,8 +40,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-o&(943*+oi)6hktq)p8s=^ullyb2@tpmeyh)y*f@v+rts35vpx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-ALLOWED_HOSTS = ['*']  # For initial testing, replace with your render URL later
+DEBUG = True
+ALLOWED_HOSTS = []  # For initial testing, replace with your render URL later
 
 
 
@@ -75,7 +79,7 @@ ROOT_URLCONF = 'project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'templates')],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -147,7 +151,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # For production on Render
@@ -169,3 +174,12 @@ SESSION_CACHE_ALIAS = 'default'
 # Media files (Uploaded files)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'nsdhanush5@gmail.com'  # Your Gmail address
+EMAIL_HOST_PASSWORD = 'koiw dnha rlkj ceqf'  # Use App Password if 2FA is enabled
+DEFAULT_FROM_EMAIL = 'nsdhanush5@gmail.com'  # Same as EMAIL_HOST_USER

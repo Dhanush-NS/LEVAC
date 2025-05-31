@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Java Videos and Code Editor</title>
-  {% load static %}
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://www.youtube.com/iframe_api"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
     /* Split screen layout for desktop */
     .split-screen {
@@ -18,6 +18,7 @@
       width: 50%;
       overflow-y: auto;
       border-right: 1px solid #dee2e6;
+      padding: 15px;
     }
     .editor-side {
       width: 50%;
@@ -38,6 +39,17 @@
         border-right: none;
         border-bottom: 1px solid #dee2e6;
       }
+      .videos-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    /* Videos Grid Layout - 3 per row */
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding: 20px;
     }
 
     /* Code editor and output styling */
@@ -61,21 +73,32 @@
 
     /* Video styling */
     .video-item {
-      margin-bottom: 20px;
       cursor: pointer;
       position: relative;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      overflow: hidden;
     }
+
+    .video-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+
     .video-thumbnail {
       position: relative;
       width: 100%;
-      height: 180px;
+      height: 200px;
       background-size: cover;
       background-position: center;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 4px;
+      border-radius: 8px 8px 0 0;
     }
+    
     .video-thumbnail::before {
       content: '';
       position: absolute;
@@ -84,19 +107,27 @@
       right: 0;
       bottom: 0;
       background: rgba(0,0,0,0.3);
-      border-radius: 4px;
+      border-radius: 8px 8px 0 0;
     }
+    
     .play-button {
       width: 60px;
       height: 60px;
-      background-color: rgba(255,255,255,0.8);
+      background-color: rgba(255,255,255,0.9);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       z-index: 1;
+      transition: all 0.3s ease;
     }
+    
+    .play-button:hover {
+      background-color: rgba(255,255,255,1);
+      transform: scale(1.1);
+    }
+    
     .play-button::after {
       content: '';
       width: 0;
@@ -106,113 +137,176 @@
       border-bottom: 15px solid transparent;
       margin-left: 5px;
     }
+
+    /* Video Player - Initially hidden */
     .video-player {
       width: 100%;
       display: none;
+      position: relative;
     }
+
+    /* Video Player when active - enlarged view */
     .video-player.active {
       display: block;
-    }
-    .video-player iframe {
-      width: 100%;
-      height: 400px; /* Increased height for better visibility */
-    }
-    
-    /* Enhanced video player in split screen mode */
-    .split-screen .video-player iframe {
-      height: 350px; /* Make video larger in split screen */
-    }
-    
-    /* New sticky video feature when scrolling in split screen */
-    .split-screen .video-player.active.sticky {
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
+      width: 80vw;
+      max-width: 1000px;
       background: white;
-      padding: 10px;
-      border-bottom: 1px solid #dee2e6;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      padding: 20px;
     }
-    
-    /* Video toggle size button */
-    .video-size-toggle {
-      background: rgba(0,0,0,0.6);
-      color: white;
-      border: none;
-      border-radius: 4px;
-      padding: 5px 10px;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      z-index: 200;
-      cursor: pointer;
+
+    .video-player.active iframe {
+      width: 100%;
+      height: 500px;
+      border-radius: 8px;
+    }
+
+    /* Video overlay background */
+    .video-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 999;
       display: none;
+      backdrop-filter: blur(5px);
     }
-    .video-player.active .video-size-toggle {
+
+    .video-overlay.active {
       display: block;
     }
-    
-    /* Full size video */
-    .video-player.full-size iframe {
-      height: 500px;
+
+    /* Close button for enlarged video */
+    .close-video {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      z-index: 1001;
+    }
+
+    .close-video:hover {
+      background: rgba(0,0,0,0.9);
+    }
+
+    /* Split screen video player */
+    .split-screen .video-player.active {
+      position: static;
+      transform: none;
+      width: 100%;
+      max-width: none;
+      box-shadow: none;
+      padding: 0;
+      margin-bottom: 20px;
+      background: transparent;
+    }
+
+    .split-screen .video-player.active iframe {
+      height: 300px;
     }
     
     .video-title {
-      font-weight: 500;
-      margin-top: 8px;
-      margin-bottom: 4px;
+      font-weight: 600;
+      margin: 15px;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      line-height: 1.3;
+      color: #333;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
     
     .video-description {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #666;
-      max-height: 60px;
+      margin: 0 15px 15px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
       overflow: hidden;
+      line-height: 1.4;
     }
 
     /* Related videos styling */
     .related-videos {
       background: #f8f9fa;
-      padding: 10px;
-      border-radius: 5px;
-      margin-top: 10px;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 15px;
     }
+    
     .related-video {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-      padding: 5px;
-      border-radius: 3px;
+      gap: 12px;
+      margin-bottom: 12px;
+      padding: 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
     }
+    
     .related-video:hover {
       background-color: #e9ecef;
     }
+    
     .related-video img {
-      border-radius: 3px;
+      border-radius: 4px;
       width: 120px;
+      height: 68px;
+      object-fit: cover;
     }
+    
     .related-video span {
       font-size: 0.9rem;
       flex-grow: 1;
+      line-height: 1.3;
     }
 
     /* Run button styling */
     .btn-run {
-      background-color: #f89820; /* Java orange color */
+      background-color: #28a745;
       color: white;
-      padding: 5px 15px;
+      padding: 8px 20px;
       border: none;
+      border-radius: 6px;
       margin: 10px 0;
+      font-weight: 500;
+      transition: background-color 0.2s ease;
     }
+    
     .btn-run:hover {
-      background-color: #e27b00;
+      background-color: #218838;
     }
     
     /* Loading animation */
     .loading {
       text-align: center;
-      padding: 20px;
+      padding: 40px 20px;
+      font-size: 1.1rem;
+      color: #666;
     }
+    
     .loading:after {
       content: '.';
       animation: dots 1.5s steps(5, end) infinite;
@@ -220,14 +314,102 @@
     
     @keyframes dots {
       0%, 20% { color: rgba(0,0,0,0); text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
-      40% { color: black; text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
-      60% { text-shadow: .25em 0 0 black, .5em 0 0 rgba(0,0,0,0); }
-      80%, 100% { text-shadow: .25em 0 0 black, .5em 0 0 black; }
+      40% { color: #666; text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
+      60% { text-shadow: .25em 0 0 #666, .5em 0 0 rgba(0,0,0,0); }
+      80%, 100% { text-shadow: .25em 0 0 #666, .5em 0 0 #666; }
+    }
+
+    /* Chatbot styling */
+    .chatbot-button {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 1000;
+    }
+    
+    .chat-icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: #4CAF50;
+      color: white;
+      text-decoration: none;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .chat-icon i {
+      font-size: 24px;
+    }
+    
+    .chat-icon:hover {
+      background-color: #45a049;
+      transform: scale(1.1);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      color: white;
+      text-decoration: none;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    .chat-icon {
+      animation: pulse 2s infinite;
+    }
+    
+    .chat-icon:hover {
+      animation: none;
+    }
+
+    /* Navigation improvements */
+    .navbar {
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .hovernav:hover {
+      background-color: rgba(255,255,255,0.1) !important;
+    }
+
+    /* Active video indicator in split screen */
+    .split-screen .video-item.playing {
+      border: 3px solid #007bff;
+      box-shadow: 0 0 20px rgba(0,123,255,0.3);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+      .videos-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 576px) {
+      .videos-grid {
+        grid-template-columns: 1fr;
+        padding: 10px;
+        gap: 15px;
+      }
+      
+      .video-player.active {
+        width: 95vw;
+        padding: 15px;
+      }
+      
+      .video-player.active iframe {
+        height: 250px;
+      }
     }
   </style>
 </head>
 <body>
-  {% block content %}
+  <!-- Video Overlay -->
+  <div class="video-overlay" id="videoOverlay"></div>
 
   <!-- Navigation Bar -->
   <nav class="sticky-top">
@@ -250,10 +432,10 @@
             <a class="hovernav nav-link active p-2 rounded m-2" href="#" id="hindivideo">Hindi</a>
           </li>
           <li class="nav-item">
-            <a target="_blank" class="hovernav nav-link active p-2 rounded m-2" href="{% url 'java' %}">Java Article</a>
+            <a target="_blank" class="hovernav nav-link active p-2 rounded m-2" href="#python-article">Java Article</a>
           </li>
           <li class="nav-item">
-            <a class="hovernav nav-link active p-2 rounded m-2" href="#" id="codeEditorButton">Code Editor</a>
+            <a class="hovernav nav-link active p-2 rounded m-2" href="#" id="codeEditorButton">Java Editor</a>
           </li>
         </ul>
       </div>
@@ -264,74 +446,97 @@
   <div class="container-fluid p-0" id="mainContainer">
     <!-- English Java Videos -->
     <div class="video-gallery" id="videoshowEnglish" style="display: none;">
-      <div class="loading">Loading English Java videos</div>
+      <div class="videos-grid">
+        <div class="loading">Loading English Java videos</div>
+      </div>
     </div>
     
     <!-- Kannada Java Videos -->
     <div class="video-gallery" id="videoshowKannada" style="display: none;">
-      <div class="loading">Loading Kannada Java videos</div>
+      <div class="videos-grid">
+        <div class="loading">Loading Kannada Java videos</div>
+      </div>
     </div>
     
     <!-- Telugu Java Videos -->
     <div class="video-gallery" id="videoshowTelugu" style="display: none;">
-      <div class="loading">Loading Telugu Java videos</div>
+      <div class="videos-grid">
+        <div class="loading">Loading Telugu Java videos</div>
+      </div>
     </div>
     
     <!-- Hindi Java Videos -->
     <div class="video-gallery" id="videoshowHindi" style="display: none;">
-      <div class="loading">Loading Hindi Java videos</div>
+      <div class="videos-grid">
+        <div class="loading">Loading Hindi Java videos</div>
+      </div>
     </div>
   </div>
 
-  <!-- Split screen container - Initially hidden -->
+  <!-- Split screen container -->
   <div class="split-screen" id="splitScreen" style="display: none;">
     <!-- Video Side -->
     <div class="video-side" id="videoSide">
-      <!-- Videos will be loaded here dynamically -->
+      <!-- Currently playing video will appear here -->
+      <div id="currentVideoPlayer" style="display: none;">
+        <!-- Active video player will be moved here -->
+      </div>
+      <!-- Video list -->
+      <div id="videoList">
+        <!-- Videos will be loaded here dynamically -->
+      </div>
     </div>
     <!-- Code Editor Side -->
     <div class="editor-side">
-      <div class="p-2">
+      <div class="p-3">
         <h4>Java Code Editor</h4>
-        <button class="btn btn-run" id="runButton">Run Code</button>
+        <button class="btn btn-run" id="runButton">▶ Run Code</button>
       </div>
-      <textarea id="codeEditor" placeholder="Write your Java code here...">public class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, Java!");
-    }
-}</textarea>
+      <textarea id="codeEditor" placeholder="Write your Java code here...">System.out.println("Hello, Java!");</textarea>
+      <div class="p-2">
+        <strong>Output:</strong>
+      </div>
       <div id="output">
         <p>Output will appear here...</p>
       </div>
     </div>
   </div>
+ <!-- Chatbot section -->
+  <div class="chatbot-button">
+    <a href="{% url 'chat'%}" class="chat-icon">
+        <i class="fas fa-robot"></i>
+    </a>
+  </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       // YouTube API Key
-      const API_KEY = "";
+      const API_KEY = "{{youtube_api_key}}";
       
       // Channel IDs and Playlist IDs for different languages
       const SOURCE_IDS = {
-        english: "PLX9Zi6XTqOKQ7TdRz0QynGIKuMV9Q2H8E", // Java playlist
-        kannada: "PLVlQHNRLflP_jLu8a8q5k-G5DxpWLgLSL", // Kannada Java playlist
-        telugu: "PLz8gl4BEGkEGYXNZrIRHJUSoxS_FPBrDy", // Telugu Java playlist
-        hindi: "PLu0W_9lII9agS67Uits0UnJyrYiXhDS6q"   // Hindi Java playlist
+       english: "PLsyeobzWxl7pe_IiTfNyr55kwJPWbgxB5",
+        kannada: "PLdjoCUa5gxgfptzJ8SA7kUFyehmsluxBr",
+        telugu: "PLz8gl4BEGkEGYXNZrIRHJUSoxS_FPBrDy",
+        hindi: "PLu0W_9lII9agS67Uits0UnJyrYiXhDS6q"
       };
       
       const MAX_RESULTS = 20;
-      
       
       // References to main elements
       const mainContainer = document.getElementById("mainContainer");
       const splitScreen = document.getElementById("splitScreen");
       const videoSide = document.getElementById("videoSide");
+      const videoList = document.getElementById("videoList");
+      const currentVideoPlayer = document.getElementById("currentVideoPlayer");
       const codeEditorButton = document.getElementById("codeEditorButton");
       const runButton = document.getElementById("runButton");
       const codeEditor = document.getElementById("codeEditor");
       const output = document.getElementById("output");
+      const videoOverlay = document.getElementById("videoOverlay");
 
       let currentVideoSection = null;
+           let currentLanguage = null;
       let videosLoaded = {
         english: false,
         kannada: false,
@@ -342,6 +547,7 @@
       // Track currently playing video
       let currentlyPlayingVideo = null;
       let activePlayer = null;
+      let isSplitScreenMode = false;
 
       // Initialize YouTube API
       window.onYouTubeIframeAPIReady = function() {
@@ -350,28 +556,31 @@
 
       async function fetchYouTubeVideos(sourceId, containerId, language) {
         const container = document.getElementById(containerId);
+        let gridContainer;
+        
+        if (containerId === 'videoList') {
+          gridContainer = container;
+        } else {
+          gridContainer = container.querySelector('.videos-grid');
+        }
         
         try {
-          let videosResponse;
-          
-          // Playlist logic - all our sources are now playlists
-          videosResponse = await fetch(
+          const videosResponse = await fetch(
             `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=${MAX_RESULTS}&playlistId=${sourceId}&key=${API_KEY}`
           );
 
           const videosData = await videosResponse.json();
           
           if (!videosData.items?.length) {
-            container.innerHTML = `<div class="alert alert-info">No videos found</div>`;
+            gridContainer.innerHTML = `<div class="alert alert-info col-span-3">No videos found</div>`;
             return;
           }
 
           // Clear loading message
-          container.innerHTML = '';
+          gridContainer.innerHTML = '';
 
           // Add videos to container
-          videosData.items.forEach((item, index) => {
-            // Skip non-video items (like deleted videos)
+          videosData.items.forEach((item) => {
             if (!item.snippet.resourceId?.videoId) return;
             
             const videoId = item.snippet.resourceId.videoId;
@@ -380,85 +589,73 @@
             const thumbnail = item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.default?.url;
             
             const videoElement = document.createElement('div');
-            videoElement.className = 'video-item p-4';
+            videoElement.className = 'video-item';
             videoElement.dataset.videoId = videoId;
             videoElement.innerHTML = `
               <div class="video-thumbnail" style="background-image: url('${thumbnail}')">
                 <div class="play-button"></div>
               </div>
               <div class="video-player" id="player-container-${videoId}">
-                <button class="video-size-toggle" id="size-toggle-${videoId}">Enlarge</button>
+                <button class="close-video" onclick="closeVideo('${videoId}')">✕</button>
                 <div id="player-${videoId}"></div>
+                <div class="related-videos" id="related-${videoId}" style="display:none;">
+                  <h6>More from this playlist:</h6>
+                  <div class="related-videos-container"></div>
+                </div>
               </div>
               <h5 class="video-title">${title}</h5>
               <p class="video-description">${description}</p>
-              <div class="related-videos" id="related-${videoId}" style="display:none;">
-                <h6>More from this playlist:</h6>
-                <div class="related-videos-container"></div>
-              </div>
             `;
-            container.appendChild(videoElement);
+            gridContainer.appendChild(videoElement);
 
             // Add click event to thumbnail
             const thumbnailElement = videoElement.querySelector('.video-thumbnail');
             thumbnailElement.addEventListener('click', function() {
-              playVideo(videoId, sourceId);
-            });
-            
-            // Add click event to size toggle button
-            const sizeToggleButton = videoElement.querySelector(`#size-toggle-${videoId}`);
-            sizeToggleButton.addEventListener('click', function(e) {
-              e.stopPropagation();
-              const playerContainer = document.getElementById(`player-container-${videoId}`);
-              
-              if (playerContainer.classList.contains('full-size')) {
-                playerContainer.classList.remove('full-size');
-                this.textContent = 'Enlarge';
-              } else {
-                playerContainer.classList.add('full-size');
-                this.textContent = 'Reduce';
-              }
+              playVideo(videoId, sourceId, language);
             });
           });
-          
-          // Add scroll event listener to make video sticky in split screen
-          if (containerId === 'videoSide') {
-            videoSide.addEventListener('scroll', function() {
-              if (currentlyPlayingVideo) {
-                const playerContainer = document.getElementById(`player-container-${currentlyPlayingVideo}`);
-                if (playerContainer) {
-                  const videoItemTop = playerContainer.parentElement.offsetTop;
-                  
-                  if (videoSide.scrollTop > videoItemTop) {
-                    playerContainer.classList.add('sticky');
-                  } else {
-                    playerContainer.classList.remove('sticky');
-                  }
-                }
-              }
-            });
-          }
 
           return true;
         } catch (error) {
           console.error('Error fetching videos:', error);
-          container.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+          gridContainer.innerHTML = `<div class="alert alert-danger col-span-3">Error: ${error.message}</div>`;
           return false;
         }
       }
 
-      function playVideo(videoId, sourceId) {
-        // If there's a currently playing video, stop it
-        if (activePlayer) {
-          activePlayer.stopVideo();
-          document.querySelector(`.video-player.active`)?.classList.remove('active');
-          document.querySelector(`.video-player.active.sticky`)?.classList.remove('sticky');
+      function playVideo(videoId, sourceId, language) {
+        // Close any currently playing video
+        if (currentlyPlayingVideo) {
+          closeVideo(currentlyPlayingVideo);
         }
         
-        // Show the player for this video
         const playerContainer = document.getElementById(`player-container-${videoId}`);
+        const videoItem = playerContainer.parentElement;
+        
+        // Show overlay if not in split screen mode
+        if (!isSplitScreenMode) {
+          videoOverlay.classList.add('active');
+        }
+        
+        // Show the player
         playerContainer.classList.add('active');
         
+        // In split screen mode, move to current video player area
+        if (isSplitScreenMode) {
+          // Remove active class from all video items
+          document.querySelectorAll('.video-item').forEach(item => {
+            item.classList.remove('playing');
+          });
+          
+          // Add playing class to current video
+          videoItem.classList.add('playing');
+          
+          // Move player to current video area
+          currentVideoPlayer.innerHTML = '';
+          currentVideoPlayer.appendChild(playerContainer);
+          currentVideoPlayer.style.display = 'block';
+        }
+
         // Create new player if not exists
         if (!window[`player_${videoId}`]) {
           window[`player_${videoId}`] = new YT.Player(`player-${videoId}`, {
@@ -466,44 +663,97 @@
             playerVars: {
               'autoplay': 1,
               'modestbranding': 1,
-              'rel': 0
+              'rel': 0,
+              'controls': 1,
+              'fs': 1,
+              'playsinline': 1
             },
             events: {
               'onStateChange': (event) => onPlayerStateChange(event, videoId, sourceId)
             }
           });
         } else {
-          // Play existing player
           window[`player_${videoId}`].playVideo();
         }
         
         currentlyPlayingVideo = videoId;
         activePlayer = window[`player_${videoId}`];
-        
-        // Auto-scroll to the video in split screen
-        if (splitScreen.style.display === 'flex') {
-          const videoItem = playerContainer.parentElement;
-          videoItem.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
       }
+
+      function closeVideo(videoId) {
+        const playerContainer = document.getElementById(`player-container-${videoId}`);
+        const videoItem = playerContainer.parentElement;
+        
+        if (playerContainer) {
+          playerContainer.classList.remove('active');
+          
+          // Hide overlay
+          videoOverlay.classList.remove('active');
+          
+          // Stop the video
+          if (window[`player_${videoId}`]) {
+            window[`player_${videoId}`].stopVideo();
+          }
+          
+          // In split screen mode, move player back to video item and hide current player area
+          if (isSplitScreenMode) {
+            // Find the original video item in the video list
+            const originalVideoItems = videoList.querySelectorAll('.video-item');
+            let originalVideoItem = null;
+            
+            originalVideoItems.forEach(item => {
+              if (item.dataset.videoId === videoId) {
+                originalVideoItem = item;
+              }
+            });
+            
+            if (originalVideoItem) {
+              originalVideoItem.appendChild(playerContainer);
+              originalVideoItem.classList.remove('playing');
+            }
+            
+            currentVideoPlayer.style.display = 'none';
+          }
+          
+          // Hide related videos
+          const relatedContainer = document.getElementById(`related-${videoId}`);
+          if (relatedContainer) {
+            relatedContainer.style.display = 'none';
+          }
+        }
+        
+        currentlyPlayingVideo = null;
+        activePlayer = null;
+      }
+
+      // Close video when clicking overlay
+      videoOverlay.addEventListener('click', function() {
+        if (currentlyPlayingVideo) {
+          closeVideo(currentlyPlayingVideo);
+        }
+      });
+
+      // Global close video function
+      window.closeVideo = closeVideo;
 
       function onPlayerStateChange(event, videoId, sourceId) {
         const relatedContainer = document.getElementById(`related-${videoId}`);
         
         if (event.data == YT.PlayerState.PAUSED) {
-          // Show related videos when paused
           showRelatedVideos(videoId, sourceId);
         } else if (event.data == YT.PlayerState.PLAYING) {
-          // Hide related videos when playing
-          relatedContainer.style.display = 'none';
+          if (relatedContainer) {
+            relatedContainer.style.display = 'none';
+          }
         }
       }
 
       async function showRelatedVideos(videoId, sourceId) {
         const relatedContainer = document.getElementById(`related-${videoId}`);
+        if (!relatedContainer) return;
+        
         const videosContainer = relatedContainer.querySelector('.related-videos-container');
         
-        // Only load once
         if (videosContainer.children.length === 0) {
           try {
             const response = await fetch(
@@ -529,7 +779,7 @@
                   `;
                   
                   relatedVideoElement.addEventListener('click', function() {
-                    playVideo(relatedVideoId, sourceId);
+                    playVideo(relatedVideoId, sourceId, currentLanguage);
                   });
                   
                   videosContainer.appendChild(relatedVideoElement);
@@ -550,15 +800,13 @@
         const button = document.getElementById(buttonId);
 
         button.addEventListener("click", function () {
-          // Stop any playing video
-          if (activePlayer) {
-            activePlayer.stopVideo();
-            document.querySelector(`.video-player.active`)?.classList.remove('active');
-            activePlayer = null;
-            currentlyPlayingVideo = null;
+          // Close any playing video
+          if (currentlyPlayingVideo) {
+            closeVideo(currentlyPlayingVideo);
           }
           
-          // Hide split screen if visible
+          // Exit split screen mode
+          isSplitScreenMode = false;
           splitScreen.style.display = "none";
           mainContainer.style.display = "block";
 
@@ -568,9 +816,10 @@
             section.style.display = "none";
           });
 
-          // Show only the selected video section
+          // Show selected video section
           videoSection.style.display = "block";
           currentVideoSection = videoSection;
+          currentLanguage = language;
           
           // Load videos if not already loaded
           if (!videosLoaded[language]) {
@@ -590,297 +839,223 @@
       toggleVideoDisplay("teluguvideo", "videoshowTelugu", "telugu");
       toggleVideoDisplay("hindivideo", "videoshowHindi", "hindi");
 
-      // Trigger click on English videos button to show by default
+      // Trigger English videos by default
       document.getElementById("englishvideo").click();
 
       // Code Editor Button Click
       codeEditorButton.addEventListener("click", function () {
-        // Stop any playing video
-        if (activePlayer) {
-          activePlayer.stopVideo();
-          document.querySelector(`.video-player.active`)?.classList.remove('active');
-          activePlayer = null;
-          currentlyPlayingVideo = null;
-        }
+        // Enter split screen mode
+        isSplitScreenMode = true;
         
         // Hide main container
         mainContainer.style.display = "none";
-
-        // Show split screen
         splitScreen.style.display = "flex";
 
-        // Clear the video side
-        videoSide.innerHTML = "";
-
-        // If there's a current video section, clone its content to the video side
-        if (currentVideoSection) {
-          // Instead of direct cloning, let's rebuild the video section to maintain player functionality
-          const language = currentVideoSection.id.replace('videoshow', '').toLowerCase();
-          videoSide.innerHTML = `<div class="loading">Loading videos...</div>`;
-          
-          fetchYouTubeVideos(SOURCE_IDS[language], 'videoSide', language);
+        // If there's a currently playing video, move it to the split screen
+        if (currentlyPlayingVideo) {
+          const playerContainer = document.getElementById(`player-container-${currentlyPlayingVideo}`);
+          if (playerContainer && playerContainer.classList.contains('active')) {
+            // Close overlay
+            videoOverlay.classList.remove('active');
+            
+            // Move to split screen video area
+            currentVideoPlayer.innerHTML = '';
+            currentVideoPlayer.appendChild(playerContainer);
+            currentVideoPlayer.style.display = 'block';
+            
+            // Mark the original video item as playing
+            const videoItems = document.querySelectorAll('.video-item');
+            videoItems.forEach(item => {
+              if (item.dataset.videoId === currentlyPlayingVideo) {
+                item.classList.add('playing');
+              }
+            });
+          }
         } else {
-          // If no video section is active, show a message
-          videoSide.innerHTML = "<div class='p-4'>Please select a video language from the navigation bar</div>";
+          currentVideoPlayer.style.display = 'none';
+        }
+
+        // Load videos in the video list if we have a current language
+        if (currentLanguage) {
+          videoList.innerHTML = `<div class="loading">Loading ${currentLanguage} Java videos</div>`;
+          fetchYouTubeVideos(SOURCE_IDS[currentLanguage], 'videoList', currentLanguage);
         }
       });
 
-      // Run Button Click (Java code execution simulation)
+      // Run Code Button functionality
       runButton.addEventListener("click", function () {
         const code = codeEditor.value;
-        output.innerHTML = "<p>Output:</p>";
-
-        // Enhanced code execution simulation for Java
-        output.innerHTML += "<pre>" + executeJavaCode(code) + "</pre>";
+        output.innerHTML = '<p style="color: #666;">Running code...</p>';
+        
+        // Simulate Java code execution (basic interpreter simulation)
+        try {
+          let result = simulateJavaExecution(code);
+          output.innerHTML = `<pre style="margin: 0; white-space: pre-wrap;">${result}</pre>`;
+        } catch (error) {
+          output.innerHTML = `<p style="color: #dc3545;">Error: ${error.message}</p>`;
+        }
       });
 
-      function executeJavaCode(code) {
-        // Java execution simulation
-        let result = "";
-        let hasOutput = false;
+      // Simple Java code simulator (for demonstration purposes)
+      function simulateJavaExecution(code) {
+        const lines = code.split('\n');
+        let result = '';
         
-        try {
-          // Look for System.out.println statements
-          if (code.includes("System.out.println")) {
-            const printRegex = /System\.out\.println\s*\(\s*([^)]+)\s*\)/g;
-            let match;
-            while ((match = printRegex.exec(code)) !== null) {
-              let content = match[1];
-              // Handle string literals with quotes
-              if ((content.startsWith('"') && content.endsWith('"')) || 
-                  (content.startsWith("'") && content.endsWith("'"))) {
-                content = content.substring(1, content.length - 1);
-              }
-              // Handle variables (simplified)
-              else if (code.includes(`${content} =`)) {
-                const varRegex = new RegExp(`${content}\\s*=\\s*([^;\\n]+)`);
-                const varMatch = varRegex.exec(code);
-                if (varMatch) {
-                  content = varMatch[1].trim();
-                  // If it's a string, remove quotes
-                  if ((content.startsWith('"') && content.endsWith('"')) || 
-                      (content.startsWith("'") && content.endsWith("'"))) {
-                    content = content.substring(1, content.length - 1);
-                  }
-                }
-              }
-              result += content + "\n";
-              hasOutput = true;
-            }
-          }
-          
-          // System.out.print statements (without line break)
-          if (code.includes("System.out.print(") && !code.includes("System.out.println(")) {
-            const printRegex = /System\.out\.print\s*\(\s*([^)]+)\s*\)/g;
-            let match;
-            let line = "";
-            while ((match = printRegex.exec(code)) !== null) {
-              let content = match[1];
-              // Handle string literals with quotes
-              if ((content.startsWith('"') && content.endsWith('"')) || 
-                  (content.startsWith("'") && content.endsWith("'"))) {
-                content = content.substring(1, content.length - 1);
-              }
-              line += content;
-              hasOutput = true;
-            }
-            if (line) {
-              result += line + "\n";
-            }
-          }
-          
-          // Basic arithmetic operations with Java syntax
-          const mathRegex = /(\w+)\s*=\s*(\d+)\s*([+\-*/%])\s*(\d+);/g;
-          while ((match = mathRegex.exec(code)) !== null) {
-            const varName = match[1];
-            const num1 = parseFloat(match[2]);
-            const op = match[3];
-            const num2 = parseFloat(match[4]);
-            let calcResult;
-            
-            switch(op) {
-              case '+': calcResult = num1 + num2; break;
-              case '-': calcResult = num1 - num2; break;
-              case '*': calcResult = num1 * num2; break;
-              case '/': calcResult = num1 / num2; break;
-              case '%': calcResult = num1 % num2; break;
-            }
-            
-            // If the result is directly printed
-            if (code.includes(`System.out.println(${varName})`) && !code.includes(`System.out.println("${varName}")`)) {
-              result += calcResult + "\n";
-              hasOutput = true;
-            }
-          }
-          
-          // Basic conditionals (if statements)
-          if (code.includes("if") && code.includes("{")) {
-            const ifRegex = /if\s*\(\s*(.+?)\s*\)/;
-            const ifMatch = ifRegex.exec(code);
-            if (ifMatch) {
-              const condition = ifMatch[1].trim();
-              // Very simplified evaluation
-              let conditionMet = false;
-              if (condition.includes("==")) {
-                const parts = condition.split("==").map(p => p.trim());
-                conditionMet = parts[0] === parts[1];
-              } else if (condition.includes(">")) {
-                const parts = condition.split(">").map(p => p.trim());
-                conditionMet = parseFloat(parts[0]) > parseFloat(parts[1]);
-              } else if (condition.includes("<")) {
-                const parts = condition.split("<").map(p => p.trim());
-                conditionMet = parseFloat(parts[0]) < parseFloat(parts[1]);
-              }
-              
-              if (conditionMet) {
-                const ifBodyRegex = /if\s*\(.+?\)\s*\{(.+?)(?:\}\s*else|$)/s;
-                const ifBodyMatch = ifBodyRegex.exec(code);
-                if (ifBodyMatch) {
-                  result += "Condition is True - executing if block\n";
-                  // Look for print statements inside the if block
-                  const printInsideIfRegex = /System\.out\.println\s*\(\s*([^)]+)\s*\)/;
-                  const printMatch = printInsideIfRegex.exec(ifBodyMatch[1]);
-                  if (printMatch) {
-                    let content = printMatch[1];
-                    if ((content.startsWith('"') && content.endsWith('"')) || 
-                        (content.startsWith("'") && content.endsWith("'"))) {
-                      content = content.substring(1, content.length - 1);
-                      result += content + "\n";
-                    }
-                  }
-                  hasOutput = true;
-                }
-              } else if (code.includes("else {")) {
-                result += "Condition is False - executing else block\n";
-                // Look for print statements inside the else block
-                const elseBodyRegex = /else\s*\{(.+?)(?:\}|$)/s;
-                const elseBodyMatch = elseBodyRegex.exec(code);
-                if (elseBodyMatch) {
-                  const printInsideElseRegex = /System\.out\.println\s*\(\s*([^)]+)\s*\)/;
-                  const printMatch = printInsideElseRegex.exec(elseBodyMatch[1]);
-                  if (printMatch) {
-                    let content = printMatch[1];
-                    if ((content.startsWith('"') && content.endsWith('"')) || 
-                        (content.startsWith("'") && content.endsWith("'"))) {
-                      content = content.substring(1, content.length - 1);
-                      result += content + "\n";
-                    }
-                  }
-                }
-                hasOutput = true;
-              }
-            }
-          }
-          
-          // Handle loops (basic for loop in Java)
-          if (code.includes("for") && code.includes("{")) {
-            const forRegex = /for\s*\(\s*int\s+(\w+)\s*=\s*(\d+)\s*;\s*\1\s*<\s*(\d+)\s*;/;
-            const forMatch = forRegex.exec(code);
-            if (forMatch) {
-              const varName = forMatch[1];
-              const startVal = parseInt(forMatch[2]);
-              const endVal = parseInt(forMatch[3]);
-              
-              result += "Loop output:\n";
-              const forBlockRegex = /for\s*\([^{]+\{([^}]+)\}/s;
-              const forBlock = forBlockRegex.exec(code);
-              
-              if (forBlock) {
-                const blockContent = forBlock[1];
-                const printInLoopRegex = /System\.out\.println\s*\(\s*([^)]+)\s*\)/;
-                const printMatch = printInLoopRegex.exec(blockContent);
-                
-                for (let i = startVal; i < endVal; i++) {
-                  if (printMatch) {
-                    let content = printMatch[1];
-                    // If printing the loop variable
-                    if (content === varName) {
-                      result += i + "\n";
-                    } 
-                    // If printing a string with the loop variable
-                    else if (content.includes(varName)) {
-                      // Very simplified variable substitution
-                      content = content.replace(varName, i);
-                      result += content + "\n";
-                    }
-                    // If printing a fixed string
-                    else if ((content.startsWith('"') && content.endsWith('"')) || 
-                        (content.startsWith("'") && content.endsWith("'"))) {
-                      content = content.substring(1, content.length - 1);
-                      result += content + "\n";
-                    }
-                  }
-                }
-                hasOutput = true;
-              }
-            }
-          }
-        }
-        
-        // Handle Java arrays (simplified)
-        if (code.includes("new ") && code.includes("[")) {
-          const arrayRegex = /(\w+)\s*\[\s*\]\s*(\w+)\s*=\s*new\s+\w+\s*\[\s*(\d+)\s*\]/;
-          const arrayMatch = arrayRegex.exec(code);
-          
-          if (arrayMatch) {
-            const arrayName = arrayMatch[2];
-            const arraySize = parseInt(arrayMatch[3]);
-            
-            // Check if array elements are assigned and printed
-            const printArrayRegex = new RegExp(`for\\s*\\([^{]+{[^}]*System\\.out\\.println\\s*\\(\\s*${arrayName}\\s*\\[\\s*(\\w+)\\s*\\]\\s*\\)`, 's');
-            const printArrayMatch = printArrayRegex.exec(code);
-            
-            if (printArrayMatch) {
-              result += "Array elements:\n";
-              // Look for array assignments
-              const arrayAssignRegex = new RegExp(`${arrayName}\\s*\\[\\s*(\\d+)\\s*\\]\\s*=\\s*([^;]+)`, 'g');
-              let assignMatch;
-              let arrayValues = Array(arraySize).fill("0"); // Default values
-              
-              while ((assignMatch = arrayAssignRegex.exec(code)) !== null) {
-                const index = parseInt(assignMatch[1]);
-                const value = assignMatch[2].trim();
-                if (index < arraySize) {
-                  arrayValues[index] = value;
-                }
-              }
-              
-              // Simple simulation of array printing
-              for (let i = 0; i < arraySize; i++) {
-                result += `${arrayName}[${i}] = ${arrayValues[i]}\n`;
-              }
-              
-              hasOutput = true;
-            }
-          }
-        }
-        
-        // If main method is present but no explicit output, show class compilation message
-        if (code.includes("public static void main") && !hasOutput) {
-          // Extract class name
-          const classRegex = /public\s+class\s+(\w+)/;
-          const classMatch = classRegex.exec(code);
-          if (classMatch) {
-            const className = classMatch[1];
-            result = `Compiled '${className}.java' successfully with no output`;
-            hasOutput = true;
-          }
-        }
-        
-        // If no output was generated, provide a default message
-        if (!hasOutput) {
-          result = "Code executed successfully! (No output)";
-        }
-        
-      } catch (error) {
-        result = "Error: " + error.message;
-      }
-      
-      return result;
-    }
-  });
-</script>
+        for (let line of lines) {
+          line = line.trim();
+          if (!line || line.startsWith('//')) continue; // Ignore empty lines and comments
 
-{% endblock %}
+          try {
+            // Handle print statements
+            if (line.startsWith('System.out.println(')) {
+              const content = line.match(/System\.out\.println\((.+)\);/);
+              if (content) {
+                let toPrint = content[1];
+
+                // Handle string literals
+                if ((toPrint.startsWith('"') && toPrint.endsWith('"')) || 
+                    (toPrint.startsWith("'") && toPrint.endsWith("'"))) {
+                  result += toPrint.slice(1, -1) + '\n';
+                } else {
+                  result += toPrint + '\n'; // Assume it's a variable or expression
+                }
+              }
+            }
+            // Handle simple variable assignments
+            else if (line.includes('=') && !line.includes('==')) {
+              // This is a simplified version and won't handle all Java syntax
+              const [varName, varValue] = line.split('=').map(s => s.trim());
+              result += `${varName} = ${varValue};\n`;
+            }
+            // Handle other Java constructs (simplified)
+            else {
+              result += `Executing: ${line}\n`;
+            }
+          } catch (error) {
+            result += `Error in line: ${line}\n`;
+          }
+        }
+
+        return result || 'Code executed successfully (no output)';
+      }
+
+      // Keyboard shortcuts
+      document.addEventListener('keydown', function(e) {
+        // Ctrl+Enter or Cmd+Enter to run code
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+          if (isSplitScreenMode) {
+            e.preventDefault();
+            runButton.click();
+          }
+        }
+        
+        // Escape to close video
+        if (e.key === 'Escape') {
+          if (currentlyPlayingVideo) {
+            closeVideo(currentlyPlayingVideo);
+          }
+        }
+      });
+
+      // Add sample Java code examples
+      
+
+      // Add sample code buttons
+      const editorHeader = document.querySelector('.editor-side .p-3');
+    
+      
+
+      // Clear button
+      const clearButton = document.createElement('button');
+      clearButton.className = 'btn btn-outline-danger btn-sm ms-2';
+      clearButton.textContent = '🗑️ Clear';
+      clearButton.addEventListener('click', function() {
+        codeEditor.value = '';
+        output.innerHTML = '<p>Output will appear here...</p>';
+      });
+      editorHeader.appendChild(clearButton);
+
+      // Auto-resize textarea
+      codeEditor.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = Math.min(this.scrollHeight, 400) + 'px';
+      });
+
+      // Add loading states and error handling
+      function showLoading(element, message) {
+        element.innerHTML = `<div class="loading">${message}</div>`;
+      }
+
+      function showError(element, message) {
+        element.innerHTML = `<div class="alert alert-danger">${message}</div>`;
+      }
+
+      // Enhanced video loading with retry mechanism
+      async function loadVideosWithRetry(sourceId, containerId, language, retries = 3) {
+        for (let i = 0; i < retries; i++) {
+          try {
+            const success = await fetchYouTubeVideos(sourceId, containerId, language);
+            if (success) return true;
+          } catch (error) {
+            console.error(`Attempt ${i + 1} failed:`, error);
+            if (i < retries - 1) {
+              await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1))); // Exponential backoff
+            }
+          }
+        }
+        return false;
+      }
+
+      // Performance optimization: Lazy load videos
+      const observerOptions = {
+        root: null,
+        rootMargin: '100px',
+        threshold: 0.1
+      };
+
+      const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const videoItem = entry.target;
+            const thumbnail = videoItem.querySelector('.video-thumbnail');
+            if (thumbnail && !thumbnail.dataset.loaded) {
+              thumbnail.dataset.loaded = 'true';
+                            // Additional lazy loading logic can be added here
+            }
+          }
+        });
+      }, observerOptions);
+
+      // Add error boundary for YouTube API
+      window.addEventListener('error', function(e) {
+        if (e.message.includes('YouTube')) {
+          console.error('YouTube API Error:', e);
+          // Fallback or retry logic
+        }
+      });
+
+   
+
+      // Mobile-specific optimizations
+      if (window.innerWidth <= 768) {
+        // Adjust video player size for mobile
+        const style = document.createElement('style');
+        style.textContent = `
+          .video-player.active iframe {
+            height: 200px !important;
+          }
+          .split-screen .video-player.active iframe {
+            height: 200px !important;
+          }
+        `;
+        document.head.appendChild(style);
+      }
+
+      // Add version info and credits
+      console.log('Java Video Learning Platform v1.0');
+      console.log('Features: Multi-language videos, Java code editor, split-screen mode');
+
+    });
+  </script>
 </body>
 </html>
