@@ -243,7 +243,7 @@ def edit_view(request):
                 }
             )
             
-            messages.success(request, "Profile updated successfully!")
+            # messages.success(request, "Profile updated successfully!")
             return redirect('base')
 
         except Exception as e:

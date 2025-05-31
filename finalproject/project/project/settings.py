@@ -19,12 +19,7 @@ load_dotenv()
 
 import dj_database_url
 
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default=os.environ.get('postgresql://my_db_9thk_user:7uVd8AVf4hYE0njlZHL3892RbmrjHKTV@localhost:5432/my-db'),
-#         conn_max_age=600
-#     )
-# }
+
 
 #Google Gemini api key
 GEMINI_KEY = os.getenv('Gemini_api_key')
@@ -37,7 +32,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-o&(943*+oi)6hktq)p8s=^ullyb2@tpmeyh)y*f@v+rts35vpx'
+SECRET_KEY = os.getenv("django_secret_key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -102,8 +97,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'cl',
-        'USERNAME':"root",
-        "PASSWORD":"root",
+        'USERNAME':os.getenv("username"),
+        "PASSWORD":os.getenv("password"),
         "HOST":"localhost",
         "PORT":"3306",
     }
