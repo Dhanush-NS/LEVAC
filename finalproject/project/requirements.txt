@@ -27,6 +27,6 @@ oauthlib==3.2.2
 requests==2.31.0
 
 # Utilities
-Pillow==10.0.1
+Pillow>=10.2.0
 python-dateutil==2.8.2
 pytz==2024.1
