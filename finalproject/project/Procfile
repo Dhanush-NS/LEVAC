@@ -1,1 +1,1 @@
-web: gunicorn LEVAC.wsgi:application
+web: gunicorn levac.wsgi:application
