@@ -1,32 +1,8 @@
-# Core Django & Deployment
 Django==5.0.6
-gunicorn==23.0.0
-whitenoise==6.9.0  # Only keep one whitenoise version
-psycopg2-binary==2.9.9
+gunicorn==21.2.0
+whitenoise==6.5.0
 dj-database-url==2.1.0
-python-decouple==3.8
-
-
-# Django Add-ons
-django-allauth==65.0.2
-django-countries==7.6.1
-django-crispy-forms==2.3
-django-environ==0.12.0
-django-extensions==3.2.3
-django-redis==5.4.0
-djangorestframework==3.15.2
-
-# Database & Caching
-redis==5.0.1
-celery==5.3.5
-
-# Security & Auth
-cryptography==43.0.3
-PyJWT==2.9.0
-oauthlib==3.2.2
-requests==2.31.0
-
-# Utilities
+python-dotenv==1.0.0
+psycopg2-binary==2.9.7
 Pillow>=10.2.0
-python-dateutil==2.8.2
-pytz==2024.1
+google-generativeai
