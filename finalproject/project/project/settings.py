@@ -38,7 +38,7 @@ DEBUG = os.getenv('DEBUG', 'False').lower() in ['true', '1', 'yes']
 ALLOWED_HOSTS = ['*']  # For development
 if not DEBUG:
     ALLOWED_HOSTS = [
-        'your-app-name.onrender.com',  # Replace with your actual Render URL
+        'app.onrender.com',  # Replace with your actual Render URL
         'localhost',
         '127.0.0.1',
     ]
